@@ -13,6 +13,8 @@
 		9EE22D5C1F8BA6CD0041FEC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9EE22D5B1F8BA6CD0041FEC1 /* Assets.xcassets */; };
 		9EE22D5F1F8BA6CD0041FEC1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9EE22D5D1F8BA6CD0041FEC1 /* LaunchScreen.storyboard */; };
 		9EE22D6A1F8BA6CD0041FEC1 /* MobileFunTemplate1Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE22D691F8BA6CD0041FEC1 /* MobileFunTemplate1Tests.swift */; };
+		9EE22D761F8CDCBC0041FEC1 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE22D751F8CDCBC0041FEC1 /* MainTableViewCell.swift */; };
+		9EE22D791F8D0E320041FEC1 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE22D781F8D0E320041FEC1 /* UIImageExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +38,8 @@
 		9EE22D651F8BA6CD0041FEC1 /* MobileFunTemplate1Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MobileFunTemplate1Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EE22D691F8BA6CD0041FEC1 /* MobileFunTemplate1Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileFunTemplate1Tests.swift; sourceTree = "<group>"; };
 		9EE22D6B1F8BA6CD0041FEC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9EE22D751F8CDCBC0041FEC1 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
+		9EE22D781F8D0E320041FEC1 /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,9 +81,10 @@
 		9EE22D531F8BA6CD0041FEC1 /* MobileFunTemplate1 */ = {
 			isa = PBXGroup;
 			children = (
+				9EE22D771F8D0DFA0041FEC1 /* Extensions */,
+				9EE22D741F8CDCA00041FEC1 /* Main */,
 				9EE22D541F8BA6CD0041FEC1 /* AppDelegate.swift */,
 				9EE22D561F8BA6CD0041FEC1 /* ViewController.swift */,
-				9EE22D581F8BA6CD0041FEC1 /* Main.storyboard */,
 				9EE22D5B1F8BA6CD0041FEC1 /* Assets.xcassets */,
 				9EE22D5D1F8BA6CD0041FEC1 /* LaunchScreen.storyboard */,
 				9EE22D601F8BA6CD0041FEC1 /* Info.plist */,
@@ -94,6 +99,23 @@
 				9EE22D6B1F8BA6CD0041FEC1 /* Info.plist */,
 			);
 			path = MobileFunTemplate1Tests;
+			sourceTree = "<group>";
+		};
+		9EE22D741F8CDCA00041FEC1 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				9EE22D581F8BA6CD0041FEC1 /* Main.storyboard */,
+				9EE22D751F8CDCBC0041FEC1 /* MainTableViewCell.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		9EE22D771F8D0DFA0041FEC1 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				9EE22D781F8D0E320041FEC1 /* UIImageExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,7 +222,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9EE22D571F8BA6CD0041FEC1 /* ViewController.swift in Sources */,
+				9EE22D761F8CDCBC0041FEC1 /* MainTableViewCell.swift in Sources */,
 				9EE22D551F8BA6CD0041FEC1 /* AppDelegate.swift in Sources */,
+				9EE22D791F8D0E320041FEC1 /* UIImageExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
