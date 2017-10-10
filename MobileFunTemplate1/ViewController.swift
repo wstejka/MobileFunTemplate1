@@ -25,6 +25,7 @@ extension ViewController : UITableViewDataSource {
         
         let manager = PHImageManager.default()
         if cell.tag != 0 {
+            cell.imageViewHandler.image = nil
             manager.cancelImageRequest(PHImageRequestID(cell.tag))
         }
         let asset = assets[indexPath.row]
@@ -36,8 +37,6 @@ extension ViewController : UITableViewDataSource {
 
         }
         cell.tag = Int(imageId)
-        
-        
         return cell
     }
 }

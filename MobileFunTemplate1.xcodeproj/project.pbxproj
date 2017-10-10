@@ -82,7 +82,8 @@
 			isa = PBXGroup;
 			children = (
 				9EE22D771F8D0DFA0041FEC1 /* Extensions */,
-				9EE22D741F8CDCA00041FEC1 /* Main */,
+				9EE22D7C1F8D162C0041FEC1 /* Model */,
+				9EE22D7B1F8D16030041FEC1 /* ViewController */,
 				9EE22D541F8BA6CD0041FEC1 /* AppDelegate.swift */,
 				9EE22D561F8BA6CD0041FEC1 /* ViewController.swift */,
 				9EE22D5B1F8BA6CD0041FEC1 /* Assets.xcassets */,
@@ -116,6 +117,21 @@
 				9EE22D781F8D0E320041FEC1 /* UIImageExtension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		9EE22D7B1F8D16030041FEC1 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				9EE22D741F8CDCA00041FEC1 /* Main */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		9EE22D7C1F8D162C0041FEC1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
