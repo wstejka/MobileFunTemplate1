@@ -9,7 +9,7 @@
 import UIKit
 import Photos
 
-extension ViewController : UITableViewDataSource {
+extension MainViewController : UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -23,31 +23,29 @@ extension ViewController : UITableViewDataSource {
         cell.titleLabel.text = "Sample title label"
         cell.detailTextLabel?.text = "Detail label text"
         
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .highQualityFormat
         let manager = PHImageManager.default()
         if cell.tag != 0 {
             cell.imageViewHandler.image = nil
             manager.cancelImageRequest(PHImageRequestID(cell.tag))
         }
         let asset = assets[indexPath.row]
-        print("\(cell.imageViewHandler.frame.width, asset.pixelWidth, asset.pixelHeight)")
-
-        let imageId = manager.requestImage(for: asset, targetSize: CGSize(width: cell.imageViewHandler.frame.width, height: cell.imageViewHandler.frame.height), contentMode: PHImageContentMode.aspectFill, options: nil) { (image, _) in
+        let imageId = manager.requestImage(for: asset, targetSize: CGSize(width: cell.imageViewHandler.frame.width, height:cell.imageViewHandler.frame.height), contentMode: PHImageContentMode.aspectFill, options: options) { (image, _) in
 
             cell.imageViewHandler.image = image
-
         }
         cell.tag = Int(imageId)
+        
         return cell
     }
 }
 
-
-
-extension ViewController : UITableViewDelegate {
+extension MainViewController : UITableViewDelegate {
     
 }
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     var assets : [PHAsset] = []
@@ -69,19 +67,18 @@ class ViewController: UIViewController {
 
 
     @IBAction func getPicturesBtnPressed(_ sender: UIButton) {
-        fetchPhotoAtIndexFromEnd(index: 1)
+        fetchPhotos()
     }
     
     // Repeatedly call the following method while incrementing
     // the index until all the photos are fetched
-    func fetchPhotoAtIndexFromEnd(index:Int) {
+    func fetchPhotos() {
         
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [NSSortDescriptor(key:"creationDate", ascending: true)]
         let fetchResult = PHAsset.fetchAssets(with: PHAssetMediaType.image, options: nil)
         print("\(fetchResult.count)")
         
-        //    let manager = PHImageManager()
         fetchResult.enumerateObjects { (asset, _, _) in
             self.assets.append(asset)
         }

@@ -12,7 +12,7 @@ import UIKit
 extension UIImage {
     
     
-    func compressself() -> UIImage? {
+    func compressImage() -> UIImage? {
         
         var actualHeight : Float = Float(self.size.height)
         var actualWidth : Float = Float(self.size.width)
