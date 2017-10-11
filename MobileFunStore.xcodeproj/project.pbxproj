@@ -12,6 +12,7 @@
 		9EAC56091F8D1DEF004067C3 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAC56081F8D1DEF004067C3 /* StringExtension.swift */; };
 		9EDC30F91F8E7C43001C2B64 /* Pods_MobileFunStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EDC30FB1F8E7C43001C2B64 /* Pods_MobileFunStore.framework */; };
 		9EDC30FA1F8E7C43001C2B64 /* Pods_MobileFunStoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EDC30FC1F8E7C43001C2B64 /* Pods_MobileFunStoreTests.framework */; };
+		9EDC31011F8E9030001C2B64 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC31001F8E8E50001C2B64 /* GoogleService-Info.plist */; };
 		9EE22D551F8BA6CD0041FEC1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE22D541F8BA6CD0041FEC1 /* AppDelegate.swift */; };
 		9EE22D571F8BA6CD0041FEC1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE22D561F8BA6CD0041FEC1 /* MainViewController.swift */; };
 		9EE22D5A1F8BA6CD0041FEC1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9EE22D581F8BA6CD0041FEC1 /* Main.storyboard */; };
@@ -49,6 +50,8 @@
 		9EAC56081F8D1DEF004067C3 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		9EDC30FB1F8E7C43001C2B64 /* Pods_MobileFunStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_MobileFunStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EDC30FC1F8E7C43001C2B64 /* Pods_MobileFunStoreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_MobileFunStoreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9EDC30FE1F8E8887001C2B64 /* incrementBuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = incrementBuild.sh; sourceTree = "<group>"; };
+		9EDC31001F8E8E50001C2B64 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9EE22D511F8BA6CD0041FEC1 /* MobileFunStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MobileFunStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EE22D541F8BA6CD0041FEC1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9EE22D561F8BA6CD0041FEC1 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -108,6 +111,14 @@
 			path = Internationalization;
 			sourceTree = "<group>";
 		};
+		9EDC30FD1F8E8862001C2B64 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				9EDC30FE1F8E8887001C2B64 /* incrementBuild.sh */,
+			);
+			path = Scripts;
+			sourceTree = "<group>";
+		};
 		9EE22D481F8BA6CD0041FEC1 = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +142,7 @@
 		9EE22D531F8BA6CD0041FEC1 /* MobileFunStore */ = {
 			isa = PBXGroup;
 			children = (
+				9EDC30FD1F8E8862001C2B64 /* Scripts */,
 				9EAC56011F8D1A84004067C3 /* Internationalization */,
 				9EE22D771F8D0DFA0041FEC1 /* Extensions */,
 				9EE22D7C1F8D162C0041FEC1 /* Model */,
@@ -139,6 +151,7 @@
 				9EE22D5B1F8BA6CD0041FEC1 /* Assets.xcassets */,
 				9EE22D5D1F8BA6CD0041FEC1 /* LaunchScreen.storyboard */,
 				9EE22D601F8BA6CD0041FEC1 /* Info.plist */,
+				9EDC31001F8E8E50001C2B64 /* GoogleService-Info.plist */,
 			);
 			path = MobileFunStore;
 			sourceTree = "<group>";
@@ -214,6 +227,7 @@
 				9EE22D4F1F8BA6CD0041FEC1 /* Resources */,
 				6786D3F11626DC6F5AD4A022 /* [CP] Embed Pods Frameworks */,
 				1BEEBB6716C0D3BD50050C10 /* [CP] Copy Pods Resources */,
+				9EDC30FF1F8E89BE001C2B64 /* Run Script - Increment build */,
 			);
 			buildRules = (
 			);
@@ -291,6 +305,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9EDC31011F8E9030001C2B64 /* GoogleService-Info.plist in Resources */,
 				9EE22D5F1F8BA6CD0041FEC1 /* LaunchScreen.storyboard in Resources */,
 				9EAC56041F8D1D6F004067C3 /* Localizable.strings in Resources */,
 				9EE22D5C1F8BA6CD0041FEC1 /* Assets.xcassets in Resources */,
@@ -467,6 +482,20 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
+		};
+		9EDC30FF1F8E89BE001C2B64 /* Run Script - Increment build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script - Increment build";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Compilation\n$SRCROOT/MobileFunStore/Scripts/incrementBuild.sh";
 		};
 		AB83879E4895D81E95DEF9DB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
