@@ -1,6 +1,6 @@
 //
 //  MainTableViewCell.swift
-//  MobileFunTemplate1
+//  MobileFunStore
 //
 //  Created by Wojciech Stejka on 10/10/2017.
 //  Copyright © 2017 Wojciech Stejka. All rights reserved.

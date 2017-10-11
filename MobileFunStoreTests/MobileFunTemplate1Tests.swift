@@ -1,15 +1,15 @@
 //
-//  MobileFunTemplate1Tests.swift
-//  MobileFunTemplate1Tests
+//  MobileFunStoreTests.swift
+//  MobileFunStoreTests
 //
 //  Created by Wojciech Stejka on 09/10/2017.
 //  Copyright © 2017 Wojciech Stejka. All rights reserved.
 //
 
 import XCTest
-@testable import MobileFunTemplate1
+@testable import Pods_MobileFunStore
 
-class MobileFunTemplate1Tests: XCTestCase {
+class MobileFunTemplateStore: XCTestCase {
     
     override func setUp() {
         super.setUp()
