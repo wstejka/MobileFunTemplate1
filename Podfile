@@ -10,11 +10,13 @@ target 'MobileFunStore' do
 
   # Pods for MobileFunStore
   pod 'FirebaseUI', '~> 4.0'
+  pod 'SwiftyBeaver'
 
   target 'MobileFunStoreTests' do
     inherit! :search_paths
     # Pods for testing
     pod 'FirebaseUI', '~> 4.0'
+    pod 'SwiftyBeaver'
   end
 
 end

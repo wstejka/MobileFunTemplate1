@@ -8,6 +8,9 @@
 
 import UIKit
 import Firebase
+import SwiftyBeaver
+
+let log = SwiftyBeaver.self
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +20,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        // ============== Set up SwiftyBeaver  =================== //
+        // add log destinations. at least one is needed!
+        let console = ConsoleDestination()  // log to Xcode Console
+        // use custom format and set console output to short time, log level & message
+        console.format = "$Dyyyy-MM-dd HH:mm:ss$d $L [$N:$l $F] $M"
+        // add the destinations to SwiftyBeaver
+        log.addDestination(console)
+        // That's the workaround to not engage whole functionallity (especially UI part) in UT activities
+        // Return if this is a unit test
+        if let _ = NSClassFromString("XCTest") {
+            log.verbose("========== UNIT TESTING ==============")
+            return true
+        }
+        
         
         FirebaseApp.configure()
         Database.database().isPersistenceEnabled = true
