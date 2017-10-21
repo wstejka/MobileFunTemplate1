@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         FirebaseApp.configure()
-        Database.database().isPersistenceEnabled = true
+//        Database.database().isPersistenceEnabled = false
         return true
     }
 

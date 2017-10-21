@@ -4,7 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,18 +18,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ddP-mb-M6p">
-                                <rect key="frame" x="145" y="552" width="85" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="hNf-hP-Vbm"/>
-                                </constraints>
-                                <state key="normal" title="Get Pictures"/>
-                                <connections>
-                                    <action selector="getPicturesBtnPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="iyJ-Ta-O4K"/>
-                                </connections>
-                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="OYT-Oe-Vqa">
-                                <rect key="frame" x="0.0" y="68" width="375" height="463"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="338" id="0o7-BG-3ay" customClass="MainTableViewCell" customModule="MobileFunStore" customModuleProvider="target">
@@ -82,12 +72,10 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ddP-mb-M6p" secondAttribute="bottom" constant="36" id="AMd-XS-oHY"/>
-                            <constraint firstItem="ddP-mb-M6p" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="DSz-HP-oTG"/>
                             <constraint firstItem="OYT-Oe-Vqa" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="FOg-J3-jbd"/>
                             <constraint firstItem="OYT-Oe-Vqa" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="GBi-56-8EU"/>
-                            <constraint firstItem="ddP-mb-M6p" firstAttribute="top" secondItem="OYT-Oe-Vqa" secondAttribute="bottom" constant="21" id="XCa-dO-1lV"/>
                             <constraint firstItem="OYT-Oe-Vqa" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="kzR-sf-A4B"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="OYT-Oe-Vqa" secondAttribute="bottom" id="noF-87-QYC"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -128,7 +116,7 @@
                     <tabBarItem key="tabBarItem" title="Item" id="zOe-0K-gbB"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ie1-4m-pM5">
-                        <rect key="frame" x="0.0" y="20" width="375" height="48"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
