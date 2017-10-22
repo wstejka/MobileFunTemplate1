@@ -37,6 +37,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
 //        Database.database().isPersistenceEnabled = false
+//        let settings = FirestoreSettings()
+//        settings.dispatchQueue = DispatchQueue.main
+//        settings.isSSLEnabled = true
         return true
     }
 

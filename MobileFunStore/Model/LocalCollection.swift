@@ -8,14 +8,38 @@
 
 import FirebaseFirestore
 
+struct DocumentIdentifiableComponent {
+    var documentID : String = ""
+}
+    
+protocol DocumentIdentifiable {
+    var documentIdentifiableComponent : DocumentIdentifiableComponent { get set }
+}
+
+extension DocumentIdentifiable {
+
+    var documentID : String {
+        get {
+            return documentIdentifiableComponent.documentID
+        }
+        set {
+            documentIdentifiableComponent.documentID = newValue
+        }
+    }
+
+}
+
 protocol DocumentSerializable {
     
     init?(dictionary : [String : Any])
     func dictionary() -> [String : Any]
+    
 }
+
 
 class LocalCollection<T: DocumentSerializable> {
 
+    // MARK - Vars/Cons
     private(set) var items : [T] = []
     fileprivate let completionHandler : Utils.CompletionType
     fileprivate(set) var query : Query
@@ -31,19 +55,25 @@ class LocalCollection<T: DocumentSerializable> {
         return self.items.count
     }
     
+    // MARK: - methods
     subscript(index: Int) -> T {
         return self.items[index]
     }
+
+//    // Get particular snapshot for given index
+//    func getSnapshot(for index : Int) -> DocumentSnapshot? {
+//
+//    }
     
-    func index(of document: DocumentSnapshot) -> Int? {
-        for i in 0 ..< documents.count {
-            if documents[i].documentID == document.documentID {
-                return i
-            }
-        }
-        
-        return nil
-    }
+//    func index(of document: DocumentSnapshot) -> Int? {
+//        for i in 0 ..< documents.count {
+//            if documents[i].documentID == document.documentID {
+//                return i
+//            }
+//        }
+//
+//        return nil
+//    }
     
     init(query: Query, completionHandler : @escaping Utils.CompletionType) {
         self.items = []
@@ -60,10 +90,10 @@ class LocalCollection<T: DocumentSerializable> {
                 log.error("Error fetching snapshot: \(String(describing: error))")
                 return
             }
-            let models = snapshot.documents.map({ (snapshot) -> T in
-                log.verbose("\(snapshot.data())")
-                guard let model = T(dictionary: snapshot.data()) else {
-                    fatalError("Cannot parse snapshot data: \(snapshot.data())")
+            let models = snapshot.documents.map({ (singlesnapshot) -> T in
+                log.verbose("\(singlesnapshot.data())")
+                guard let model = T(dictionary: singlesnapshot.data()) else {
+                    fatalError("Cannot parse snapshot data: \(singlesnapshot.data())")
                 }
                 return model
             })

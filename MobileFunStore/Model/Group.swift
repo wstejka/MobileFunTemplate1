@@ -9,8 +9,8 @@
 struct Group {
 
     // MARK: - mandatory fields
-    var name : String?
-    var description : String
+    var title : String
+    var description : String?
     var url: String
     var gs_link : String?
     var id : Int
@@ -23,29 +23,29 @@ extension Group : DocumentSerializable {
 
     init?(dictionary: [String : Any]) {
 
-        guard let description = dictionary["description"] as? String,
+        guard let title = dictionary["title"] as? String,
             let id = dictionary["id"] as? Int,
             let url = dictionary["url"] as? String else {
 
                 log.error("Lack of mandatory value(s): \(dictionary)")
                 return nil
         }
-        var cName : String?
-        if let name = dictionary["name"] as? String {
-            cName = name
+        var cDescription : String?
+        if let description = dictionary["description"] as? String {
+            cDescription = description
         }
         var cGsLink : String?
         if let gs_link = dictionary["gs_link"] as? String {
             cGsLink = gs_link
         }
 
-        self.init(name: cName, description: description, url: url, gs_link: cGsLink, id: id)
+        self.init(title: title, description: cDescription, url: url, gs_link: cGsLink, id: id)
     }
 
     func dictionary() -> [String : Any] {
         
-        return ["name" : name ?? "",
-                "description" : description,
+        return ["title" : title,
+                "description" : description ?? "",
                 "url" : url,
                 "gs_link" : gs_link ?? "",
                 "id" : id]
