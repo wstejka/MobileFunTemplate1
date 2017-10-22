@@ -45,7 +45,7 @@ class LocalCollection<T: DocumentSerializable> {
     fileprivate(set) var query : Query
     fileprivate(set) var documents: [DocumentSnapshot] = []
     
-    var listener : FIRListenerRegistration? {
+    var listener : ListenerRegistration? {
         didSet {
             oldValue?.remove()
         }
