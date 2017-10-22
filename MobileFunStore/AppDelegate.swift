@@ -35,7 +35,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         
-        FirebaseApp.configure()
+        FirebaseApp.configure()        
+        
 //        Database.database().isPersistenceEnabled = false
 //        let settings = FirestoreSettings()
 //        settings.dispatchQueue = DispatchQueue.main

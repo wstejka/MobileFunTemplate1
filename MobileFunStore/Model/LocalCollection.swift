@@ -60,10 +60,10 @@ class LocalCollection<T: DocumentSerializable> {
         return self.items[index]
     }
 
-//    // Get particular snapshot for given index
-//    func getSnapshot(for index : Int) -> DocumentSnapshot? {
-//
-//    }
+    // Get documentID
+    func getDocumentID(for index : Int) -> String {
+        return documents[index].documentID
+    }
     
 //    func index(of document: DocumentSnapshot) -> Int? {
 //        for i in 0 ..< documents.count {

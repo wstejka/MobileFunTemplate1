@@ -14,8 +14,8 @@ struct Group {
     var url: String
     var gs_link : String?
     var id : Int
-
-    // MARK: - optional fields
+    // This is workaround as for now there is no possible to check if document has a collection
+    var final : Bool
 
 }
 
@@ -25,7 +25,8 @@ extension Group : DocumentSerializable {
 
         guard let title = dictionary["title"] as? String,
             let id = dictionary["id"] as? Int,
-            let url = dictionary["url"] as? String else {
+            let url = dictionary["url"] as? String,
+            let final = dictionary["final"] as? Bool else {
 
                 log.error("Lack of mandatory value(s): \(dictionary)")
                 return nil
@@ -39,7 +40,7 @@ extension Group : DocumentSerializable {
             cGsLink = gs_link
         }
 
-        self.init(title: title, description: cDescription, url: url, gs_link: cGsLink, id: id)
+        self.init(title: title, description: cDescription, url: url, gs_link: cGsLink, id: id, final : final)
     }
 
     func dictionary() -> [String : Any] {
@@ -48,7 +49,8 @@ extension Group : DocumentSerializable {
                 "description" : description ?? "",
                 "url" : url,
                 "gs_link" : gs_link ?? "",
-                "id" : id]
+                "id" : id,
+                "final" : final]
     }
 }
 

@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  GroupViewController.swift
 //  MobileFunStore
 //
 //  Created by Wojciech Stejka on 09/10/2017.
@@ -13,7 +13,7 @@ import FirebaseFirestore
 import Firebase
 
 // MARK: - Extension UITableViewDataSource
-extension MainViewController : UITableViewDataSource {
+extension GroupViewController : UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -39,30 +39,44 @@ extension MainViewController : UITableViewDataSource {
 }
 
 // MARK: - Extension UITableViewDataSource
-extension MainViewController : UITableViewDelegate {
+extension GroupViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         log.verbose("selected = \(indexPath.row)")
         
+        // Present selected group subview (if exist) or product view (if doesn't exist)
+        // for now we have only groupviewcontroller :D
+        let group = self.groupCollection[indexPath.row]
+        if group.final == false {
+            let controller = GroupViewController.fromStoryboard()
+            let documentID = self.groupCollection.getDocumentID(for: indexPath.row)
+            controller.query = query.document(documentID).collection(subgroupID)
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+        
     }
 }
 
 // MARK: -
-class MainViewController: UIViewController {
+class GroupViewController: UIViewController {
 
     // MARK: - Outlets
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: Const/Var
     var groupCollection : LocalCollection<Group>!
-    var groupsReference : DocumentReference?
+    let subgroupID = "subgroup"
     
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: UIControlEvents.valueChanged)
         
         return refreshControl
+    }()
+
+    lazy var query = {
+        return Firestore.firestore().collection("Groups") //.order(by: "id")
     }()
     
     // MARK: - class lifecycle
@@ -76,7 +90,6 @@ class MainViewController: UIViewController {
 
         self.tableView.refreshControl = self.refreshControl
         
-        let query = Firestore.firestore().collection("Groups").order(by: "id")
         groupCollection = LocalCollection(query: query, completionHandler: { [unowned self] (documents) in
             
             _ = documents.map({ print("\(String(describing: $0))") })
@@ -118,7 +131,9 @@ class MainViewController: UIViewController {
     }
     
     deinit {
-        groupCollection.stopListening()
+        if groupCollection != nil {
+            groupCollection.stopListening()
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -138,6 +153,11 @@ class MainViewController: UIViewController {
                 self.refreshControl.endRefreshing()
             }
         }
+    }
+    
+    static func fromStoryboard(_ storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)) -> GroupViewController {
+        let controller = storyboard.instantiateViewController(withIdentifier: "GroupViewController") as! GroupViewController
+        return controller
     }
 }
 
