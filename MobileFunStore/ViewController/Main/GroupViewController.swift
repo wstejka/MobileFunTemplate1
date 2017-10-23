@@ -30,9 +30,22 @@ extension GroupViewController : UITableViewDataSource {
         cell.titleLabel.text = group.title
         cell.descriptionLabel.text = group.description
         cell.imageViewHandler.image = nil
+        cell.imageViewHandler.contentMode = .scaleAspectFit
         
         let imageUrl = URL(string: group.url)
         cell.imageViewHandler.sd_setImage(with: imageUrl)
+//        cell.imageViewHandler.sd_setImage(with: imageUrl) { (image, error, cacheType, url) in
+//
+//            DispatchQueue.global().async {
+//                log.verbose("Size: \(image?.size.width, image?.size.height)")
+//                let croppedImage = image?.crop(to: CGSize(width: 150.0, height: 100.0))
+//                log.verbose("Size After: \(image?.size.width, image?.size.height)")
+//                DispatchQueue.main.async {
+//                    cell.imageViewHandler.image = croppedImage
+//                }
+//            }
+//            
+//        }
         
         return cell
     }
@@ -52,9 +65,9 @@ extension GroupViewController : UITableViewDelegate {
             let controller = GroupViewController.fromStoryboard()
             let documentID = self.groupCollection.getDocumentID(for: indexPath.row)
             controller.query = query.document(documentID).collection(subgroupID)
+            controller.navigationItem.leftBarButtonItem = nil
             self.navigationController?.pushViewController(controller, animated: true)
         }
-        
     }
 }
 
@@ -79,6 +92,8 @@ class GroupViewController: UIViewController {
         return Firestore.firestore().collection("Groups") //.order(by: "id")
     }()
     
+    var initialRequest : Bool = true
+    
     // MARK: - class lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,9 +105,15 @@ class GroupViewController: UIViewController {
 
         self.tableView.refreshControl = self.refreshControl
         
-        groupCollection = LocalCollection(query: query, completionHandler: { [unowned self] (documents) in
+        groupCollection = LocalCollection(query: query.order(by: "id"), completionHandler: { [unowned self] (documents) in
             
-            _ = documents.map({ print("\(String(describing: $0))") })
+//            _ = documents.map({ print("\(String(describing: $0))") })
+            if self.initialRequest == true {
+                self.initialRequest = false
+                self.tableView.reloadData()
+                return
+            }
+                
             var addIndexPaths: [IndexPath] = []
             var delIndexPaths: [IndexPath] = []
 
@@ -131,6 +152,7 @@ class GroupViewController: UIViewController {
     }
     
     deinit {
+        log.verbose("")
         if groupCollection != nil {
             groupCollection.stopListening()
         }
