@@ -64,7 +64,9 @@ extension GroupViewController : UITableViewDelegate {
         if group.final == false {
             let controller = GroupViewController.fromStoryboard()
             let documentID = self.groupCollection.getDocumentID(for: indexPath.row)
-            controller.query = query.document(documentID).collection(subgroupID)
+
+            controller.query = Firestore.firestore().collection("Groups").order(by: "order").whereField("parent_id", isEqualTo: documentID)
+            //query.document(documentID).collection(subgroupID)
             controller.navigationItem.leftBarButtonItem = nil
             self.navigationController?.pushViewController(controller, animated: true)
         }
@@ -89,7 +91,7 @@ class GroupViewController: UIViewController {
     }()
 
     lazy var query = {
-        return Firestore.firestore().collection("Groups")
+        return Firestore.firestore().collection("Groups").order(by: "order").whereField("parent_id", isEqualTo: "")
     }()
     
     var initialRequest : Bool = true
@@ -105,9 +107,8 @@ class GroupViewController: UIViewController {
 
         self.tableView.refreshControl = self.refreshControl
                 
-        groupCollection = LocalCollection(query: query.order(by: "order"), completionHandler: { [unowned self] (documents) in
+        groupCollection = LocalCollection(query: query, completionHandler: { [unowned self] (documents) in
             
-//            _ = documents.map({ print("\(String(describing: $0))") })
             if self.initialRequest == true {
                 self.initialRequest = false
                 self.tableView.reloadData()

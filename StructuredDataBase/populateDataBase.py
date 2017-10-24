@@ -32,6 +32,8 @@ def delete_collection(coll_ref, batch_size):
     if deleted >= batch_size:
         return delete_collection(coll_ref, batch_size)	
 
+def parse_group_object(group):
+	pass
 
 
 ########### MAIN ################	
@@ -45,7 +47,7 @@ if __name__ == "__main__":
 
 	output = readConfig("storeDataStructure.json")
 	data = json.loads(output)
-	recursion.recursion(data, 0, "")
+	recursion.recursion(data, 0, "", 0)
 
 	## CLEAR old Groups
 	print "Deleting old documents"
@@ -56,34 +58,20 @@ if __name__ == "__main__":
 	print "Adding new documents"
 	for group in recursion.group_list:
 
-		# if "parent_id" in group and group["parent_id"] != "":
 		doc_ref = firestore.DocumentReference("Groups", group["id"], client=client)
+		if "parent_id" in group and group["parent_id"] != "":
+			parent = firestore.DocumentReference("Groups", group["parent_id"], client=client)
+			group["parent_ref"] = parent
+
+		# decode string to unicode
+		group["parent_id"] = (group["parent_id"]).decode("utf-8")
+			
+		# remove uneeded data from dict
+		del group["id"]
+		del group["is_group"]
+		# del group["parent_id"]
 		# print type(group), group
 		doc_ref.set(group)
 
-
-
-
-
-	# docRef = firestore.DocumentReference("Groups", "test", client=client)
-	# docs = doc_ref.get()
-	# print type(doc_ref)
-	# for doc in docs:
-	# 	dict = doc.to_dict()
-	# 	print doc.id, "=>", dict
-	# 	if "final" in dict and dict["final"] == False:
-	# 		# print "BUBA"
-	# 		subgroup_ref = doc_ref.document(doc.id).collection("subgroup")
-	# 		subdocs = subgroup_ref.get()
-	# 		for subdoc in subdocs:
-	# 			# print "  ", subdoc.id, " "
-	# 			sdict = subdoc.to_dict()
-	# 			if "parent" in sdict:
-	# 				ref = sdict["parent"]
-	# 				print "======>", ref.id, ref.parent.id
-	# 				print type(ref)
-
-	# 				ref.set({"ala" : u"kot", "domek" : True, "newRef" : docRef})
-	# 		# pp.pprint(sdict)
 
 

@@ -7,7 +7,7 @@ import uuid
 
 group_list = []
 
-def recursion(array, ident, parent):
+def recursion(array, ident, parent, level):
 
 
 	identString = getIdent(ident)
@@ -16,7 +16,7 @@ def recursion(array, ident, parent):
 
 	for item in array:
 		id = uuid.uuid4()
-		print identString, item["name"], "==>", parent
+		print identString, item["name"], (level), "==>", parent
 
 		itemcopy = deepcopy(item)
 		if field_name in item:
@@ -27,18 +27,22 @@ def recursion(array, ident, parent):
 		if field_name in item:
 			# Subgroup
 			final = False if len(item[field_name]) > 0 else True
+			level
 			group_list.append({"title" : document.name,
 								"description" : document.description,
 								"url" : document.url,
 								"id" : str(id),
 								"parent_id" : str(parent),
 								"final" : final,
-								"order" : order})
+								"order" : order,
+								"level" : level,
+								"is_group" : True})
 
-			recursion(item[field_name], ident, id)
+			recursion(item[field_name], ident, id, level + 1)
 		else:
 			# Product
 			pass
+		order += 10
 
 
 def getIdent(len):
@@ -62,7 +66,7 @@ if __name__ == "__main__":
 	f.close()
 	data = json.loads(output)
 
-	recursion(data, 0, "")
+	recursion(data, 0, "", 0)
 
 
 
