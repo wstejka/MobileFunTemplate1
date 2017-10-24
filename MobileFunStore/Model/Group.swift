@@ -13,7 +13,7 @@ struct Group {
     var description : String?
     var url: String
     var gs_link : String?
-    var id : Int
+    var order : Int
     // This is workaround as for now there is no possible to check if document has a collection
     var final : Bool
 
@@ -24,7 +24,7 @@ extension Group : DocumentSerializable {
     init?(dictionary: [String : Any]) {
 
         guard let title = dictionary["title"] as? String,
-            let id = dictionary["id"] as? Int,
+            let order = dictionary["order"] as? Int,
             let url = dictionary["url"] as? String,
             let final = dictionary["final"] as? Bool else {
 
@@ -40,7 +40,7 @@ extension Group : DocumentSerializable {
             cGsLink = gs_link
         }
 
-        self.init(title: title, description: cDescription, url: url, gs_link: cGsLink, id: id, final : final)
+        self.init(title: title, description: cDescription, url: url, gs_link: cGsLink, order: order, final : final)
     }
 
     func dictionary() -> [String : Any] {
@@ -49,7 +49,7 @@ extension Group : DocumentSerializable {
                 "description" : description ?? "",
                 "url" : url,
                 "gs_link" : gs_link ?? "",
-                "id" : id,
+                "order" : order,
                 "final" : final]
     }
 }

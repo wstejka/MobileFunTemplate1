@@ -5,6 +5,8 @@
 ## Build generated
 build/
 DerivedData/
+StructuredDataBase/MobileFunStore*.json
+StructuredDataBase/test*
 
 ## Firebase
 .idea

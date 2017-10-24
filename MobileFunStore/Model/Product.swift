@@ -19,7 +19,6 @@ struct Product {
     var lastName : String = ""
     var producer : String = ""
     var discountPercent : Float = 0.0
-//    var groups : [Group]
     
 }
 

@@ -89,7 +89,7 @@ class GroupViewController: UIViewController {
     }()
 
     lazy var query = {
-        return Firestore.firestore().collection("Groups") //.order(by: "id")
+        return Firestore.firestore().collection("Groups")
     }()
     
     var initialRequest : Bool = true
@@ -104,8 +104,8 @@ class GroupViewController: UIViewController {
         tableView.separatorStyle = .none
 
         self.tableView.refreshControl = self.refreshControl
-        
-        groupCollection = LocalCollection(query: query.order(by: "id"), completionHandler: { [unowned self] (documents) in
+                
+        groupCollection = LocalCollection(query: query.order(by: "order"), completionHandler: { [unowned self] (documents) in
             
 //            _ = documents.map({ print("\(String(describing: $0))") })
             if self.initialRequest == true {
@@ -169,7 +169,7 @@ class GroupViewController: UIViewController {
         
         DispatchQueue.global().async {
             log.verbose("")
-            sleep(5)
+            sleep(1)
             DispatchQueue.main.async { [unowned self] in
                 log.verbose("")
                 self.refreshControl.endRefreshing()
