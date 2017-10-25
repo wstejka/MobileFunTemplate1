@@ -59,6 +59,7 @@ extension GroupViewController : UITableViewDelegate {
             self.navigationController?.pushViewController(controller, animated: true)
         } else {
             let controller = GroupDetailsViewController.fromStoryboard()
+//            present(controller, animated: true)
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
@@ -95,7 +96,7 @@ class GroupViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
-
+        
         self.tableView.refreshControl = self.refreshControl
                 
         groupCollection = LocalCollection(query: query, completionHandler: { [unowned self] (documents) in
@@ -137,8 +138,9 @@ class GroupViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         groupCollection.listen()
+        self.tabBarController?.tabBar.isHidden = false
     }
-    
+        
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
     }

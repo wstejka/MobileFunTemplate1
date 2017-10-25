@@ -1,4 +1,4 @@
-//
+
 //  GroupDetailsViewController.swift
 //  MobileFunStore
 //
@@ -13,14 +13,9 @@ class GroupDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        self.tabBarController?.tabBar.isHidden = true
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     // MARK: - Methods
     
     static func fromStoryboard(_ storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)) -> GroupDetailsViewController {
