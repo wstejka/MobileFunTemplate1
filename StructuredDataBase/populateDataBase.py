@@ -12,6 +12,11 @@ def readConfig(file_name):
 	f.close()
 	return output
 
+def saveConfig(config, file_name):
+	serialized = json.dumps(config)
+	with open(file_name, 'w') as file:
+		file.write(serialized)
+
 
 def getFirestoreClient():
 	"""Returns habdler to firestore DB """
@@ -25,15 +30,33 @@ def delete_collection(coll_ref, batch_size):
     deleted = 0
 
     for doc in docs:
-        print(u'Deleting doc {} => {}'.format(doc.id, doc.to_dict()["title"]))
+        print(u'    Deleting doc {} => {}'.format(doc.id, doc.to_dict()["title"]))
         doc.reference.delete()
         deleted = deleted + 1
 
     if deleted >= batch_size:
         return delete_collection(coll_ref, batch_size)	
 
-def parse_group_object(group):
-	pass
+def parse_and_save_group_object(group):
+
+	print "    Adding", group["id"], "=>", group["title"]
+	doc_ref = firestore.DocumentReference("Groups", group["id"], client=client)
+	if "parent_id" in group and group["parent_id"] != "":
+		parent = firestore.DocumentReference("Groups", group["parent_id"], client=client)
+		group["parent_ref"] = parent
+
+	# decode string to unicode
+	group["parent_id"] = (group["parent_id"]).decode("utf-8")
+		
+	# remove uneeded data from dict
+	del group["id"]
+	del group["is_group"]
+	# del group["parent_id"]
+	# print type(group), group
+	doc_ref.set(group)
+
+
+
 
 
 ########### MAIN ################	
@@ -43,35 +66,33 @@ if __name__ == "__main__":
 	client = getFirestoreClient()
 	# doc_ref = client.collection('Groups') 
 
-
-
 	output = readConfig("storeDataStructure.json")
 	data = json.loads(output)
 	recursion.recursion(data, 0, "", 0)
 
+	## make copy
+	original_data = dict(recursion.group_list)
+
 	## CLEAR old Groups
-	print "Deleting old documents"
+	print "=> Deleting old documents"
 	group_ref = firestore.CollectionReference("Groups", client=client)
 	delete_collection(group_ref, 1)
 
 	## Populates
-	print "Adding new documents"
-	for group in recursion.group_list:
+	print "=> Adding new documents"
+	for key, group in recursion.group_list.iteritems():
 
-		doc_ref = firestore.DocumentReference("Groups", group["id"], client=client)
-		if "parent_id" in group and group["parent_id"] != "":
-			parent = firestore.DocumentReference("Groups", group["parent_id"], client=client)
-			group["parent_ref"] = parent
+		if "is_group" in group and group["is_group"] == True:
+			parse_and_save_group_object(group)
 
-		# decode string to unicode
-		group["parent_id"] = (group["parent_id"]).decode("utf-8")
-			
-		# remove uneeded data from dict
-		del group["id"]
-		del group["is_group"]
-		# del group["parent_id"]
-		# print type(group), group
-		doc_ref.set(group)
+
+	## Save current status
+	print "=> Saving data"
+	# print original_data
+	# saveConfig(original_data, "history/old")
+
+
+
 
 
 

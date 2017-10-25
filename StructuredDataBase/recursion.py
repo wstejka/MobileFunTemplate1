@@ -5,7 +5,7 @@ from bunch import bunchify
 from copy import deepcopy
 import uuid
 
-group_list = []
+group_list = {}
 
 def recursion(array, ident, parent, level):
 
@@ -15,7 +15,7 @@ def recursion(array, ident, parent, level):
 	order = 10
 
 	for item in array:
-		id = uuid.uuid4()
+		id = str(uuid.uuid4())
 		print identString, item["name"], (level), "==>", parent
 
 		itemcopy = deepcopy(item)
@@ -27,16 +27,15 @@ def recursion(array, ident, parent, level):
 		if field_name in item:
 			# Subgroup
 			final = False if len(item[field_name]) > 0 else True
-			level
-			group_list.append({"title" : document.name,
+			group_list[id] = {"title" : document.name,
 								"description" : document.description,
 								"url" : document.url,
-								"id" : str(id),
+								"id" : id,
 								"parent_id" : str(parent),
 								"final" : final,
 								"order" : order,
 								"level" : level,
-								"is_group" : True})
+								"is_group" : True}
 
 			recursion(item[field_name], ident, id, level + 1)
 		else:
