@@ -23,7 +23,7 @@ extension GroupViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         log.verbose("entered: \(indexPath.row)")
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! MainTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! GroupTableViewCell
         cell.selectionStyle = .none
         
         let group = groupCollection[indexPath.row]
@@ -34,18 +34,6 @@ extension GroupViewController : UITableViewDataSource {
         
         let imageUrl = URL(string: group.url)
         cell.imageViewHandler.sd_setImage(with: imageUrl)
-//        cell.imageViewHandler.sd_setImage(with: imageUrl) { (image, error, cacheType, url) in
-//
-//            DispatchQueue.global().async {
-//                log.verbose("Size: \(image?.size.width, image?.size.height)")
-//                let croppedImage = image?.crop(to: CGSize(width: 150.0, height: 100.0))
-//                log.verbose("Size After: \(image?.size.width, image?.size.height)")
-//                DispatchQueue.main.async {
-//                    cell.imageViewHandler.image = croppedImage
-//                }
-//            }
-//            
-//        }
         
         return cell
     }
@@ -68,6 +56,9 @@ extension GroupViewController : UITableViewDelegate {
             controller.query = Firestore.firestore().collection("Groups").order(by: "order").whereField("parent_id", isEqualTo: documentID)
             //query.document(documentID).collection(subgroupID)
             controller.navigationItem.leftBarButtonItem = nil
+            self.navigationController?.pushViewController(controller, animated: true)
+        } else {
+            let controller = GroupDetailsViewController.fromStoryboard()
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
@@ -114,7 +105,7 @@ class GroupViewController: UIViewController {
                 self.tableView.reloadData()
                 return
             }
-                
+            
             var addIndexPaths: [IndexPath] = []
             var delIndexPaths: [IndexPath] = []
 

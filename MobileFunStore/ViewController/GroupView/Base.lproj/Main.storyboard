@@ -6,6 +6,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -28,7 +29,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="554"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="338" id="0o7-BG-3ay" customClass="MainTableViewCell" customModule="MobileFunStore" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" rowHeight="338" id="0o7-BG-3ay" customClass="GroupTableViewCell" customModule="MobileFunStore" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="338"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0o7-BG-3ay" id="FVp-pW-ywH">
@@ -36,19 +37,19 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0He-q9-5QT">
-                                                    <rect key="frame" x="8" y="0.0" width="359" height="239"/>
+                                                    <rect key="frame" x="8" y="13" width="359" height="239"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="239" id="QHk-kT-KVJ"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Abo-1R-l41">
-                                                    <rect key="frame" x="8" y="250" width="359" height="30.5"/>
+                                                    <rect key="frame" x="8" y="260" width="359" height="30.5"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="22"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="55e-tB-Of0">
-                                                    <rect key="frame" x="8" y="282.5" width="359" height="22"/>
+                                                    <rect key="frame" x="8" y="292.5" width="359" height="22"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -62,9 +63,9 @@
                                                 <constraint firstItem="Abo-1R-l41" firstAttribute="leading" secondItem="FVp-pW-ywH" secondAttribute="leadingMargin" id="Xek-fc-EMf"/>
                                                 <constraint firstItem="55e-tB-Of0" firstAttribute="trailing" secondItem="FVp-pW-ywH" secondAttribute="trailingMargin" id="ZND-sZ-HId"/>
                                                 <constraint firstItem="0He-q9-5QT" firstAttribute="leading" secondItem="FVp-pW-ywH" secondAttribute="leadingMargin" id="bec-rG-NrQ"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="55e-tB-Of0" secondAttribute="bottom" constant="25" id="sHA-iF-Lf4"/>
-                                                <constraint firstItem="0He-q9-5QT" firstAttribute="top" secondItem="FVp-pW-ywH" secondAttribute="top" id="tWz-X4-tqF"/>
-                                                <constraint firstItem="Abo-1R-l41" firstAttribute="top" secondItem="0He-q9-5QT" secondAttribute="bottom" constant="11" id="zRy-qg-AzM"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="55e-tB-Of0" secondAttribute="bottom" constant="15" id="sHA-iF-Lf4"/>
+                                                <constraint firstItem="0He-q9-5QT" firstAttribute="top" secondItem="FVp-pW-ywH" secondAttribute="top" constant="13" id="tWz-X4-tqF"/>
+                                                <constraint firstItem="Abo-1R-l41" firstAttribute="top" secondItem="0He-q9-5QT" secondAttribute="bottom" constant="8" id="zRy-qg-AzM"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -87,7 +88,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="eIk-HY-AfY">
                         <barButtonItem key="leftBarButtonItem" image="male" largeContentSizeImage="male" id="7vo-7V-3TA"/>
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="cEs-Lc-E56"/>
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="shopping_cart" id="cEs-Lc-E56"/>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="OYT-Oe-Vqa" id="mDO-rK-7cg"/>
@@ -96,6 +97,27 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1748" y="-212.74362818590706"/>
+        </scene>
+        <!--Group Details View Controller-->
+        <scene sceneID="uzi-zF-iFR">
+            <objects>
+                <viewController storyboardIdentifier="GroupDetailsViewController" id="NuN-qx-pc0" customClass="GroupDetailsViewController" customModule="MobileFunStore" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="GYk-7P-5eW">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <viewLayoutGuide key="safeArea" id="vgH-5R-wPf"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="cuo-8s-4nA">
+                        <rightBarButtonItems>
+                            <barButtonItem title="Item" image="shopping_cart" id="M5l-sp-ACz"/>
+                            <barButtonItem title="Item" image="share" id="kgl-Bc-PDz"/>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jal-Ky-vUe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2609" y="-213"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Ixv-cl-7pq">
@@ -132,10 +154,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3kk-yT-S8T" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="841" y="-223"/>
+            <point key="canvasLocation" x="873" y="-214"/>
         </scene>
     </scenes>
     <resources>
         <image name="male" width="22" height="22"/>
+        <image name="share" width="25" height="25"/>
+        <image name="shopping_cart" width="25" height="25"/>
     </resources>
 </document>

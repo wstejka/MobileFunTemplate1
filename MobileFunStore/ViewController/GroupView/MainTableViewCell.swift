@@ -1,5 +1,5 @@
 //
-//  MainTableViewCell.swift
+//  GroupTableViewCell.swift
 //  MobileFunStore
 //
 //  Created by Wojciech Stejka on 10/10/2017.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainTableViewCell: UITableViewCell {
+class GroupTableViewCell: UITableViewCell {
 
     
     @IBOutlet weak var imageViewHandler: UIImageView!
