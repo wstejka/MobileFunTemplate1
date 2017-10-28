@@ -25,16 +25,7 @@ extension GroupViewController : UITableViewDataSource {
         log.verbose("entered: \(indexPath.row)")
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! GroupTableViewCell
         cell.selectionStyle = .none
-        
-        let group = groupCollection[indexPath.row]
-        cell.titleLabel.text = group.title
-        cell.descriptionLabel.text = group.description
-        cell.imageViewHandler.image = nil
-        cell.imageViewHandler.contentMode = .scaleAspectFit
-        
-        let imageUrl = URL(string: group.url)
-        cell.imageViewHandler.sd_setImage(with: imageUrl)
-        
+        cell.group = groupCollection[indexPath.row]            
         return cell
     }
 }

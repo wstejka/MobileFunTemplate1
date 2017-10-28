@@ -24,26 +24,10 @@ extension GroupDetailsViewController : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-//        log.verbose("")
+        log.verbose("")
         var reusableCell : UICollectionViewCell!
-//        reusableCell.backgroundColor = .blue
         if indexPath.section == 0 && indexPath.row == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! GroupDetailsTopCollectionViewCell
-
-//            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(headerTaped))
-//            tapGesture.cancelsTouchesInView = false
-//            cell.isUserInteractionEnabled = true
-//            cell.addGestureRecognizer(tapGesture)
-
-//
-//            cell.title.addGestureRecognizer(tapGesture)
-//            cell.title.gestureRecognizers = [tapGesture]
-//            cell.title.isUserInteractionEnabled = true
-//            cell.title.text = "Top header title"
-
-//            let tapGestureCell = UITapGestureRecognizer(target: self, action: #selector(headerTaped(_:)))
-
-            
             cell.shortDecription.text = "short desc"
             return cell
         }
@@ -69,16 +53,6 @@ extension GroupDetailsViewController : UICollectionViewDataSource {
 }
 
 extension GroupDetailsViewController : UICollectionViewDelegate {
-
-//    @objc func headerTaped(_ sender: UITapGestureRecognizer) {
-//
-//        log.verbose("Long description label tapped")
-//        guard let cell = sender.view as? GroupDetailsTopCollectionViewCell else {
-//            log.error("Incorrect type of view. Cannot cast to PurchasesCollectionViewCell")
-//            return
-//        }
-//        log.verbose("")
-//    }
 
     @objc func labelTaped(_ sender: UITapGestureRecognizer) {
         log.verbose("Tap gesture recognizer")

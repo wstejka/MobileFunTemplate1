@@ -10,7 +10,7 @@ import UIKit
 
 
 /* The heights are declared as constants outside of the class so they can be easily referenced elsewhere */
-struct GroupCollectionViewLayoutConstants {
+struct GroupDetailsCollectionViewLayoutConstants {
     struct Cell {
         /* The height of the non-featured cell */
         static let standardHeight: CGFloat = 100
@@ -19,7 +19,7 @@ struct GroupCollectionViewLayoutConstants {
     }
 }
 
-class GroupCollectionViewLayout: UICollectionViewLayout {
+class GroupDetailsCollectionViewLayout: UICollectionViewLayout {
     // MARK: Properties and Variables
     
     /* The amount the user needs to scroll before the featured cell changes */
@@ -76,12 +76,12 @@ class GroupCollectionViewLayout: UICollectionViewLayout {
     }
     
     override func prepare() {
-        //    print("prepare")
+        print("prepare")
         
         cache.removeAll(keepingCapacity: false)
         
-        let standardHeight = GroupCollectionViewLayoutConstants.Cell.standardHeight
-        let featuredHeight = GroupCollectionViewLayoutConstants.Cell.featuredHeight
+        let standardHeight = GroupDetailsCollectionViewLayoutConstants.Cell.standardHeight
+        let featuredHeight = GroupDetailsCollectionViewLayoutConstants.Cell.featuredHeight
         
         var frame = CGRect.zero
         var y: CGFloat = 0
