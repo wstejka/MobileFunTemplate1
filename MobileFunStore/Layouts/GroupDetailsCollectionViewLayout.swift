@@ -15,7 +15,7 @@ struct GroupDetailsCollectionViewLayoutConstants {
         /* The height of the non-featured cell */
         static let standardHeight: CGFloat = 100
         /* The height of the first visible cell */
-        static let featuredHeight: CGFloat = 280
+        static let topHeight: CGFloat = 500
     }
 }
 
@@ -31,7 +31,7 @@ class GroupDetailsCollectionViewLayout: UICollectionViewLayout {
     var featuredItemIndex: Int {
         get {
             /* Use max to make sure the featureItemIndex is never < 0 */
-            //        print("\(collectionView!.contentOffset.y)")
+            //        log.verbose("\(collectionView!.contentOffset.y)")
             return max(0, Int(collectionView!.contentOffset.y / dragOffset))
         }
     }
@@ -60,7 +60,13 @@ class GroupDetailsCollectionViewLayout: UICollectionViewLayout {
     /* Returns the number of items in the collection view */
     var numberOfItems: Int {
         get {
-            return collectionView!.numberOfItems(inSection: 0)
+            var itemsNumber : Int = 0
+            for sectionIndex in 1...collectionView!.numberOfSections {
+                
+                itemsNumber += collectionView!.numberOfItems(inSection: sectionIndex - 1)
+            }
+            log.verbose("\(itemsNumber)")
+            return itemsNumber
         }
     }
     
@@ -68,23 +74,25 @@ class GroupDetailsCollectionViewLayout: UICollectionViewLayout {
     
     /* Return the size of all the content in the collection view */
     override var collectionViewContentSize : CGSize {
-        //    print("collectionViewContentSize")
+        log.verbose("")
         
-        //    print("\(numberOfItems, height)")
+        //    log.verbose("\(numberOfItems, height)")
         let contentHeight = (CGFloat(numberOfItems) * dragOffset) + (height - dragOffset)
         return CGSize(width: width, height: contentHeight)
     }
     
     override func prepare() {
-        print("prepare")
+        log.verbose("prepare")
         
         cache.removeAll(keepingCapacity: false)
         
         let standardHeight = GroupDetailsCollectionViewLayoutConstants.Cell.standardHeight
-        let featuredHeight = GroupDetailsCollectionViewLayoutConstants.Cell.featuredHeight
+        let topHeight = GroupDetailsCollectionViewLayoutConstants.Cell.topHeight
         
         var frame = CGRect.zero
         var y: CGFloat = 0
+        
+        
         
         for item in 0..<numberOfItems {
             // 1
@@ -99,13 +107,13 @@ class GroupDetailsCollectionViewLayout: UICollectionViewLayout {
             if indexPath.item == featuredItemIndex {
                 // 4
                 let yOffset = standardHeight * nextItemPercentageOffset
-                //            print("\(collectionView!.contentOffset.y, yOffset)")
+                //            log.verbose("\(collectionView!.contentOffset.y, yOffset)")
                 y = collectionView!.contentOffset.y - yOffset
-                height = featuredHeight
+                height = topHeight
             } else if indexPath.item == (featuredItemIndex + 1) && indexPath.item != numberOfItems {
                 // 5
                 let maxY = y + standardHeight
-                height = standardHeight + max((featuredHeight - standardHeight) * nextItemPercentageOffset, 0)
+                height = standardHeight + max((topHeight - standardHeight) * nextItemPercentageOffset, 0)
                 y = maxY - height
             }
             
@@ -120,7 +128,7 @@ class GroupDetailsCollectionViewLayout: UICollectionViewLayout {
     /* Return all attributes in the cache whose frame intersects with the rect passed to the method */
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         
-        //    print("layoutAttributesForElements")
+        log.verbose("layoutAttributesForElements")
         
         var layoutAttributes = [UICollectionViewLayoutAttributes]()
         for attributes in cache {
@@ -129,21 +137,21 @@ class GroupDetailsCollectionViewLayout: UICollectionViewLayout {
             }
         }
         
-        //    print("layoutAttributesForElements: \(layoutAttributes)")
+        //    log.verbose("layoutAttributesForElements: \(layoutAttributes)")
         return layoutAttributes
     }
     
     /* Return true so that the layout is continuously invalidated as the user scrolls */
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
-        //    print("shouldInvalidateLayout")
+        log.verbose("shouldInvalidateLayout")
         return true
     }
     
-    override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {
-        
-        let itemIndex = round(proposedContentOffset.y / dragOffset)
-        let yOffset = itemIndex * dragOffset
-        return CGPoint(x: 0, y: yOffset)
-    }
+//    override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {
+//
+//        let itemIndex = round(proposedContentOffset.y / dragOffset)
+//        let yOffset = itemIndex * dragOffset
+//        return CGPoint(x: 0, y: yOffset)
+//    }
     
 }

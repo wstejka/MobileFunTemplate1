@@ -11,11 +11,14 @@ import UIKit
 extension GroupDetailsViewController : UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 3
+        log.verbose("")
+
+        return 2
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        var itemInSection = 10
+        log.verbose("numberOfItemsInSection")
+        var itemInSection = 0
         if section == 0 {
             itemInSection = 1
         }
@@ -24,11 +27,13 @@ extension GroupDetailsViewController : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        log.verbose("")
+        log.verbose("cellForItemAt")
         var reusableCell : UICollectionViewCell!
         if indexPath.section == 0 && indexPath.row == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! GroupDetailsTopCollectionViewCell
             cell.shortDecription.text = "short desc"
+            
+            cell.backgroundColor = .green
             return cell
         }
         else {
@@ -44,12 +49,14 @@ extension GroupDetailsViewController : UICollectionViewDataSource {
         return reusableCell
     }
     
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-
-        let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "reusableCell", for: indexPath)
-        
-        return reusableView
-    }
+    
+    
+//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//
+//        let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "reusableCell", for: indexPath)
+//        
+//        return reusableView
+//    }
 }
 
 extension GroupDetailsViewController : UICollectionViewDelegate {
@@ -59,9 +66,6 @@ extension GroupDetailsViewController : UICollectionViewDelegate {
     }
 }
 
-extension GroupDetailsViewController : UIGestureRecognizerDelegate {
-    
-}
 
 extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
     
@@ -78,11 +82,11 @@ extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
         cellSize = CGSize(width: cellWidth, height: 1.7 * cellWidth)
         return cellSize
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        return UIEdgeInsets(top: 0.0, left: 5.0, bottom: 0.0, right: 0.0)
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+//        
+//        return UIEdgeInsets(top: 0.0, left: 5.0, bottom: 0.0, right: 2.0)
+//    }
 }
 
 class GroupDetailsViewController: UIViewController {
@@ -100,6 +104,7 @@ class GroupDetailsViewController: UIViewController {
         
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.collectionViewLayout = GroupDetailsCollectionViewLayout()
         self.tabBarController?.tabBar.isHidden = true
 
         //  Register custom section header

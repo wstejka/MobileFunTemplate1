@@ -10,7 +10,7 @@ import UIKit
 
 extension UIView  {
     
-    // This method checks if given location is in scope of UIView object
+    // This method checks if given location (touched point) is in scope of UIView object
     func touched(in location: CGPoint) -> Bool {
         
         let frame = self.frame

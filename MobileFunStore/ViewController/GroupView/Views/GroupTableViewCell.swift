@@ -36,7 +36,6 @@ class GroupTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        log.verbose("ERROR")
         imageViewHandler.image = nil
         imageViewHandler.sd_cancelCurrentImageLoad()
     }
