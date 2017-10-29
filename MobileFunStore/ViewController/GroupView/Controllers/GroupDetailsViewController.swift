@@ -18,9 +18,9 @@ extension GroupDetailsViewController : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         log.verbose("numberOfItemsInSection")
-        var itemInSection = 0
+        var itemInSection = 4
         if section == 0 {
-            itemInSection = 1
+            itemInSection = 2
         }
         return itemInSection
     }
@@ -32,8 +32,10 @@ extension GroupDetailsViewController : UICollectionViewDataSource {
         if indexPath.section == 0 && indexPath.row == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! GroupDetailsTopCollectionViewCell
             cell.shortDecription.text = "short desc"
-            
-            cell.backgroundColor = .green
+            cell.title.text = "Title text"
+            cell.collectionView = collectionView
+
+//            cell.backgroundColor = .green
             return cell
         }
         else {
@@ -71,22 +73,61 @@ extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
+
         var cellSize : CGSize!
-        let inset : Double = 5.0
+        let inset : Double = 10.0
         // Default: 2 cell per row
         var cellWidth : Double = (Double(collectionView.frame.width) - (3 * inset))/2
+        var cellHeight : Double = 1.7 * cellWidth
+        
         if indexPath.section == 0 && indexPath.row == 0 {
             // One cell
             cellWidth = Double(collectionView.frame.width) - (2 * inset)
+            cellHeight = 1.1 * cellWidth
+            
+            if let cell = collectionView.cellForItem(at: indexPath) as? GroupDetailsTopCollectionViewCell {
+                cellHeight = Double(cell.shortDecription.frame.maxY) + 15.0
+                log.verbose("sizeForItemAt: \(cell.frame.size)")
+                let height : CGFloat!
+                if cell.tag == 0 {
+                    height = cell.longDescription.text?.height(constraintedWidth: cell.frame.width,
+                                                                   font: UIFont(name: cell.longDescription.font.fontName,
+                                                                                size: cell.longDescription.font.pointSize)!)
+
+                    let animation:CATransition = CATransition()
+                    animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                    animation.duration = 0.5
+                    cell.longDescription.layer.add(animation, forKey: kCATransitionReveal)
+                    
+//                    UIView.transition(with: cell.longDescription, duration: 5, options: UIViewAnimationOptions.curveEaseOut, animations: {
+//                        cell.frame.size.height = (CGFloat(cellHeight) + height)
+//                        cell.longDescription.frame.size.height = height
+//                    }, completion: nil)
+
+                }
+                else {
+                    height = cell.longDescription.text?.height(constraintedWidth: cell.frame.width,
+                                                                   font: UIFont(name: cell.longDescription.font.fontName,
+                                                                                size: cell.longDescription.font.pointSize)!,
+                                                                numberOfLines: 2)
+                }
+                cellHeight += Double(height)
+                log.verbose("XXX= \(height, cellHeight)")
+
+
+            }
         }
-        cellSize = CGSize(width: cellWidth, height: 1.7 * cellWidth)
+        
+        cellSize = CGSize(width: cellWidth, height: cellHeight)
         return cellSize
     }
         
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//        
-//        return UIEdgeInsets(top: 0.0, left: 5.0, bottom: 0.0, right: 2.0)
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+
+        log.verbose("insetForSectionAt: \(section)")
+        return UIEdgeInsets(top: 5.0, left: 5.0, bottom: 0.0, right: 5.0)
+    }
+    
 }
 
 class GroupDetailsViewController: UIViewController {
@@ -104,8 +145,10 @@ class GroupDetailsViewController: UIViewController {
         
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.collectionViewLayout = GroupDetailsCollectionViewLayout()
+//        collectionView.collectionViewLayout = GroupDetailsCollectionViewLayout()
         self.tabBarController?.tabBar.isHidden = true
+        
+        _ = collectionView.collectionViewLayout
 
         //  Register custom section header
         collectionView.register(UINib(nibName: "GroupDetailsTopCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cell")

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension String {
 
@@ -92,5 +93,18 @@ extension String {
             let to = String.Index(to16, within: self)
             else { return nil }
         return from ..< to
+    }
+}
+
+extension String {
+    
+    func height(constraintedWidth width: CGFloat, font: UIFont, numberOfLines : Int = 0) -> CGFloat {
+        let label =  UILabel(frame: CGRect(x: 0, y: 0, width: width, height: .greatestFiniteMagnitude))
+        label.numberOfLines = numberOfLines
+        label.text = self
+        label.font = font
+        label.sizeToFit()
+        
+        return label.frame.height
     }
 }

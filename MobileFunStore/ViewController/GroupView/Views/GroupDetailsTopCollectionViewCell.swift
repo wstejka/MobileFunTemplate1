@@ -19,15 +19,16 @@ class GroupDetailsTopCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Const/Vars
     private var isShortDescription : Bool = true
-    
+    var collectionView : UICollectionView?
     
     // MARK: - Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         log.verbose("")
-        longDescription.backgroundColor = .orange
-        longDescription.textColor = .black
+//        longDescription.backgroundColor = .orange
+//        longDescription.textColor = .black
+        tag = 1
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cellTapped(_:)))
         self.isUserInteractionEnabled = true
@@ -39,14 +40,19 @@ class GroupDetailsTopCollectionViewCell: UICollectionViewCell {
         log.verbose("")
         
         if sender.state == .ended {
-            log.verbose("touched: \(longDescription.touched(in: sender.location(in: self)))")
-            if isShortDescription {
-                
-            } else {
-                
+            let descriptionTapped = longDescription.touched(in: sender.location(in: self))
+            if descriptionTapped == true {
+                if isShortDescription {
+                    longDescription.numberOfLines = 0
+                    longDescription.lineBreakMode = .byWordWrapping
+                } else {
+                    longDescription.numberOfLines = 2
+                    longDescription.lineBreakMode = .byTruncatingTail
+                }
+                isShortDescription = !isShortDescription
+                self.tag = isShortDescription == true ? 1 : 0
+                collectionView?.collectionViewLayout.invalidateLayout()
             }
-            
-            isShortDescription = !isShortDescription
         }
     }
     
