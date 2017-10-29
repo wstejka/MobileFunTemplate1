@@ -44,12 +44,8 @@ def parse_and_save_group_object(group):
 	if "parent_id" in group and group["parent_id"] != "":
 		parent = firestore.DocumentReference("Groups", group["parent_id"], client=client)
 		group["parent_ref"] = parent
-
-	# decode string to unicode
-	group["parent_id"] = (group["parent_id"]).decode("utf-8")
 		
 	# remove uneeded data from dict
-	del group["id"]
 	del group["is_group"]
 	# del group["parent_id"]
 	# print type(group), group
@@ -66,11 +62,21 @@ if __name__ == "__main__":
 	client = getFirestoreClient()
 	# doc_ref = client.collection('Groups') 
 
+	# Read config
 	output = readConfig("storeDataStructure.json")
 	data = json.loads(output)
+
+	# Parse data
 	recursion.recursion(data, 0, "", 0)
 
-	## make copy
+	# Validate data
+	# Check all mandatory field are there
+	mandatory_fields = ["title", "order", "level", "url", "final", "id", "shortDescription", "longDescription"]
+	for key, group in recursion.group_list.iteritems():
+		
+		recursion.checkMandatoryFields(mandatory_fields, group)
+
+	## Make copy
 	original_data = dict(recursion.group_list)
 
 	## CLEAR old Groups

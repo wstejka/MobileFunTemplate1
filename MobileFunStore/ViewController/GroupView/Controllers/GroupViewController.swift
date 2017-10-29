@@ -40,18 +40,26 @@ extension GroupViewController : UITableViewDelegate {
         // Present selected group subview (if exist) or product view (if doesn't exist)
         // for now we have only groupviewcontroller :D
         let group = self.groupCollection[indexPath.row]
+        let documentID = self.groupCollection.getDocumentID(for: indexPath.row)
         if group.final == false {
             let controller = GroupViewController.fromStoryboard()
-            let documentID = self.groupCollection.getDocumentID(for: indexPath.row)
 
-            controller.query = Firestore.firestore().collection("Groups").order(by: "order").whereField("parent_id", isEqualTo: documentID)
+            controller.query = Firestore.firestore().collection(GroupStatics.collection.group.rawValue).order(by: "order").whereField("parent_id", isEqualTo: documentID)
             //query.document(documentID).collection(subgroupID)
             controller.navigationItem.leftBarButtonItem = nil
+            controller.documentID = documentID
             self.navigationController?.pushViewController(controller, animated: true)
         } else {
             let controller = GroupDetailsViewController.fromStoryboard()
-//            present(controller, animated: true)
+            controller.group = group
+            controller.documentID = documentID
             self.navigationController?.pushViewController(controller, animated: true)
+
+//            let animation : CATransition = CATransition()
+//            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+//            animation.duration = 0.5
+//            self.navigationController?.view.layer.add(animation, forKey: kCATransitionFromTop)
+
         }
     }
 }
@@ -65,6 +73,7 @@ class GroupViewController: UIViewController {
     // MARK: Const/Var
     var groupCollection : LocalCollection<Group>!
     let subgroupID = "subgroup"
+    var documentID : String = ""
     
     lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 extension GroupDetailsViewController : UICollectionViewDataSource {
     
@@ -18,7 +19,7 @@ extension GroupDetailsViewController : UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         log.verbose("numberOfItemsInSection")
-        var itemInSection = 4
+        var itemInSection = 0
         if section == 0 {
             itemInSection = 2
         }
@@ -30,20 +31,22 @@ extension GroupDetailsViewController : UICollectionViewDataSource {
         log.verbose("cellForItemAt")
         var reusableCell : UICollectionViewCell!
         if indexPath.section == 0 && indexPath.row == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! GroupDetailsTopCollectionViewCell
-            cell.shortDecription.text = "short desc"
-            cell.title.text = "Title text"
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "groupCell", for: indexPath) as! GroupDetailsTopCollectionViewCell
             cell.collectionView = collectionView
-
-//            cell.backgroundColor = .green
+            cell.group = group
+            
+            return cell
+        }
+        else if indexPath.section == 0 && indexPath.row == 1 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "labelCell", for: indexPath) as! SingleLabelCollectionViewCell
+            cell.collectionView = collectionView
+            cell.textLabel.text = group.longDescription
+            
             return cell
         }
         else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reusableCell", for: indexPath) as! GroupDetailsCollectionViewCell
-            cell.text.isUserInteractionEnabled = true
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTaped(_:)))
-            cell.text.addGestureRecognizer(tapGesture)
-            cell.backgroundColor = .orange
+//            cell.backgroundColor = .orange
 
             reusableCell = cell
         }
@@ -72,50 +75,54 @@ extension GroupDetailsViewController : UICollectionViewDelegate {
 extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
 
         var cellSize : CGSize!
-        let inset : Double = 10.0
+        let inset = GroupStatics.insetSize
+        let collectionWidth : Double = Double(collectionView.frame.width)
         // Default: 2 cell per row
         var cellWidth : Double = (Double(collectionView.frame.width) - (3 * inset))/2
-        var cellHeight : Double = 1.7 * cellWidth
+        var cellHeight : Double = 1.4 * cellWidth
         
         if indexPath.section == 0 && indexPath.row == 0 {
             // One cell
-            cellWidth = Double(collectionView.frame.width) - (2 * inset)
-            cellHeight = 1.1 * cellWidth
-            
-            if let cell = collectionView.cellForItem(at: indexPath) as? GroupDetailsTopCollectionViewCell {
-                cellHeight = Double(cell.shortDecription.frame.maxY) + 15.0
-                log.verbose("sizeForItemAt: \(cell.frame.size)")
-                let height : CGFloat!
-                if cell.tag == 0 {
-                    height = cell.longDescription.text?.height(constraintedWidth: cell.frame.width,
-                                                                   font: UIFont(name: cell.longDescription.font.fontName,
-                                                                                size: cell.longDescription.font.pointSize)!)
+            cellWidth = collectionWidth - (2 * inset)
+            cellHeight = 0.9 * cellWidth
+        }
+        else if indexPath.section == 0 && indexPath.row == 1 {
 
-                    let animation:CATransition = CATransition()
+            cellWidth = collectionWidth - (2 * inset)
+            let height : CGFloat!
+            let widthWithInsets = CGFloat(cellWidth - (2 * inset))
+
+            if let cell = collectionView.cellForItem(at: indexPath) as? SingleLabelCollectionViewCell {
+                
+                if cell.tag == 0 {
+                    height = cell.textLabel.text?.height(constraintedWidth: widthWithInsets,
+                                                               font: UIFont(name: cell.textLabel.font.fontName,
+                                                                            size: cell.textLabel.font.pointSize)!)
+                    
+                    let animation : CATransition = CATransition()
                     animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
                     animation.duration = 0.5
-                    cell.longDescription.layer.add(animation, forKey: kCATransitionReveal)
+                    cell.textLabel.layer.add(animation, forKey: kCATransitionReveal)
                     
-//                    UIView.transition(with: cell.longDescription, duration: 5, options: UIViewAnimationOptions.curveEaseOut, animations: {
-//                        cell.frame.size.height = (CGFloat(cellHeight) + height)
-//                        cell.longDescription.frame.size.height = height
-//                    }, completion: nil)
-
                 }
                 else {
-                    height = cell.longDescription.text?.height(constraintedWidth: cell.frame.width,
-                                                                   font: UIFont(name: cell.longDescription.font.fontName,
-                                                                                size: cell.longDescription.font.pointSize)!,
-                                                                numberOfLines: 2)
+                    height = cell.textLabel.text?.height(constraintedWidth: widthWithInsets,
+                                                               font: UIFont(name: cell.textLabel.font.fontName,
+                                                                            size: cell.textLabel.font.pointSize)!,
+                                                               numberOfLines: 2)
                 }
-                cellHeight += Double(height)
-                log.verbose("XXX= \(height, cellHeight)")
-
-
+                
+            } else {
+                let font = UIFont(name: "AvenirNext-Regular", size: 16.0)
+                height = group.longDescription.height(constraintedWidth: widthWithInsets,
+                                                     font: font!,
+                                                     numberOfLines: 2)
             }
+            // Add to height the left and right cell insets (2 * 8) + some bufor
+            cellHeight = Double(height) + 24
+            
         }
         
         cellSize = CGSize(width: cellWidth, height: cellHeight)
@@ -124,8 +131,7 @@ extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
         
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
 
-        log.verbose("insetForSectionAt: \(section)")
-        return UIEdgeInsets(top: 5.0, left: 5.0, bottom: 0.0, right: 5.0)
+        return UIEdgeInsets(top: 5.0, left: 8.0, bottom: 0.0, right: 8.0)
     }
     
 }
@@ -133,25 +139,47 @@ extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
 class GroupDetailsViewController: UIViewController {
     
     // MARK: - Outlets
-    
     @IBOutlet weak var collectionView: UICollectionView!
     
     // MARK: - Const/Var
+    var group : Group!
+    var documentID : String!
     
+    private var productCollection : LocalCollection<Product>!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        log.verbose("")
         
         collectionView.dataSource = self
         collectionView.delegate = self
-//        collectionView.collectionViewLayout = GroupDetailsCollectionViewLayout()
         self.tabBarController?.tabBar.isHidden = true
         
-        _ = collectionView.collectionViewLayout
-
         //  Register custom section header
-        collectionView.register(UINib(nibName: "GroupDetailsTopCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "cell")
+        collectionView.register(UINib(nibName: "SingleLabelCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "labelCell")
+        collectionView.register(UINib(nibName: "GroupDetailsTopCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "groupCell")
+
+//        Firestore.firestore().collection(GroupStatics.collection.group.rawValue).document(documentID)
+//            .getDocument { [weak self] (snapshot, erorr) in
+//            
+//                guard let weakSelf = self else { return }
+//                weakSelf.group = Group(dictionary: snapshot!.data())
+//                // TODO: Requests here for products wired up with the document
+//                
+//        }
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if productCollection != nil {
+            productCollection.stopListening()
+        }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
     }
     
     deinit {

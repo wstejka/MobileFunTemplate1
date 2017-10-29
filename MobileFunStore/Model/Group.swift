@@ -11,7 +11,8 @@ struct Group {
 
     // MARK: - mandatory fields
     var title : String
-    var description : String?
+    var shortDescription : String
+    var longDescription : String
     var url: String
     var level : Int
     var gs_link : String?
@@ -20,6 +21,7 @@ struct Group {
     var parent_ref : DocumentReference?
     // This is workaround as for now there is no possible to check if document has a collection
     var final : Bool
+    var id : String
 
 }
 
@@ -31,15 +33,16 @@ extension Group : DocumentSerializable {
             let order = dictionary["order"] as? Int,
             let level = dictionary["level"] as? Int,
             let url = dictionary["url"] as? String,
-            let final = dictionary["final"] as? Bool else {
+            let final = dictionary["final"] as? Bool,
+            let id = dictionary["id"] as? String,
+            let shortDescription = dictionary["shortDescription"] as? String,
+            let longDescription = dictionary["longDescription"] as? String
+            else {
 
                 log.error("Lack of mandatory value(s): \(dictionary)")
                 return nil
         }
-        var cDescription : String?
-        if let description = dictionary["description"] as? String {
-            cDescription = description
-        }
+
         var cGsLink : String?
         if let gs_link = dictionary["gs_link"] as? String {
             cGsLink = gs_link
@@ -53,17 +56,20 @@ extension Group : DocumentSerializable {
             cParentRef = parent_ref
         }
 
-        self.init(title: title, description: cDescription, url: url, level: level, gs_link: cGsLink, order: order, parent_id: cParentId, parent_ref: cParentRef, final: final)
+        self.init(title: title, shortDescription: shortDescription, longDescription: longDescription, url: url, level: level, gs_link: cGsLink, order: order, parent_id: cParentId, parent_ref: cParentRef, final: final, id: id)
     }
 
     func dictionary() -> [String : Any] {
         
         return ["title" : title,
-                "description" : description ?? "",
+                "shortDescription" : shortDescription,
+                "longDescription" : longDescription,
                 "url" : url,
+                "level" : level,
                 "gs_link" : gs_link ?? "",
                 "order" : order,
-                "final" : final]
+                "final" : final,
+                "id" : id]
     }
 }
 

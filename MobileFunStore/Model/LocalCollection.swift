@@ -86,6 +86,7 @@ class LocalCollection<T: DocumentSerializable> {
         guard listener == nil else { return }
         listener = query.addSnapshotListener { [unowned self] (snapshot, error) in
             
+            log.verbose("=========")
             guard let snapshot = snapshot else {
                 log.error("Error fetching snapshot: \(String(describing: error))")
                 return

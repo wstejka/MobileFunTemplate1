@@ -1,23 +1,27 @@
 [
 	{
 		"name" : "Cameras & Photos",
-		"description": "Cameras & Photos",
+		"shortDescription": "Cameras & Photos",
+		"longDescription" : "",
 		"url": "https://firebasestorage.googleapis.com/v0/b/mobilefuntemplate1.appspot.com/o/products%2Fcameras%2FCamerasMain.JPG?alt=media&token=f7af1c84-5df0-4f03-a742-807161cb9e35", 
 		"references" : [
 			{
 				"name": "Compact Cameras",
-				"description": "capture quality images on the go",
+				"shortDescription": "capture quality images on the go",
+				"longDescription" : "",
 				"url": "https://firebasestorage.googleapis.com/v0/b/mobilefuntemplate1.appspot.com/o/products%2Fcameras%2Fnikon_coolpix_w300_yellow_hero_shot.png?alt=media&token=c6c69392-a41e-4ad4-9fb7-0583d25d1c21",
 				"references" : [
 					{
-						"name": "Childer",
-						"description": "Childer Cameras",
+						"name": "For children fun",
+						"shortDescription": "Children Cameras",
+						"longDescription" : "",
 						"url": "https://firebasestorage.googleapis.com/v0/b/mobilefuntemplate1.appspot.com/o/products%2Fcameras%2Fnikon_coolpix_w300_yellow_hero_shot.png?alt=media&token=c6c69392-a41e-4ad4-9fb7-0583d25d1c21",
 						"references" : []
 					},
 					{
 						"name": "Adults",
-						"description": "Adults Cameras",
+						"shortDescription": "Adults Cameras",
+						"longDescription" : "",
 						"url": "https://firebasestorage.googleapis.com/v0/b/mobilefuntemplate1.appspot.com/o/products%2Fcameras%2Fnikon_coolpix_w300_yellow_hero_shot.png?alt=media&token=c6c69392-a41e-4ad4-9fb7-0583d25d1c21",
 						"references" : []
 
@@ -26,19 +30,22 @@
 			},
 			{
 			    "name": "DSLR - Beginner",
-			   	"description": "start your photography journey",
+			   	"shortDescription": "start your photography journey",
+	   			"longDescription" : "",
 			    "url": "https://firebasestorage.googleapis.com/v0/b/mobilefuntemplate1.appspot.com/o/products%2Fcameras%2F2507208231.png?alt=media&token=6280254d-a265-4a33-94b2-6cfa2eb73249",
 				"references" : []
 			},
 			{
 			    "name": "DSLR - Advanced",
-				"description": "Expand your creative horizons",
+				"shortDescription": "Expand your creative horizons",
+				"longDescription" : "",
 			    "url": "https://firebasestorage.googleapis.com/v0/b/mobilefuntemplate1.appspot.com/o/products%2Fcameras%2Fnikon_dslr_d3400_black_18_55_vr_front--original.png?alt=media&token=cfe3b004-8123-4924-a33e-734e8bdc1073",
 				"references" : []
 			},
 			{
 				"name": "DSLR - Professional",
-				"description": "The ultimate in image quality and performance",
+				"shortDescription": "The ultimate in image quality and performance",
+				"longDescription" : "",
 				"url": "https://firebasestorage.googleapis.com/v0/b/mobilefuntemplate1.appspot.com/o/products%2Fcameras%2F1944430261.png?alt=media&token=0d4f0653-0704-4e3d-87d6-508e32346cc0",
 				"references" : []
 			}
@@ -46,14 +53,16 @@
 	},
 	{
 		"name": "Laptops & Equipment",
-		"description": "Laptops", 
+		"shortDescription": "Laptops",
+		"longDescription" : "",
 		"url": "https://firebasestorage.googleapis.com/v0/b/mobilefuntemplate1.appspot.com/o/products%2Flaptops%2FLaptopsMain.jpg?alt=media&token=220e7c6f-d9e4-47b3-9aad-2a03607040e4", 
 		"references" : []
 	},
 	{
 		"name": "Watches", 
 		"url": "https://firebasestorage.googleapis.com/v0/b/mobilefuntemplate1.appspot.com/o/products%2Fwatches%2FWatchesMain.jpg?alt=media&token=70f913e5-2b20-4a6f-835f-c154be902876", 
-		"description": "Watches", 
+		"shortDescription": "Watches", 
+		"longDescription" : "",
 		"references" : []
 	}
 ]

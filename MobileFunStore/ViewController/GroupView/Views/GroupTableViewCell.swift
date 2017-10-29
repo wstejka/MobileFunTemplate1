@@ -30,7 +30,7 @@ class GroupTableViewCell: UITableViewCell {
                 }
             }
             titleLabel.text = group.title
-            descriptionLabel.text = group.description
+            descriptionLabel.text = group.shortDescription
         }
     }
     
