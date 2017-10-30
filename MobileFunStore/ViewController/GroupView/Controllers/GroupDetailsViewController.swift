@@ -9,12 +9,18 @@
 import UIKit
 import FirebaseFirestore
 
+struct GroupDetailsConstants {
+    
+    static let standardLeftInset : CGFloat = 8.0
+    static let standardRightInset : CGFloat = 8.0
+}
+
 extension GroupDetailsViewController : UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         log.verbose("")
 
-        return 2
+        return 3
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -23,12 +29,18 @@ extension GroupDetailsViewController : UICollectionViewDataSource {
         if section == 0 {
             itemInSection = 2
         }
+        else if section == 1 {
+            itemInSection = 6
+        }
+//        else {
+//            itemInSection = 1
+//        }
+        
         return itemInSection
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        log.verbose("cellForItemAt")
         var reusableCell : UICollectionViewCell!
         if indexPath.section == 0 && indexPath.row == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "groupCell", for: indexPath) as! GroupDetailsTopCollectionViewCell
@@ -44,24 +56,22 @@ extension GroupDetailsViewController : UICollectionViewDataSource {
             
             return cell
         }
-        else {
+        else if indexPath.section == 1 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reusableCell", for: indexPath) as! GroupDetailsCollectionViewCell
-//            cell.backgroundColor = .orange
+            cell.backgroundColor = .orange
 
             reusableCell = cell
         }
-        
+        else if indexPath.section == 2 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reusableCell", for: indexPath) as! GroupDetailsCollectionViewCell
+            cell.backgroundColor = .blue
+            
+            reusableCell = cell
+        }
+
         return reusableCell
     }
-    
-    
-    
-//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//
-//        let reusableView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "reusableCell", for: indexPath)
-//        
-//        return reusableView
-//    }
+
 }
 
 extension GroupDetailsViewController : UICollectionViewDelegate {
@@ -78,19 +88,19 @@ extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
 
         var cellSize : CGSize!
         let inset = GroupStatics.insetSize
-        let collectionWidth : Double = Double(collectionView.frame.width)
+        let collectionWidth = Double(collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right))
         // Default: 2 cell per row
-        var cellWidth : Double = (Double(collectionView.frame.width) - (3 * inset))/2
+        var cellWidth = (collectionWidth - 10) / 2
         var cellHeight : Double = 1.4 * cellWidth
         
         if indexPath.section == 0 && indexPath.row == 0 {
             // One cell
-            cellWidth = collectionWidth - (2 * inset)
+            cellWidth = collectionWidth // - (2 * inset)
             cellHeight = 0.9 * cellWidth
         }
         else if indexPath.section == 0 && indexPath.row == 1 {
 
-            cellWidth = collectionWidth - (2 * inset)
+            cellWidth = collectionWidth //- (2 * inset)
             let height : CGFloat!
             let widthWithInsets = CGFloat(cellWidth - (2 * inset))
 
@@ -124,14 +134,14 @@ extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
             cellHeight = Double(height) + 24
             
         }
+        else {
+
+//            cellHeight = (Double(arc4random_uniform(300) + 50)) + cellWidth
+//            print("\(cellHeight)")
+        }
         
         cellSize = CGSize(width: cellWidth, height: cellHeight)
         return cellSize
-    }
-        
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-
-        return UIEdgeInsets(top: 5.0, left: 8.0, bottom: 0.0, right: 8.0)
     }
     
 }
@@ -144,6 +154,7 @@ class GroupDetailsViewController: UIViewController {
     // MARK: - Const/Var
     var group : Group!
     var documentID : String!
+
     
     private var productCollection : LocalCollection<Product>!
     
@@ -155,6 +166,8 @@ class GroupDetailsViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         self.tabBarController?.tabBar.isHidden = true
+        collectionView?.contentInset = UIEdgeInsets(top: 10.0, left: GroupDetailsConstants.standardLeftInset, bottom: 20.0, right: GroupDetailsConstants.standardRightInset)
+
         
         //  Register custom section header
         collectionView.register(UINib(nibName: "SingleLabelCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "labelCell")
