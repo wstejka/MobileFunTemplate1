@@ -25,8 +25,8 @@ class GroupDetailsTopCollectionViewCell: UICollectionViewCell {
             guard let group = group else { return }
             title.text = group.title
             shortDecription.text = group.shortDescription
-            guard let url = URL(string: group.url) else { return }
-            imageView.sd_setImage(with: url, completed: nil)
+//            guard let imageName = URL(string: group.url) else { return }
+//            imageView.sd_setImage(with: url, completed: nil)
         }
     }
     

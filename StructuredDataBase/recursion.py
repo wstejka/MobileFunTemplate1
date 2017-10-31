@@ -6,7 +6,7 @@ from copy import deepcopy
 import uuid
 
 
-def recursion(array, ident, parent, level):
+def recursion(array, ident, parent, level, reference):
 
 
 	identString = getIdent(ident)
@@ -15,13 +15,13 @@ def recursion(array, ident, parent, level):
 
 	for item in array:
 		id = str(uuid.uuid4())
-		print identString, item["name"], (level), "==>", parent
 
 		itemcopy = deepcopy(item)
 		if field_name in item:
 			itemcopy[field_name] = []
 		document = bunchify(itemcopy)
 		# print getattr(document, 'description')
+		print identString, item["name"], (level), "==>", parent, "|", reference + "/" + document.imageName
 
 		if field_name in item:
 			# Subgroup
@@ -29,7 +29,7 @@ def recursion(array, ident, parent, level):
 			group_list[id] = {"title" : document.name,
 								"shortDescription" : document.shortDescription,
 								"longDescription" : document.longDescription if document.longDescription != "" else default_longDescription,
-								"url" : document.url,
+								"imageName" : reference + "/" + document.imageName if document.imageName != "" else "",
 								"id" : id.decode("utf-8"),
 								"parent_id" : str(parent).decode("utf-8"),
 								"final" : final,
@@ -37,27 +37,34 @@ def recursion(array, ident, parent, level):
 								"level" : level,
 								"is_group" : True}
 
-			recursion(item[field_name], ident, id, level + 1)
+			recursion(item[field_name], ident, id, level + 1, reference + "/" + document.name)
 		else:
 			# Product
 			pass
 		order += 10
 
 
-def checkMandatoryFields(mandatory_fields, group):
+def checkMandatoryFields(mandatory_fields, not_empty_fields, group):
 	""" """
 
 	isError = False
 	for field in mandatory_fields:
 		if not field in group:
 			isError = True
-			print "    <===== WARNING - missing field =====>", field
+			print "    <===== ERROR - missing mandatory field =====>", field
 
 	if isError:
 		if "title" in group:
 			print "    =======>>>>>>> ", group["title"], "<<<<<<======="
 		else:
 			print group
+
+		raise ValueError('Missing mandatory fields')
+
+	for field in not_empty_fields:
+		if field in group and group[field] == "":
+			print "    <===== WARNING - missing field or empty =====>", field, "for", group["title"]
+
 
 	return not isError
 
@@ -85,13 +92,15 @@ if __name__ == "__main__":
 	f.close()
 	data = json.loads(output)
 
-	recursion(data, 0, "", 0)
+	reference = "products"
+	recursion(data, 0, "", 0, reference)
 
 	# Check all mandatory field are there
-	mandatory_fields = ["title", "order", "level", "url", "final", "id", "shortDescription", "longDescription"]
+	mandatory_fields = ["title", "order", "level", "final", "id", "shortDescription", "longDescription", "imageName"]
+	not_empty_fields = ["shortDescription", "longDescription", "imageName"]
 	for key, group in group_list.iteritems():
 		
-		checkMandatoryFields(mandatory_fields, group)
+		checkMandatoryFields(mandatory_fields, not_empty_fields, group)
 
 
 

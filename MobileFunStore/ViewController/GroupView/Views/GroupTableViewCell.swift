@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class GroupTableViewCell: UITableViewCell {
 
@@ -23,14 +24,16 @@ class GroupTableViewCell: UITableViewCell {
     var group : Group? {
         didSet {
             guard let group = group else { return  }
-            let imageURL = URL(string: group.url)
-            imageViewHandler.sd_setImage(with: imageURL) { (image, error, type, url) in
-                if error != nil {
-                    log.error("\(error!)")
-                }
-            }
+//            let imageURL = URL(string: group.url)
+//            imageViewHandler.sd_setImage(with: imageURL) { (image, error, type, url) in
+//                if error != nil {
+//                    log.error("\(error!)")
+//                }
+//            }
             titleLabel.text = group.title
             descriptionLabel.text = group.shortDescription
+            Storage.storage().reference(forURL: "products/")
+            
         }
     }
     

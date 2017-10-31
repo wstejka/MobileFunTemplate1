@@ -7,6 +7,7 @@ build/
 DerivedData/
 StructuredDataBase/MobileFunStore*.json
 StructuredDataBase/test*
+StructuredDataBase/copy*
 StructuredDataBase/history/*
 
 ## Firebase

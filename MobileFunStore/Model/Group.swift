@@ -13,7 +13,7 @@ struct Group {
     var title : String
     var shortDescription : String
     var longDescription : String
-    var url: String
+    var imageName: String
     var level : Int
     var gs_link : String?
     var order : Int
@@ -32,7 +32,7 @@ extension Group : DocumentSerializable {
         guard let title = dictionary["title"] as? String,
             let order = dictionary["order"] as? Int,
             let level = dictionary["level"] as? Int,
-            let url = dictionary["url"] as? String,
+            let imageName = dictionary["imageName"] as? String,
             let final = dictionary["final"] as? Bool,
             let id = dictionary["id"] as? String,
             let shortDescription = dictionary["shortDescription"] as? String,
@@ -56,7 +56,7 @@ extension Group : DocumentSerializable {
             cParentRef = parent_ref
         }
 
-        self.init(title: title, shortDescription: shortDescription, longDescription: longDescription, url: url, level: level, gs_link: cGsLink, order: order, parent_id: cParentId, parent_ref: cParentRef, final: final, id: id)
+        self.init(title: title, shortDescription: shortDescription, longDescription: longDescription, imageName: imageName, level: level, gs_link: cGsLink, order: order, parent_id: cParentId, parent_ref: cParentRef, final: final, id: id)
     }
 
     func dictionary() -> [String : Any] {
@@ -64,7 +64,7 @@ extension Group : DocumentSerializable {
         return ["title" : title,
                 "shortDescription" : shortDescription,
                 "longDescription" : longDescription,
-                "url" : url,
+                "imageName" : imageName,
                 "level" : level,
                 "gs_link" : gs_link ?? "",
                 "order" : order,

@@ -67,11 +67,12 @@ if __name__ == "__main__":
 	data = json.loads(output)
 
 	# Parse data
-	recursion.recursion(data, 0, "", 0)
+	reference = "products"
+	recursion.recursion(data, 0, "", 0, reference)
 
 	# Validate data
 	# Check all mandatory field are there
-	mandatory_fields = ["title", "order", "level", "url", "final", "id", "shortDescription", "longDescription"]
+	mandatory_fields = ["title", "order", "level", "imageName", "final", "id", "shortDescription", "longDescription"]
 	for key, group in recursion.group_list.iteritems():
 		
 		recursion.checkMandatoryFields(mandatory_fields, group)
