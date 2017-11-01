@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseStorageUI
 
 class GroupTableViewCell: UITableViewCell {
 
@@ -15,6 +16,7 @@ class GroupTableViewCell: UITableViewCell {
     @IBOutlet weak var imageViewHandler: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var titleHeightConstraint: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,16 +26,23 @@ class GroupTableViewCell: UITableViewCell {
     var group : Group? {
         didSet {
             guard let group = group else { return  }
-//            let imageURL = URL(string: group.url)
-//            imageViewHandler.sd_setImage(with: imageURL) { (image, error, type, url) in
-//                if error != nil {
-//                    log.error("\(error!)")
-//                }
-//            }
+            
             titleLabel.text = group.title
             descriptionLabel.text = group.shortDescription
-            Storage.storage().reference(forURL: "products/")
+            let titleHeight = titleLabel.text?.height(constraintedWidth: titleLabel.frame.width,
+                                                      font: titleLabel.font)
+            titleHeightConstraint.constant = titleHeight!
             
+            if !group.imageName.isEmpty {
+                Storage.storage().reference().child(group.imageName).downloadURL { [unowned self] (url, error) in
+                    
+                    self.imageViewHandler.sd_setImage(with: url) { (image, error, type, url) in
+                        if error != nil {
+                            log.error("\(error!)")
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -42,4 +51,6 @@ class GroupTableViewCell: UITableViewCell {
         imageViewHandler.image = nil
         imageViewHandler.sd_cancelCurrentImageLoad()
     }
+    
+    
 }

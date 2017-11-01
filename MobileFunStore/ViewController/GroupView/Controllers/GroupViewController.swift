@@ -23,7 +23,7 @@ extension GroupViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        log.verbose("entered: \(indexPath.row)")
+//        log.verbose("entered: \(indexPath.row)")
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! GroupTableViewCell
         cell.selectionStyle = .none
         cell.group = groupCollection[indexPath.row]            

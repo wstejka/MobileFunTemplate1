@@ -29,7 +29,7 @@ def recursion(array, ident, parent, level, reference):
 			group_list[id] = {"title" : document.name,
 								"shortDescription" : document.shortDescription,
 								"longDescription" : document.longDescription if document.longDescription != "" else default_longDescription,
-								"imageName" : reference + "/" + document.imageName if document.imageName != "" else "",
+								"imageName" : reference + "/" + document.imageName if document.imageName != "" else "".decode("utf-8"),
 								"id" : id.decode("utf-8"),
 								"parent_id" : str(parent).decode("utf-8"),
 								"final" : final,

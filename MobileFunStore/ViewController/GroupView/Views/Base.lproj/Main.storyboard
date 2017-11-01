@@ -43,7 +43,7 @@
                                                         <constraint firstAttribute="width" secondItem="0He-q9-5QT" secondAttribute="height" multiplier="1.5" id="lTN-XM-xgC"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Abo-1R-l41">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="title" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Abo-1R-l41">
                                                     <rect key="frame" x="8" y="264.5" width="359" height="22"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="22" id="lkG-EB-IzC"/>
@@ -75,6 +75,7 @@
                                         <connections>
                                             <outlet property="descriptionLabel" destination="55e-tB-Of0" id="hoN-Gv-2zF"/>
                                             <outlet property="imageViewHandler" destination="0He-q9-5QT" id="AXi-nc-eRA"/>
+                                            <outlet property="titleHeightConstraint" destination="lkG-EB-IzC" id="c7T-XK-VHl"/>
                                             <outlet property="titleLabel" destination="Abo-1R-l41" id="NC6-D7-8eh"/>
                                         </connections>
                                     </tableViewCell>

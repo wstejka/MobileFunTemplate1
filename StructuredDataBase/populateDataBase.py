@@ -73,9 +73,10 @@ if __name__ == "__main__":
 	# Validate data
 	# Check all mandatory field are there
 	mandatory_fields = ["title", "order", "level", "imageName", "final", "id", "shortDescription", "longDescription"]
+	not_empty_fields = ["shortDescription", "longDescription", "imageName"]
 	for key, group in recursion.group_list.iteritems():
 		
-		recursion.checkMandatoryFields(mandatory_fields, group)
+		recursion.checkMandatoryFields(mandatory_fields, not_empty_fields, group)
 
 	## Make copy
 	original_data = dict(recursion.group_list)
