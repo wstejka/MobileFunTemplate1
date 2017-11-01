@@ -144,15 +144,18 @@ if __name__ == "__main__":
 	child = "Lenses.jpg"
 
 	print "=> Obtaing images urls"
+	imageDirectory = "images"
 	for key, group in recursion.group_list.iteritems():	
 		imageURL = ""
 		if "imageName" in group and group["imageName"] != "":
-			imageURL = firebaseMananger.firebase.storage().child(group["imageName"]).get_url(token=None)
+			child = imageDirectory + "/" + group["imageName"]
+			imageURL = firebaseMananger.firebase.storage().child(child).get_url(token=None)
 		group["url"] = imageURL.decode("utf-8")
 
 
 	# Validate data
 	# Check all mandatory field are there
+	print "=> Checking mandatory fields"
 	mandatory_fields = ["title", "order", "level", "imageName", "final", "id", "shortDescription", "longDescription"]
 	not_empty_fields = ["shortDescription", "longDescription", "imageName"]
 	for key, group in recursion.group_list.iteritems():
@@ -167,7 +170,7 @@ if __name__ == "__main__":
 	group_ref = firestore.CollectionReference("Groups", client=client)
 	delete_collection(group_ref, 1)
 
-	## Populates
+	## Populate data
 	print "=> Adding new documents"
 	for key, group in recursion.group_list.iteritems():
 

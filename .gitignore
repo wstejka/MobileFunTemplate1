@@ -11,6 +11,8 @@ StructuredDataBase/copy*
 StructuredDataBase/history/*
 ## ignore my credential file due to security reason
 StructuredDataBase/config/
+## ignore images 
+StructuredDataBase/images/
 
 ## Firebase
 .idea

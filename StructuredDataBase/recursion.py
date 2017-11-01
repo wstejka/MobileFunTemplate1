@@ -20,7 +20,7 @@ def recursion(array, ident, parent, level):
 			itemcopy[field_name] = []
 		document = bunchify(itemcopy)
 		# print getattr(document, 'description')
-		print identString, item["name"], (level), "==>", parent, "|", "images/" + document.imageName
+		print identString, item["name"], (level), "==>", parent, "|", document.imageName
 
 		if field_name in item:
 			# Subgroup
@@ -28,7 +28,7 @@ def recursion(array, ident, parent, level):
 			group_list[id] = {"title" : document.name,
 								"shortDescription" : document.shortDescription,
 								"longDescription" : document.longDescription if document.longDescription != "" else default_longDescription,
-								"imageName" : "images/" + document.imageName if document.imageName != "" else "".decode("utf-8"),
+								"imageName" : document.imageName if document.imageName != "" else "".decode("utf-8"),
 								"id" : id.decode("utf-8"),
 								"parent_id" : str(parent).decode("utf-8"),
 								"final" : final,

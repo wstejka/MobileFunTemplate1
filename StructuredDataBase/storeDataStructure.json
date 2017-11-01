@@ -23,7 +23,7 @@
 				"name" : "Telescopes",
 				"shortDescription": "",
 				"longDescription" : "",
-				"imageName": "", 
+				"imageName": "Telescopes.jpg", 
 				"references" : []
 			},
 			{
@@ -52,58 +52,66 @@
 				"name" : "Laptopts",
 				"shortDescription": "Portable to let you work and play on the way",
 				"longDescription" : "",
-				"imageName": "", 
+				"imageName": "Laptopts.png", 
 				"references" : []
 			},
 			{
-				"name" : "Desktop",
+				"name" : "Desktops",
 				"shortDescription": "Stronger and good prepared for tought work",
 				"longDescription" : "",
-				"imageName": "", 
+				"imageName": "DesktopComputers.png", 
 				"references" : []
 			},
 			{
 				"name" : "Tablets",
 				"shortDescription": "Always at hand to make life easier",
 				"longDescription" : "",
-				"imageName": "", 
+				"imageName": "Tablets.jpg", 
 				"references" : []
 			},
 			{
 				"name" : "Software",
 				"shortDescription": "The best quality software",
 				"longDescription" : "",
-				"imageName": "", 
+				"imageName": "softwareBoxes.png", 
+				"references" : []				
+			},
+						{
+				"name" : "Computer monitors",
+				"shortDescription": "Computer monitors",
+				"longDescription" : "",
+				"imageName": "computerMonitors.jpg", 
 				"references" : []				
 			}
+
 		]
 	},
 	{
 		"name": "Smartphones",
 		"shortDescription": "Worldwide in a small device",
 		"longDescription" : "",
-		"imageName": "", 
+		"imageName": "Smartphones.jpg", 
 		"references" : []
 	},	
 	{
-		"name": "TVs",
+		"name": "Televisions",
 		"shortDescription": "Suits TV to your needs",
 		"longDescription" : "",
-		"imageName": "", 
+		"imageName": "Televisions2.png", 
 		"references" : []
 	},
 	{
-		"name": "Watches", 
-		"imageName": "Watches.jpg", 
+		"name": "Hand watches", 
 		"shortDescription": "Elegant or sporty?", 
 		"longDescription" : "",
+		"imageName": "Watches2.jpg", 
 		"references" : []
 	},
 	{
-		"name": "Games",
+		"name": "Computer games",
 		"shortDescription": "Become a hero ... or not, you make decision",
 		"longDescription" : "",
-		"imageName": "", 
+		"imageName": "ComputerGames.jpg", 
 		"references" : []
 	}
 
