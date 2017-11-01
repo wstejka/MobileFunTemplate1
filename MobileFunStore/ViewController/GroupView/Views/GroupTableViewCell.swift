@@ -33,15 +33,16 @@ class GroupTableViewCell: UITableViewCell {
                                                       font: titleLabel.font)
             titleHeightConstraint.constant = titleHeight!
             
-            if !group.imageName.isEmpty {
-                Storage.storage().reference().child(group.imageName).downloadURL { [unowned self] (url, error) in
-                    
-                    self.imageViewHandler.sd_setImage(with: url) { (image, error, type, url) in
-                        if error != nil {
-                            log.error("\(error!)")
-                        }
+            if !group.url.isEmpty {
+                let url = URL(string: group.url)
+                self.imageViewHandler.sd_setImage(with: url) { (image, error, type, url) in
+                    if error != nil {
+                        log.error("\(error!)")
                     }
                 }
+
+//                Storage.storage().reference().child(group.imageName).downloadURL { [unowned self] (url, error) in
+//                }
             }
         }
     }

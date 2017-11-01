@@ -5,8 +5,7 @@ from bunch import bunchify
 from copy import deepcopy
 import uuid
 
-
-def recursion(array, ident, parent, level, reference):
+def recursion(array, ident, parent, level):
 
 
 	identString = getIdent(ident)
@@ -21,7 +20,7 @@ def recursion(array, ident, parent, level, reference):
 			itemcopy[field_name] = []
 		document = bunchify(itemcopy)
 		# print getattr(document, 'description')
-		print identString, item["name"], (level), "==>", parent, "|", reference + "/" + document.imageName
+		print identString, item["name"], (level), "==>", parent, "|", "images/" + document.imageName
 
 		if field_name in item:
 			# Subgroup
@@ -29,7 +28,7 @@ def recursion(array, ident, parent, level, reference):
 			group_list[id] = {"title" : document.name,
 								"shortDescription" : document.shortDescription,
 								"longDescription" : document.longDescription if document.longDescription != "" else default_longDescription,
-								"imageName" : reference + "/" + document.imageName if document.imageName != "" else "".decode("utf-8"),
+								"imageName" : "images/" + document.imageName if document.imageName != "" else "".decode("utf-8"),
 								"id" : id.decode("utf-8"),
 								"parent_id" : str(parent).decode("utf-8"),
 								"final" : final,
@@ -37,7 +36,7 @@ def recursion(array, ident, parent, level, reference):
 								"level" : level,
 								"is_group" : True}
 
-			recursion(item[field_name], ident, id, level + 1, reference + "/" + document.name)
+			recursion(item[field_name], ident, id, level + 1)
 		else:
 			# Product
 			pass
@@ -92,8 +91,7 @@ if __name__ == "__main__":
 	f.close()
 	data = json.loads(output)
 
-	reference = "products"
-	recursion(data, 0, "", 0, reference)
+	recursion(data, 0, "", 0)
 
 	# Check all mandatory field are there
 	mandatory_fields = ["title", "order", "level", "final", "id", "shortDescription", "longDescription", "imageName"]

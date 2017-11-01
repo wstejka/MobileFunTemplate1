@@ -1,8 +1,74 @@
 #!/usr/local/bin/python
 
 from google.cloud import firestore
-import os, json, pprint
+import os, json, pprint, sys
 import recursion as recursion
+import pyrebase
+
+
+######################################################################################################
+# Important remark: Before you start create below files and populate them with data
+#
+#	firebaseConfig.json 	-> Data needed for firebase project identification
+#	credentials.json 		-> login/password for authentication throughout pyrebase
+#	MobileFunStore-fdf9f054b682.json 	->	key and data for authentication throughout firestore
+#
+######################################################################################################
+
+
+directory = os.path.dirname(sys.argv[0])
+
+# IMPORTANT REMARK: 
+# Due to security reason credentials are kept in separate file which is called "credentials"
+# Information should be stored there in format: "login|password"
+class FirebaseManager(object):
+	"""docstring for FirebaseManager"""
+
+	login = ""
+	password = ""
+	firebase = None
+	userIdToken = None
+
+	def __init__(self, login=None, password=None):
+
+		credentials = self.getCredentials()
+		self.firebase = self.getFirebaseClient()
+
+		###### AUTHENTICATION ############
+		# Get a reference to the auth service
+		auth = self.firebase.auth()
+
+		# Log the user in
+		user = auth.sign_in_with_email_and_password(credentials["login"], credentials["password"])
+		# Refresh token as it can expire after 1 hour
+		user = auth.refresh(user['refreshToken'])
+		# now we have a fresh token
+		self.userIdToken = user['idToken']
+
+		# ######## DATABASE #####################
+		# # Get a reference to the database service
+		# self.db = firebase.database()
+
+	def getCredentials(self):
+
+		file_name = "./config/credentials.json"
+		credentials = ""
+		with open(file_name, 'r') as json_file:
+			credentials = json.load(json_file)
+
+		return credentials	
+
+	def getFirebaseClient(self):
+		"""Returns handler to firebase storage """
+		file_name = "./config/firebaseConfig.json"
+		firebaseConfigFile = ""
+		with open(file_name, 'r') as json_file:
+			firebaseConfig = json.load(json_file)
+			# print firebaseConfig
+
+		return pyrebase.initialize_app(firebaseConfig)	
+
+## end class
 
 
 def readConfig(file_name):
@@ -19,10 +85,12 @@ def saveConfig(config, file_name):
 
 
 def getFirestoreClient():
-	"""Returns habdler to firestore DB """
+	"""Returns handler to firestore DB """
 	user = os.environ["USER"]
-	os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/Users/' + user + '/Documents/xCode/MYProjects/MobileFunTemplate1/StructuredDataBase/MobileFunStore-fdf9f054b682.json'
+	os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = directory + "/config/MobileFunStore-fdf9f054b682.json"
+
 	return firestore.Client()
+
 
 def delete_collection(coll_ref, batch_size):
 
@@ -58,6 +126,7 @@ def parse_and_save_group_object(group):
 ########### MAIN ################	
 if __name__ == "__main__":
 
+
 	pp = pprint.PrettyPrinter(indent=4)
 	client = getFirestoreClient()
 	# doc_ref = client.collection('Groups') 
@@ -68,7 +137,19 @@ if __name__ == "__main__":
 
 	# Parse data
 	reference = "products"
-	recursion.recursion(data, 0, "", 0, reference)
+	recursion.recursion(data, 0, "", 0)
+
+	# print recursion.group_list
+	firebaseMananger = FirebaseManager()
+	child = "Lenses.jpg"
+
+	print "=> Obtaing images urls"
+	for key, group in recursion.group_list.iteritems():	
+		imageURL = ""
+		if "imageName" in group and group["imageName"] != "":
+			imageURL = firebaseMananger.firebase.storage().child(group["imageName"]).get_url(token=None)
+		group["url"] = imageURL.decode("utf-8")
+
 
 	# Validate data
 	# Check all mandatory field are there

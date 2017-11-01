@@ -21,7 +21,9 @@ struct Group {
     var parent_ref : DocumentReference?
     // This is workaround as for now there is no possible to check if document has a collection
     var final : Bool
+    
     var id : String
+    var url: String
 
 }
 
@@ -36,7 +38,8 @@ extension Group : DocumentSerializable {
             let final = dictionary["final"] as? Bool,
             let id = dictionary["id"] as? String,
             let shortDescription = dictionary["shortDescription"] as? String,
-            let longDescription = dictionary["longDescription"] as? String
+            let longDescription = dictionary["longDescription"] as? String,
+            let url = dictionary["url"] as? String
             else {
 
                 log.error("Lack of mandatory value(s): \(dictionary)")
@@ -56,7 +59,7 @@ extension Group : DocumentSerializable {
             cParentRef = parent_ref
         }
 
-        self.init(title: title, shortDescription: shortDescription, longDescription: longDescription, imageName: imageName, level: level, gs_link: cGsLink, order: order, parent_id: cParentId, parent_ref: cParentRef, final: final, id: id)
+        self.init(title: title, shortDescription: shortDescription, longDescription: longDescription, imageName: imageName, level: level, gs_link: cGsLink, order: order, parent_id: cParentId, parent_ref: cParentRef, final: final, id: id, url: url)
     }
 
     func dictionary() -> [String : Any] {
@@ -69,7 +72,8 @@ extension Group : DocumentSerializable {
                 "gs_link" : gs_link ?? "",
                 "order" : order,
                 "final" : final,
-                "id" : id]
+                "id" : id,
+                "url" : url]
     }
 }
 
