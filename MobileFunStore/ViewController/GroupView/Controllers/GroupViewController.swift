@@ -54,12 +54,19 @@ extension GroupViewController : UITableViewDelegate {
             let controller = GroupDetailsViewController.fromStoryboard()
             controller.group = group
             controller.documentID = documentID
-            self.navigationController?.pushViewController(controller, animated: true)
 
 //            let animation : CATransition = CATransition()
 //            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 //            animation.duration = 0.5
 //            self.navigationController?.view.layer.add(animation, forKey: kCATransitionFromTop)
+
+//            let transition:CATransition = CATransition()
+//            transition.duration = 0.5
+//            transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+//            transition.type = kCATransitionPush
+//            transition.subtype = kCATransitionFromLeft
+//            self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+            self.navigationController?.pushViewController(controller, animated: true)
 
         }
     }
@@ -70,6 +77,7 @@ class GroupViewController: UIViewController {
 
     // MARK: - Outlets
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var alphaView: UIView!
     
     // MARK: Const/Var
     var groupCollection : LocalCollection<Group>!
@@ -97,6 +105,7 @@ class GroupViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
+//        self.navigationController?.delegate = NavDelegate()
         
         self.tableView.refreshControl = self.refreshControl
                 

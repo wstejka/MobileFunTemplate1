@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseFirestore
 
+
 struct GroupDetailsConstants {
     
     static let standardLeftInset : CGFloat = 8.0
@@ -96,7 +97,8 @@ extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
         if indexPath.section == 0 && indexPath.row == 0 {
             // One cell
             cellWidth = collectionWidth // - (2 * inset)
-            cellHeight = 0.9 * cellWidth
+            collectionView.cellForItem(at: IndexPath(row: 0, section: 0))
+            cellHeight = 1.1 * cellWidth
         }
         else if indexPath.section == 0 && indexPath.row == 1 {
 
@@ -129,6 +131,7 @@ extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
                 height = group.longDescription.height(constraintedWidth: widthWithInsets,
                                                      font: font!,
                                                      numberOfLines: 2)
+                
             }
             // Add to height the left and right cell insets (2 * 8) + some bufor
             cellHeight = Double(height) + 24
@@ -150,6 +153,7 @@ class GroupDetailsViewController: UIViewController {
     
     // MARK: - Outlets
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var alphaView: UIView!
     
     // MARK: - Const/Var
     var group : Group!

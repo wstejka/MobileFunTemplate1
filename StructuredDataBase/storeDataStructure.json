@@ -7,35 +7,35 @@
 		"references" : [
 			{
 				"name" : "Cameras",
-				"shortDescription": "Take a good picture, capture a moment",
+				"shortDescription": "Take a picture, capture a moment",
 				"longDescription" : "",
 				"imageName": "Cameras1.jpg", 
 				"references" : []
 			},
 			{
 				"name" : "Lenses",
-				"shortDescription": "",
+				"shortDescription": "Looking for best lenses for your great cameras?",
 				"longDescription" : "",
 				"imageName": "Lenses.jpg", 
 				"references" : []
 			},
 			{
 				"name" : "Telescopes",
-				"shortDescription": "",
+				"shortDescription": "Watch the world from better perspective",
 				"longDescription" : "",
 				"imageName": "Telescopes.jpg", 
 				"references" : []
 			},
 			{
 				"name" : "Binoculars",
-				"shortDescription": "",
+				"shortDescription": "Zoom in, zoom out ... you decide",
 				"longDescription" : "",
 				"imageName": "Binoculars2.png", 
 				"references" : []				
 			},
 			{
 				"name" : "Bags and equipment",
-				"shortDescription": "Protect your device",
+				"shortDescription": "Protect your device with handy bags.",
 				"longDescription" : "",
 				"imageName": "CameraBags.jpg", 
 				"references" : []				

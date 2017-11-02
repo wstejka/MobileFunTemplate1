@@ -32,7 +32,8 @@ class GroupTableViewCell: UITableViewCell {
             let titleHeight = titleLabel.text?.height(constraintedWidth: titleLabel.frame.width,
                                                       font: titleLabel.font)
             titleHeightConstraint.constant = titleHeight!
-            
+            titleLabel.setNeedsUpdateConstraints()
+
             if !group.url.isEmpty {
                 let url = URL(string: group.url)
                 self.imageViewHandler.sd_setImage(with: url) { (image, error, type, url) in
