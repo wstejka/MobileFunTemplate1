@@ -19,19 +19,19 @@ def recursion(array, ident, parent, level):
 		if field_name in item:
 			itemcopy[field_name] = []
 		document = bunchify(itemcopy)
-		# print getattr(document, 'description')
-		print identString, item["name"], (level), "==>", parent, "|", document.imageName
 
 		if field_name in item:
+			# print getattr(document, 'description')
+			print identString, item["name"], (level), "==>", parent, "|", document.imageName
+
 			# Subgroup
-			final = False if len(item[field_name]) > 0 else True
 			group_list[id] = {"title" : document.name,
 								"shortDescription" : document.shortDescription,
 								"longDescription" : document.longDescription if document.longDescription != "" else default_longDescription,
 								"imageName" : document.imageName if document.imageName != "" else "".decode("utf-8"),
 								"id" : id.decode("utf-8"),
 								"parent_id" : str(parent).decode("utf-8"),
-								"final" : final,
+								"final" : False if len(item[field_name]) > 0 else True,
 								"order" : order,
 								"level" : level,
 								"is_group" : True}
@@ -39,7 +39,19 @@ def recursion(array, ident, parent, level):
 			recursion(item[field_name], ident, id, level + 1)
 		else:
 			# Product
-			pass
+			# print getattr(document, 'description')
+			print identString, item["name"], (level), "==>", parent
+			product_list[id] = {
+				"title" : document.name,
+				"shortDescription" : document.shortDescription,
+				"longDescription" : document.longDescription if document.longDescription != "" else default_longDescription,
+				"images" : document.images,
+				"id" : id.decode("utf-8"),
+				"parent_id" : str(parent).decode("utf-8"),
+				"order" : order,
+				"level" : level,
+				"is_group" : False
+			}
 		order += 10
 
 
@@ -79,6 +91,8 @@ def getIdent(len):
 field_name = "references"
 global_ident = 4
 group_list = {}
+product_list = {}
+
 default_longDescription = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.".decode("utf-8")
 
 

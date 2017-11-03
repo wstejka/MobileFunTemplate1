@@ -10,7 +10,150 @@
 				"shortDescription": "Take a picture, capture a moment",
 				"longDescription" : "",
 				"imageName": "Cameras1.jpg", 
-				"references" : []
+				"references" : [
+					{
+						"name" : "Nikon D3400",
+						"shortDescription": "The time is now. Shoot brilliantly, share instantly with the D3400.",
+						"longDescription" : "The D3400 makes it spectacularly easy to shoot and share DSLR-quality images. Nikon’s SnapBridge keeps the camera connected to your smart device via Bluetooth so you can actually sync photos as you shoot. Pick up your phone and the photos are there, ready to share: no fuss, no waiting.",
+						"images": ["nikon_dslr_d3400_black_18_55_vr_front--original.png",
+								"nikon_dslr_d3400_black_18_55_vr_front_left--original.png",
+								"nikon_dslr_d3400_black_18_55_vr_front_top--original.png",
+								"nikon_dslr_d3400_black_18_55_vr_right--original.png",
+								"nikon_dslr_d3400_black_18_55_vr_top--original.png",
+								"nikon_dslr_d3400_black_back--original.png"]
+					},
+					{
+
+						"name" : "Nikan D500",
+						"shortDescription": "Flagship power—DX agility. Go further with the D500.",
+						"longDescription" : "As the smaller sibling to the D5, Nikon’s FX-format flagship, the D500 offers phenomenal power and precision. Nikon’s next-generation 153-point AF system provides exceptionally wide coverage. New image and metering sensors deliver phenomenally accurate subject recognition and detail. You can shoot at up to 10 fps, and the high-performance buffer allows up to 200 NEF (RAW) images to be captured during one high-speed burst. Combined, this means you can shoot at maximum image quality for an incredible 20 seconds. And for moviemakers who go to extremes, D-Movie enables high-definition 4K/UHD movies of up to 29 minutes and 59 seconds long to be recorded in-camera.",
+						"images": ["dslr_d500_front_test--original.png", 
+								"nikon_dslr_d500_black_back_34l--original.png",
+								"nikon_dslr_d500_black_front_34l--original.png",							
+								"nikon_dslr_d500_black_back--original.png",	
+								"nikon_dslr_d500_black_top--original.png"]
+					},
+					{
+
+						"name" : "Nikon COOLPIX W300",
+						"shortDescription": "Tough build. Tough performance. Real freedom.",
+						"longDescription" : "Meet the rugged COOLPIX W300—the all-weather compact with deep-water credentials. Enjoy superb image quality, easy connectivity, and GPS tracking. For the great outdoors, the city, and everything in between.",
+						"images": ["nikon_coolpix_w300_yellow__back.png",
+								"nikon_coolpix_w300_black_hero_shot.png",		
+								"nikon_coolpix_w300_yellow_front34l_lo_w.png",
+								"nikon_coolpix_w300_camouflage_hero_shot.png",
+								"nikon_coolpix_w300_yellow_front_lo.png",
+								"nikon_coolpix_w300_orange_hero_shot.png",		
+								"nikon_coolpix_w300_yellow_hero_shot.png"]
+					},
+					{
+
+						"name" : "Nikon COOLPIX P900",
+						"shortDescription": "Styled for comfortable shooting, the COOLPIX P900 brings you closer than ever to the beauty of nature.",
+						"longDescription" : "If you’re a keen photographer of wildlife or the night sky, the 16-megapixel COOLPIX P900’s incredible 83x optical zoom lets you capture details not visible to the naked eye. Shoot instantly with rapid AF and a reduced shooting time lag, while 5.0-stop Dual Detect Optical VR enhances blur reduction.",
+						"images": ["144673610.png",	
+								"2101510734.png",	
+								"3134076176.png",
+								"202417429.png",	
+								"2718352564.png",	
+								"440948793.png"]
+					},
+					{
+
+						"name" : "Nikon 1 J5",
+						"shortDescription": "Enjoy the freedom to shoot with confidence in low light.",
+						"longDescription" : "Break away from the ordinary with the super-portable Nikon 1 J5 system camera. Shoot thrilling 20.8-megapixel images and ultra-sharp 4K video. Miss nothing with faster shooting speeds than a D-SLR.",
+						"images": ["1509155203.png",	
+								"2507208231.png",	
+								"395413927.png",
+								"587567515.png",
+								"1953667919.png",	
+								"2641201427.png",	
+								"417872626.png",
+								"74350630.png"]
+					},
+					{
+						"name" : "Nikon 1 AW1",
+						"shortDescription": "Life doesn’t have a replay button. You need a camera that can keep up.",
+						"longDescription" : "Waterproof, shockproof, and freeze-proof, the amazingly fast Nikon 1 AW1 always delivers. Whether you’re on the ski slopes, out on a yacht, or enjoying an adventure safari, this system camera is protected from accidents and the elements. And thanks to the minimalist design, you won’t look out of place at a chic city event either.",
+						"images": ["1082494712.png",	
+								"2196371990.png",	
+								"2773162905.png",	
+								"4275299530.png",
+								"1944430261.png",	
+								"2581533831.png",	
+								"3940986752.png"]
+					},
+					{
+
+						"name" : "Sony DSCRX100M2 Cyber-shot",
+						"shortDescription": "Advanced Camera with 1.0 inch sensor",
+						"longDescription" : "Natural eyes, even in the dark. When something beautiful inspires the artist within, the Cyber-shot® RX100 II is there to capture every exquisite detail. A new 1-inch back-illuminated Exmor R CMOS sensor combines with a bright F1.8 ZEISS® Vario-Sonnar T* lens for beautiful, clean, low-noise images",
+						"images": ["576b612b436f1.png",	
+								"576b612bd84bc.png",	
+								"576b612c7a716.png",
+								"576b612b9da61.png",	
+								"576b612c2139e.png",	
+								"576b612c98275.png",
+								"576b612bbb584.png",	
+								"576b612c5d648.png"]
+					},
+					{
+
+						"name" : "Sony WX350",
+						"shortDescription": "WX350 Compact Camera with 20x Optical Zoom",
+						"longDescription" : "Digital compact camera with 20x optical zoom, 18.2MP Exmor™ R CMOS sensor, NFC, and Wi-Fi",
+						"images": ["576b6164e5640.png",	
+								"576b6165309f2.png",
+								"576b616510c19.png",
+								"576b61655059a.png"]
+					},
+					{
+
+						"name" : "Sony RX10 Ⅱ",
+						"shortDescription": "Pro style. Lightning fast.",
+						"longDescription" : "New pro-style RX10 II zoom camera with a memory-attached 1.0-type stacked CMOS sensor captures hidden realms of imagination. Now explore super-real 4K movies and stills.",
+						"images": ["576b628ab7256.png",	
+									"576b628b39060.png",	
+									"576b628bb036b.png",
+									"576b628af2a9f.png",	
+									"576b628b562dd.png",	
+									"576b628bce226.png",
+									"576b628b1c24e.png",	
+									"576b628b92fd3.png"]
+					},
+					{
+
+						"name" : "Sony DSCWX220/N",
+						"shortDescription": "18.2 MP Digital Camera with 2.7-Inch LCD",
+						"longDescription" : "Digital compact camera with 10x optical zoom, 18.2MP Exmor R® CMOS sensor, NFC, and Wi-Fi",
+						"images": ["576b615b2c3dc.png",
+									"576b615b6a4c4.png",	
+									"576b615b892be.png"]
+					},
+					{
+
+						"name" : "ILCA-68 BODY / KIT",
+						"shortDescription": "Make the feeling last a lifetime",
+						"longDescription" : "Shoot and share beautifully creative stills and Full HD movies, wherever you go, with this truly pocketable, connected camera. Take as much or as little control as you like, using the Lens Control Ring and intuitive 7.5 cm touchscreen, while expert features - like the large 1.0 type sensor, bright f/2.0-4.9 lens, superior DIGIC 7 and Dual Sensing image stabilisation technology - ensure exceptional results.",
+						"images": ["576b5d448fb63.jpeg",
+								"576b6170858bb.png",
+								"576b61706641e.png",	
+								"576b6170a49bc.png"]
+					},
+					{
+
+						"name" : "Canon PowerShot G9 X Mark II – Silver",
+						"shortDescription": "Explore your creativity, take the control",
+						"longDescription" : "Digital compact camera with 10x optical zoom, 18.2MP Exmor R® CMOS sensor, NFC, and Wi-Fi",
+						"images": ["1718c011_powershot-g9-x-mark-ii_1.jpg",	
+								"1718c011_powershot-g9-x-mark-ii_4.jpg",
+								"1718c011_powershot-g9-x-mark-ii_2.jpg",	
+								"1718c011_powershot-g9-x-mark-ii_5.jpg",
+								"1718c011_powershot-g9-x-mark-ii_3.jpg"]
+					}
+
+				]					
 			},
 			{
 				"name" : "Lenses",

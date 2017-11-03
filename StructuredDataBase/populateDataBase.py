@@ -92,59 +92,43 @@ def getFirestoreClient():
 	return firestore.Client()
 
 
-def delete_collection(coll_ref, batch_size):
+def delete_collection_documents(coll_ref, batch_size):
 
     docs = coll_ref.limit(10).get()
     deleted = 0
 
     for doc in docs:
-        print(u'    Deleting doc {} => {}'.format(doc.id, doc.to_dict()["title"]))
+    	print doc.id
+    	try:
+    		print(u'    Deleting doc {} => {}'.format(doc.id, doc.to_dict()["title"]))
+    	except:
+	    	print(u'    Deleting doc {} => {}'.format(doc.id, "Unknown object"))
+
         doc.reference.delete()
         deleted = deleted + 1
 
     if deleted >= batch_size:
-        return delete_collection(coll_ref, batch_size)	
+        return delete_collection_documents(coll_ref, batch_size)	
 
-def parse_and_save_group_object(group):
+def parse_and_save_document(document, directory):
 
-	print "    Adding", group["id"], "=>", group["title"]
-	doc_ref = firestore.DocumentReference("Groups", group["id"], client=client)
-	if "parent_id" in group and group["parent_id"] != "":
-		parent = firestore.DocumentReference("Groups", group["parent_id"], client=client)
-		group["parent_ref"] = parent
+	print "    Adding", document["id"], "=>", document["title"]
+	doc_ref = firestore.DocumentReference(directory, document["id"], client=client)
+	if "parent_id" in document and document["parent_id"] != "":
+		parent = firestore.DocumentReference(directory, document["parent_id"], client=client)
+		document["parent_ref"] = parent
 		
 	# remove uneeded data from dict
-	del group["is_group"]
-	# del group["parent_id"]
-	# print type(group), group
-	doc_ref.set(group)
+	del document["is_group"]
+	doc_ref.set(document)
 
 
-
-
-
-########### MAIN ################	
-if __name__ == "__main__":
-
-
-	pp = pprint.PrettyPrinter(indent=4)
-	client = getFirestoreClient()
-	# doc_ref = client.collection('Groups') 
-
-	# Read config
-	output = readConfig("storeDataStructure.json")
-	data = json.loads(output)
-
-	# Parse data
-	reference = "products"
-	recursion.recursion(data, 0, "", 0)
-
-	# print recursion.group_list
-	firebaseMananger = FirebaseManager()
-	child = "Lenses.jpg"
+def performAllGroupTasks(firebaseMananger):
+	print "===>>> Performing all GROUP tasks <<<==="
 
 	print "=> Obtaing images urls"
 	imageDirectory = "images"
+
 	for key, group in recursion.group_list.iteritems():	
 		imageURL = ""
 		if "imageName" in group and group["imageName"] != "":
@@ -166,20 +150,86 @@ if __name__ == "__main__":
 	original_data = dict(recursion.group_list)
 
 	## CLEAR old Groups
-	print "=> Deleting old documents"
+	print "=> Deleting all existing documents"
 	group_ref = firestore.CollectionReference("Groups", client=client)
-	delete_collection(group_ref, 1)
+	delete_collection_documents(group_ref, 1)
 
 	## Populate data
 	print "=> Adding new documents"
 	for key, group in recursion.group_list.iteritems():
 
 		if "is_group" in group and group["is_group"] == True:
-			parse_and_save_group_object(group)
+			parse_and_save_document(group, "Groups")
+
+
+def performAllProductTasks(firebaseMananger):
+	print "===>>> Performing all PRODUCT tasks <<<==="
+
+	print "=> Obtaing images urls"
+	imageDirectory = "images"
+
+	for key, product in recursion.product_list.iteritems():	
+		imagesURL = []
+
+		if "images" in product and len(product["images"]) > 0:
+			for imageName in product["images"]:
+				child = imageDirectory + "/" + imageName
+				imageURL = firebaseMananger.firebase.storage().child(child).get_url(token=None)
+				imagesURL.append(imageURL.decode("utf-8"))
+
+			product["urls"] = imagesURL
+
+	# Validate data
+	# Check all mandatory field are there
+	print "=> Checking mandatory fields"
+	mandatory_fields = ["title", "order", "level", "images", "id", "shortDescription", "longDescription"]
+	not_empty_fields = ["shortDescription", "longDescription", "images"]
+	for key, product in recursion.product_list.iteritems():
+		
+		recursion.checkMandatoryFields(mandatory_fields, not_empty_fields, product)
+
+	## Make copy
+	original_data = dict(recursion.product_list)
+
+	## CLEAR old Products
+	print "=> Deleting all existing documents"
+	product_ref = firestore.CollectionReference("Products", client=client)
+	delete_collection_documents(product_ref, 1)
+
+	## Populate data
+	print "=> Adding new documents"
+	for key, product in recursion.product_list.iteritems():
+
+		parse_and_save_document(product, "Products")
+
+
+########### MAIN ################	
+if __name__ == "__main__":
+
+
+	pp = pprint.PrettyPrinter(indent=4)
+	client = getFirestoreClient()
+	# doc_ref = client.collection('Groups') 
+
+	# Read config
+	output = readConfig("storeDataStructure.json")
+	data = json.loads(output)
+
+	# Parse data
+	reference = "products"
+	recursion.recursion(data, 0, "", 0)
+
+	# print recursion.group_list
+	firebaseMananger = FirebaseManager()
+
+	# do all GROUP associated tasks
+	# performAllGroupTasks(firebaseMananger)
+	# do all PRODUCT associated tasks
+	performAllProductTasks(firebaseMananger)
 
 
 	## Save current status
-	print "=> Saving data"
+	# print "=> Saving data"
 	# print original_data
 	# saveConfig(original_data, "history/old")
 

@@ -4,7 +4,6 @@ from google.cloud import storage
 import os, json, pprint, sys, six
 import recursion as recursion
 
-image = "IMG_0174.JPG"
 directory = os.path.dirname(sys.argv[0])
 
 def readConfig(file_name):
@@ -21,12 +20,12 @@ def getFirestoreClient():
 
 	return storage.Client()
 
-def uploadFile(fileName, client, bucket, reSave=False):
-	blob2 = bucket.blob('images/' + fileName)
-	file_exist = blob2.exists()
+def uploadFile(fileName, local_dir, external_dir, bucket, reSave=False):
+	blob = bucket.blob(external_dir + "/" + fileName)
+	file_exist = blob.exists()
 	if file_exist == False or \
 		(file_exist == True and reSave == True):
-		blob2.upload_from_filename(filename='./images/' + fileName)
+		blob.upload_from_filename(filename=local_dir + "/" + fileName)
 
 		print "=> Uploading", imageName
 	else:
@@ -35,7 +34,7 @@ def uploadFile(fileName, client, bucket, reSave=False):
 
 	# Note: 
 	# It is useless url as it refers to https://storage.googleapis.com/
-	# w/o certificate I cannot access it from app
+	# w/o certificate 	I cannot access it from app
 	#
 	# url = blob2.public_url
 	# if isinstance(url, six.binary_type):
@@ -56,14 +55,23 @@ if __name__ == "__main__":
 	recursion.recursion(data, 0, "", 0)
 	client = getFirestoreClient()
 	bucket = client.get_bucket('mobilefuntemplate1.appspot.com')
-	print bucket
+	# print bucket
 
-	# exit(1)
+	# Upload images associated with Groups
+	print "===> Groups images <==="  
 	for key, group in recursion.group_list.iteritems():	
 
 		imageName = group["imageName"]
 		if imageName != "":
-			uploadFile(imageName, client, bucket)
+			uploadFile(fileName=imageName, local_dir = "./images", external_dir="images", bucket=bucket)
+
+	# Upload images associated with Products
+	print "===> Products images <==="  
+	for key, product in recursion.product_list.iteritems():	
+
+		if "images" in product and len(product["images"]) > 0:
+			for imageName in product["images"]:
+				uploadFile(fileName=imageName, local_dir = "./images", external_dir="images", bucket=bucket)
 
 	print ">>>>  END  <<<<"
 
