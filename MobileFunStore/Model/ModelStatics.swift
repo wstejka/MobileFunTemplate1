@@ -9,14 +9,12 @@ import FirebaseFirestore
 
 class Utils {
 
-    enum FirestoreLink : String {
-        
-        case product = "product"
-        case user = "user"
-        case group = "group"
-    }
-
     typealias CompletionType = ([DocumentChange]) -> Void
-
+    static let insetSize : Double = 8.0
+    
+    enum collection : String {
+        case group = "Groups"
+        case product = "Products"
+    }
 }
 

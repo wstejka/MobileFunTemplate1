@@ -5,62 +5,69 @@
 //  Created by Wojciech Stejka on 18/10/2017.
 //  Copyright © 2017 Wojciech Stejka. All rights reserved.
 //
-
+import Firebase
 
 struct Product {
     
     // MARK: - mandatory fields
-    var name : String
-    var price : Float
+    var title : String
+    var shortDescription : String
+    var longDescription : String
+    var id : String
+    var parent_id : String
+    var parent_ref : DocumentReference
+    var order : Int
     var quantityInStock : Float
-    var description : String
-    
-    // MARK: - optional fields
-    var lastName : String = ""
-    var producer : String = ""
-    var discountPercent : Float = 0.0
-    
+    var price : Float
+
+    // Optionals
+    var images : [String] = []
+
 }
 
 extension Product : DocumentSerializable {
     
-    func dictionary() -> [String : Any] {
-        
-        return ["name" : name,
-                "price" : price,
-                "quantityInStock" : quantityInStock,
-                "description" : description,
-                "lastName" : lastName,
-                "producer" : producer,
-                "discountPercent" : discountPercent]
-    }
-    
     init?(dictionary: [String : Any]) {
 
         // Mandatory values
-        guard let name = dictionary["name"] as? String,
+        guard let title = dictionary["title"] as? String,
+            let shortDescription = dictionary["shortDescription"] as? String,
+            let longDescription = dictionary["longDescription"] as? String,
+            let id = dictionary["id"] as? String,
+            let parent_id = dictionary["parent_id"] as? String,
+            let parent_ref = dictionary["parent_ref"] as? DocumentReference,
+            let order = dictionary["order"] as? Int,
             let price = dictionary["price"] as? Float,
-            let quantityInStock = dictionary["quantityInStock"] as? Float,
-            let description = dictionary["description"] as? String else {
+            let quantityInStock = dictionary["quantityInStock"] as? Float
+        else {
                 log.error("Lack of mandatory value(s): \(dictionary)")
                 return nil
         }
         
         // Optional values
-        var cLastName : String = ""
-        var cProducer : String = ""
-        var cDiscountPercent : Float = 0.0
-        if let lastName = dictionary["lastName"] as? String {
-            cLastName = lastName
-        }
-        if let producer = dictionary["producer"] as? String {
-            cProducer = producer
-        }
-        if let discountPercent = dictionary["discountPercent"] as? Float {
-            cDiscountPercent = discountPercent
+        var cImages : [String] = []
+        if let images = dictionary["images"] as? [String] {
+            cImages = images
         }
         
-        self.init(name: name, price: price, quantityInStock: quantityInStock, description: description,
-                  lastName: cLastName, producer: cProducer, discountPercent: cDiscountPercent)
-    }    
+        self.init(title: title, shortDescription: shortDescription, longDescription: longDescription, id: id,
+                  parent_id: parent_id, parent_ref: parent_ref, order: order, quantityInStock: quantityInStock,
+                  price: price, images: cImages)
+    }
+    
+    func dictionary() -> [String : Any] {
+        
+        return ["title" : title,
+                "shortDescription" : shortDescription,
+                "longDescription" : longDescription,
+                "id" : id,
+                "parent_id" : parent_id,
+                "parent_ref" : parent_ref,
+                "order" : order,
+                "price" : price,
+                "quantityInStock" : quantityInStock,
+                "images" : images]
+    }
+    
+
 }

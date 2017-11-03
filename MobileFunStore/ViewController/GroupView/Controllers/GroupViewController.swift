@@ -46,7 +46,7 @@ extension GroupViewController : UITableViewDelegate {
         if group.final == false {
             let controller = GroupViewController.fromStoryboard()
 
-            controller.query = Firestore.firestore().collection(GroupStatics.collection.group.rawValue).order(by: "order").whereField("parent_id", isEqualTo: documentID)
+            controller.query = Firestore.firestore().collection(Utils.collection.group.rawValue).order(by: "order").whereField("parent_id", isEqualTo: documentID)
             //query.document(documentID).collection(subgroupID)
             controller.navigationItem.leftBarButtonItem = nil
             controller.documentID = documentID
@@ -98,7 +98,8 @@ class GroupViewController: UIViewController {
     }()
     
     var initialRequest : Bool = true
-    
+    private var tableViewOffset = CGPoint.zero
+
     // MARK: - class lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,15 +108,14 @@ class GroupViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
-//        self.navigationController?.delegate = NavDelegate()
-        
         self.tableView.refreshControl = self.refreshControl
                 
-        groupCollection = LocalCollection(query: query, completionHandler: { [unowned self] (documents) in
+        groupCollection = LocalCollection(query: query, completionHandler: { [weak self] (documents) in
             
-            if self.initialRequest == true {
-                self.initialRequest = false
-                self.tableView.reloadData()
+            guard let weakSelf = self else { return }
+            if weakSelf.initialRequest == true {
+                weakSelf.initialRequest = false
+                weakSelf.tableView.reloadData()
                 return
             }
             
@@ -140,33 +140,31 @@ class GroupViewController: UIViewController {
                 }
             }
             // let's do this in batch to avoid crash
-            self.tableView.performBatchUpdates({
-                self.tableView.insertRows(at: addIndexPaths, with: .automatic)
-                self.tableView.deleteRows(at: delIndexPaths, with: .automatic)
+            weakSelf.tableView.performBatchUpdates({
+                weakSelf.tableView.insertRows(at: addIndexPaths, with: .automatic)
+                weakSelf.tableView.deleteRows(at: delIndexPaths, with: .automatic)
             })
         })
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        groupCollection.listen()
+        groupCollection?.listen()
         self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+//        tableView.contentOffset = tableViewOffset
     }
         
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+//        groupCollection?.stopListening()
     }
     
     deinit {
         log.verbose("")
-        if groupCollection != nil {
-            groupCollection.stopListening()
-        }
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Methods

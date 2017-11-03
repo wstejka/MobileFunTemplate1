@@ -10,7 +10,7 @@
 				"shortDescription": "Take a picture, capture a moment",
 				"longDescription" : "",
 				"imageName": "Cameras1.jpg", 
-				"references" : [
+				"products" : [
 					{
 						"name" : "Nikon D3400",
 						"shortDescription": "The time is now. Shoot brilliantly, share instantly with the D3400.",
@@ -24,7 +24,7 @@
 					},
 					{
 
-						"name" : "Nikan D500",
+						"name" : "Nikon D500",
 						"shortDescription": "Flagship power—DX agility. Go further with the D500.",
 						"longDescription" : "As the smaller sibling to the D5, Nikon’s FX-format flagship, the D500 offers phenomenal power and precision. Nikon’s next-generation 153-point AF system provides exceptionally wide coverage. New image and metering sensors deliver phenomenally accurate subject recognition and detail. You can shoot at up to 10 fps, and the high-performance buffer allows up to 200 NEF (RAW) images to be captured during one high-speed burst. Combined, this means you can shoot at maximum image quality for an incredible 20 seconds. And for moviemakers who go to extremes, D-Movie enables high-definition 4K/UHD movies of up to 29 minutes and 59 seconds long to be recorded in-camera.",
 						"images": ["dslr_d500_front_test--original.png", 
@@ -159,29 +159,25 @@
 				"name" : "Lenses",
 				"shortDescription": "Looking for best lenses for your great cameras?",
 				"longDescription" : "",
-				"imageName": "Lenses.jpg", 
-				"references" : []
+				"imageName": "Lenses.jpg" 
 			},
 			{
 				"name" : "Telescopes",
 				"shortDescription": "Watch the world from better perspective",
 				"longDescription" : "",
-				"imageName": "Telescopes.jpg", 
-				"references" : []
+				"imageName": "Telescopes.jpg"
 			},
 			{
 				"name" : "Binoculars",
 				"shortDescription": "Zoom in, zoom out ... you decide",
 				"longDescription" : "",
-				"imageName": "Binoculars2.png", 
-				"references" : []				
+				"imageName": "Binoculars2.png" 
 			},
 			{
 				"name" : "Bags and equipment",
 				"shortDescription": "Protect your device with handy bags.",
 				"longDescription" : "",
-				"imageName": "CameraBags.jpg", 
-				"references" : []				
+				"imageName": "CameraBags.jpg"
 			}
 		]
 	},
@@ -195,36 +191,31 @@
 				"name" : "Laptopts",
 				"shortDescription": "Portable to let you work and play on the way",
 				"longDescription" : "",
-				"imageName": "Laptopts.png", 
-				"references" : []
+				"imageName": "Laptopts.png" 
 			},
 			{
 				"name" : "Desktops",
 				"shortDescription": "Stronger and good prepared for tought work",
 				"longDescription" : "",
-				"imageName": "DesktopComputers.png", 
-				"references" : []
+				"imageName": "DesktopComputers.png"
 			},
 			{
 				"name" : "Tablets",
 				"shortDescription": "Always at hand to make life easier",
 				"longDescription" : "",
-				"imageName": "Tablets.jpg", 
-				"references" : []
+				"imageName": "Tablets.jpg"
 			},
 			{
 				"name" : "Software",
 				"shortDescription": "The best quality software",
 				"longDescription" : "",
-				"imageName": "softwareBoxes.png", 
-				"references" : []				
+				"imageName": "softwareBoxes.png"
 			},
 						{
 				"name" : "Computer monitors",
 				"shortDescription": "Computer monitors",
 				"longDescription" : "",
-				"imageName": "computerMonitors.jpg", 
-				"references" : []				
+				"imageName": "computerMonitors.jpg" 
 			}
 
 		]
@@ -233,29 +224,25 @@
 		"name": "Smartphones",
 		"shortDescription": "Worldwide in a small device",
 		"longDescription" : "",
-		"imageName": "Smartphones.jpg", 
-		"references" : []
+		"imageName": "Smartphones.jpg" 
 	},	
 	{
 		"name": "Televisions",
 		"shortDescription": "Suits TV to your needs",
 		"longDescription" : "",
-		"imageName": "Televisions2.png", 
-		"references" : []
+		"imageName": "Televisions2.png"
 	},
 	{
 		"name": "Hand watches", 
 		"shortDescription": "Elegant or sporty?", 
 		"longDescription" : "",
-		"imageName": "Watches2.jpg", 
-		"references" : []
+		"imageName": "Watches2.jpg"
 	},
 	{
 		"name": "Computer games",
 		"shortDescription": "Become a hero ... or not, you make decision",
 		"longDescription" : "",
-		"imageName": "ComputerGames.jpg", 
-		"references" : []
+		"imageName": "ComputerGames.jpg"
 	}
 
 ]

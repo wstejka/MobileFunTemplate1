@@ -32,7 +32,7 @@ extension GroupDetailsViewController : UICollectionViewDataSource {
             itemInSection = 2
         }
         else if section == 1 {
-            itemInSection = 6
+            itemInSection = productCollection.count
         }
 //        else {
 //            itemInSection = 1
@@ -89,7 +89,7 @@ extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
         var cellSize : CGSize!
-        let inset = GroupStatics.insetSize
+        let inset = Utils.insetSize
         let collectionWidth = Double(collectionView.frame.width - (GroupDetailsConstants.standardLeftInset + GroupDetailsConstants.standardRightInset))
         // Default: 2 cell per row
         var cellWidth = (collectionWidth - 10) / 2
@@ -180,6 +180,7 @@ class GroupDetailsViewController: UIViewController {
     var topCellFrame : CGRect!
     
     private var productCollection : LocalCollection<Product>!
+    private var initialRequest = true
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -189,36 +190,59 @@ class GroupDetailsViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         self.tabBarController?.tabBar.isHidden = true
-//        collectionView?.contentInset = UIEdgeInsets(top: GroupDetailsConstants.standardTopInset,
-//                                                    left: GroupDetailsConstants.standardLeftInset,
-//                                                    bottom: 20.0,
-//                                                    right: GroupDetailsConstants.standardRightInset)
-
         
         //  Register custom section header
         collectionView.register(UINib(nibName: "SingleLabelCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "labelCell")
         collectionView.register(UINib(nibName: "GroupDetailsTopCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "groupCell")
 
-//        Firestore.firestore().collection(GroupStatics.collection.group.rawValue).document(documentID)
-//            .getDocument { [weak self] (snapshot, erorr) in
-//            
-//                guard let weakSelf = self else { return }
-//                weakSelf.group = Group(dictionary: snapshot!.data())
-//                // TODO: Requests here for products wired up with the document
-//                
-//        }
+        let query = Firestore.firestore().collection(Utils.collection.product.rawValue).whereField("parent_id", isEqualTo: group.id).order(by: "order")
         
+        productCollection = LocalCollection(query: query, completionHandler: { [weak self] (documents) in
+            
+            guard let weakSelf = self else { return }
+            if weakSelf.initialRequest == true {
+                weakSelf.initialRequest = false
+                weakSelf.collectionView.reloadData()
+                return
+            }
+            
+            var addIndexPaths: [IndexPath] = []
+            var delIndexPaths: [IndexPath] = []
+            
+            for document in documents {
+                if document.type == .added {
+                    let indexPath = IndexPath(row: Int(document.newIndex), section: 0)
+                    addIndexPaths.append(indexPath)
+                }
+                else if document.type == .removed {
+                    let indexPath = IndexPath(row: Int(document.oldIndex), section: 0)
+                    delIndexPaths.append(indexPath)
+                }
+                else if document.type == DocumentChangeType.modified {
+                    let newIndexPath = IndexPath(row: Int(document.newIndex), section: 0)
+                    let oldIndexPath = IndexPath(row: Int(document.oldIndex), section: 0)
+                    addIndexPaths.append(newIndexPath)
+                    delIndexPaths.append(oldIndexPath)
+                    
+                }
+            }
+            // let's do this in batch to avoid crash
+            weakSelf.collectionView.performBatchUpdates({
+                weakSelf.collectionView.insertItems(at: addIndexPaths)
+                weakSelf.collectionView.insertItems(at: delIndexPaths)
+            })
+        })
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if productCollection != nil {
-            productCollection.stopListening()
-        }
+        productCollection?.listen()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+//        productCollection?.stopListening()
+//        initialRequest = true
     }
     
     deinit {

@@ -98,7 +98,6 @@ def delete_collection_documents(coll_ref, batch_size):
     deleted = 0
 
     for doc in docs:
-    	print doc.id
     	try:
     		print(u'    Deleting doc {} => {}'.format(doc.id, doc.to_dict()["title"]))
     	except:
@@ -217,13 +216,14 @@ if __name__ == "__main__":
 
 	# Parse data
 	reference = "products"
-	recursion.recursion(data, 0, "", 0)
+	recursion.recursion(data, 0, "", 0, is_group=True)
 
 	# print recursion.group_list
 	firebaseMananger = FirebaseManager()
 
 	# do all GROUP associated tasks
-	# performAllGroupTasks(firebaseMananger)
+	performAllGroupTasks(firebaseMananger)
+
 	# do all PRODUCT associated tasks
 	performAllProductTasks(firebaseMananger)
 

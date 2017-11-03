@@ -5,7 +5,7 @@ from bunch import bunchify
 from copy import deepcopy
 import uuid
 
-def recursion(array, ident, parent, level):
+def recursion(array, ident, parent, level, is_group):
 
 
 	identString = getIdent(ident)
@@ -16,13 +16,26 @@ def recursion(array, ident, parent, level):
 		id = str(uuid.uuid4())
 
 		itemcopy = deepcopy(item)
-		if field_name in item:
-			itemcopy[field_name] = []
 		document = bunchify(itemcopy)
 
-		if field_name in item:
+		if is_group == True:
 			# print getattr(document, 'description')
-			print identString, item["name"], (level), "==>", parent, "|", document.imageName
+			print identString, ">", item["name"], "(" + str(level) + ")" , "==>", id, "|", parent, "|", document.imageName
+
+			# Validate there is no "references" and "products" array at the same time
+			if reference_field in item and products_field in group_list:
+				raise ValueError(reference_field, "and", products_field, "cannot be a part of the node at the same time")
+
+			final = True
+			check_is_group = True
+			array_for_group = []
+			if reference_field in item and len(item[reference_field]) > 0:
+				final = False
+				array_for_group = item[reference_field]
+			else:
+				if products_field in item:
+					check_is_group = False
+					array_for_group = item[products_field]
 
 			# Subgroup
 			group_list[id] = {"title" : document.name,
@@ -30,27 +43,30 @@ def recursion(array, ident, parent, level):
 								"longDescription" : document.longDescription if document.longDescription != "" else default_longDescription,
 								"imageName" : document.imageName if document.imageName != "" else "".decode("utf-8"),
 								"id" : id.decode("utf-8"),
-								"parent_id" : str(parent).decode("utf-8"),
-								"final" : False if len(item[field_name]) > 0 else True,
+								"parent_id" : parent.decode("utf-8"),
+								"final" : final,
 								"order" : order,
 								"level" : level,
 								"is_group" : True}
 
-			recursion(item[field_name], ident, id, level + 1)
+			recursion(array_for_group, ident, id, level + 1, is_group=check_is_group)
 		else:
 			# Product
 			# print getattr(document, 'description')
-			print identString, item["name"], (level), "==>", parent
+			print identString, "<", item["name"], "(" + str(level) + ")" , "==>", parent
 			product_list[id] = {
 				"title" : document.name,
 				"shortDescription" : document.shortDescription,
 				"longDescription" : document.longDescription if document.longDescription != "" else default_longDescription,
 				"images" : document.images,
 				"id" : id.decode("utf-8"),
-				"parent_id" : str(parent).decode("utf-8"),
+				"parent_id" : parent.decode("utf-8"),
 				"order" : order,
 				"level" : level,
-				"is_group" : False
+				"is_group" : False,
+				"quantityInStock" : 0.0,
+				"price" : 0.0
+
 			}
 		order += 10
 
@@ -88,7 +104,8 @@ def getIdent(len):
 	return ident	
 
 
-field_name = "references"
+reference_field = "references"
+products_field = "products"
 global_ident = 4
 group_list = {}
 product_list = {}
@@ -105,7 +122,11 @@ if __name__ == "__main__":
 	f.close()
 	data = json.loads(output)
 
-	recursion(data, 0, "", 0)
+	recursion(data, 0, "", 0, is_group=True)
+
+	# for key, group in group_list.iteritems():
+	# 	print group["title"]
+	# print "Count: ", len(group_list)
 
 	# Check all mandatory field are there
 	mandatory_fields = ["title", "order", "level", "final", "id", "shortDescription", "longDescription", "imageName"]
