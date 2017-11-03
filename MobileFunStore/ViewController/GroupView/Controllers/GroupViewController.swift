@@ -42,6 +42,7 @@ extension GroupViewController : UITableViewDelegate {
         // for now we have only groupviewcontroller :D
         let group = self.groupCollection[indexPath.row]
         let documentID = self.groupCollection.getDocumentID(for: indexPath.row)
+        let selectedCell = tableView.cellForRow(at: indexPath) as? GroupTableViewCell
         if group.final == false {
             let controller = GroupViewController.fromStoryboard()
 
@@ -54,6 +55,7 @@ extension GroupViewController : UITableViewDelegate {
             let controller = GroupDetailsViewController.fromStoryboard()
             controller.group = group
             controller.documentID = documentID
+            controller.topCellFrame = selectedCell?.frame
 
 //            let animation : CATransition = CATransition()
 //            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)

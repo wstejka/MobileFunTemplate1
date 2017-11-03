@@ -96,10 +96,16 @@ extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
         var cellHeight : Double = 1.4 * cellWidth
         
         if indexPath.section == 0 && indexPath.row == 0 {
-            // One cell
-            cellWidth = Double(collectionView.frame.width) // - (2 * inset)
-            collectionView.cellForItem(at: IndexPath(row: 0, section: 0))
-            cellHeight = 0.9 * cellWidth
+            // First cell
+            if topCellFrame != nil {
+                cellWidth = Double(topCellFrame.width)
+                cellHeight = Double(topCellFrame.height)
+            }
+            else {
+                cellWidth = Double(collectionView.frame.width) // - (2 * inset)
+                collectionView.cellForItem(at: IndexPath(row: 0, section: 0))
+                cellHeight = 0.9 * cellWidth
+            }
         }
         else if indexPath.section == 0 && indexPath.row == 1 {
 
@@ -171,7 +177,7 @@ class GroupDetailsViewController: UIViewController {
     // MARK: - Const/Var
     var group : Group!
     var documentID : String!
-
+    var topCellFrame : CGRect!
     
     private var productCollection : LocalCollection<Product>!
     

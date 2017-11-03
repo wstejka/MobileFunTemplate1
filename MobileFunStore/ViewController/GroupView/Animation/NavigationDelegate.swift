@@ -82,6 +82,7 @@ class Animator: NSObject, UIViewControllerAnimatedTransitioning {
             // Create new UIView with the same frame as original TableViewCell
             let groupViewCell = UIView(frame: rectOfCellInSuperview)
             temporaryView.addSubview(groupViewCell)
+//            groupViewCell.backgroundColor = .orange
 
             // Create image view and add it at the same position in UIView as in original TableViewCell
             let imageView = UIImageView(frame: selectedCell.imageViewHandler.frame)
@@ -90,11 +91,8 @@ class Animator: NSObject, UIViewControllerAnimatedTransitioning {
             imageView.image = selectedCell.imageViewHandler.image
             groupViewCell.addSubview(imageView)
             
-//            groupDetailsVC.alphaView.alpha = 1.0
-            
             temporaryView.backgroundColor = .clear
             UIView.animate(withDuration: 0.3, animations: {
-//                groupDetailsVC.alphaView.alpha = 1.0
                 temporaryView.backgroundColor = .white
 
             }, completion: { (status) in
@@ -119,10 +117,10 @@ class Animator: NSObject, UIViewControllerAnimatedTransitioning {
                     titleLabel.text = selectedCell.titleLabel.text
                     titleLabel.font = selectedCell.titleLabel.font
                     groupViewCell.addSubview(titleLabel)
-                    titleLabel.frame.origin.y = titleLabel.frame.origin.y + 50
+                    titleLabel.frame.origin.y = titleLabel.frame.origin.y + 100
                     titleLabel.alpha = 0.2
                     
-                    UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
+                    UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
                         
                         titleLabel.frame.origin.y = selectedCell.titleLabel.frame.origin.y
                         titleLabel.alpha = 1.0
@@ -135,10 +133,7 @@ class Animator: NSObject, UIViewControllerAnimatedTransitioning {
                         
                     })
                 })
-
-                
-            })
-            
+            })            
         }
     }
 }
