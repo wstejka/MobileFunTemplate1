@@ -59,10 +59,10 @@ extension GroupDetailsViewController : UICollectionViewDataSource {
             return cell
         }
         else if indexPath.section == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reusableCell", for: indexPath) as! GroupDetailsCollectionViewCell
-            cell.backgroundColor = .orange
-
-            reusableCell = cell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productCell", for: indexPath) as! GroupDetailsProductCollectionViewCell
+            
+            cell.product = productCollection[indexPath.row]
+            return cell
         }
         else if indexPath.section == 2 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reusableCell", for: indexPath) as! GroupDetailsCollectionViewCell
@@ -144,6 +144,9 @@ extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
             cellHeight = Double(height) + 24
             
         }
+//        else if indexPath.section == 1 {
+//
+//        }
         else {
 
 //            cellHeight = (Double(arc4random_uniform(300) + 50)) + cellWidth
@@ -194,6 +197,7 @@ class GroupDetailsViewController: UIViewController {
         //  Register custom section header
         collectionView.register(UINib(nibName: "SingleLabelCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "labelCell")
         collectionView.register(UINib(nibName: "GroupDetailsTopCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "groupCell")
+        collectionView.register(UINib(nibName: "GroupDetailsProductCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "productCell")
 
         let query = Firestore.firestore().collection(Utils.collection.product.rawValue).whereField("parent_id", isEqualTo: group.id).order(by: "order")
         

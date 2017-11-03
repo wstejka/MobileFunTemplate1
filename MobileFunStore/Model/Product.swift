@@ -22,6 +22,7 @@ struct Product {
 
     // Optionals
     var images : [String] = []
+    var urls : [String] = []
 
 }
 
@@ -49,10 +50,14 @@ extension Product : DocumentSerializable {
         if let images = dictionary["images"] as? [String] {
             cImages = images
         }
-        
+        var cUrls : [String] = []
+        if let urls = dictionary["urls"] as? [String] {
+            cUrls = urls
+        }
+
         self.init(title: title, shortDescription: shortDescription, longDescription: longDescription, id: id,
                   parent_id: parent_id, parent_ref: parent_ref, order: order, quantityInStock: quantityInStock,
-                  price: price, images: cImages)
+                  price: price, images: cImages, urls: cUrls)
     }
     
     func dictionary() -> [String : Any] {
@@ -66,7 +71,8 @@ extension Product : DocumentSerializable {
                 "order" : order,
                 "price" : price,
                 "quantityInStock" : quantityInStock,
-                "images" : images]
+                "images" : images,
+                "urls" : urls]
     }
     
 
