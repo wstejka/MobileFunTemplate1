@@ -69,9 +69,11 @@ class Animator: NSObject, UIViewControllerAnimatedTransitioning {
         if let indexPath = groupVC.tableView.indexPathForSelectedRow,
             // Get the original selected tableViewCell
             let selectedCell = groupVC.tableView.cellForRow(at: indexPath) as? GroupTableViewCell {
+//            var collectionCell = groupDetailsVC.collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? GroupDetailsCollectionViewCell
             
-            // Add to context view groupDetails
-            context.containerView.addSubview(groupDetailsVC.view)
+            // Create temporary view for transparency effect
+            let temporaryView = UIView(frame: context.containerView.frame)
+            context.containerView.addSubview(temporaryView)
             
             // Calculate the selected cell position in table view
             let rectOfCell = groupVC.tableView.rectForRow(at: indexPath)
@@ -79,42 +81,64 @@ class Animator: NSObject, UIViewControllerAnimatedTransitioning {
 
             // Create new UIView with the same frame as original TableViewCell
             let groupViewCell = UIView(frame: rectOfCellInSuperview)
-            groupDetailsVC.view.addSubview(groupViewCell)
-            
+            temporaryView.addSubview(groupViewCell)
+
             // Create image view and add it at the same position in UIView as in original TableViewCell
             let imageView = UIImageView(frame: selectedCell.imageViewHandler.frame)
             imageView.contentMode = .scaleAspectFit
             imageView.clipsToBounds = true
             imageView.image = selectedCell.imageViewHandler.image
             groupViewCell.addSubview(imageView)
-
-            UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                
-                groupViewCell.frame.origin.y = (groupDetailsVC.navigationController?.navigationBar.frame.origin.y)! +
-                                                ((groupDetailsVC.navigationController?.navigationBar.frame.height)!) + 12
+            
+//            groupDetailsVC.alphaView.alpha = 1.0
+            
+            temporaryView.backgroundColor = .clear
+            UIView.animate(withDuration: 0.3, animations: {
+//                groupDetailsVC.alphaView.alpha = 1.0
+                temporaryView.backgroundColor = .white
 
             }, completion: { (status) in
-
-                let titleLabel = UILabel(frame: selectedCell.titleLabel.frame)
-                titleLabel.text = selectedCell.titleLabel.text
-                titleLabel.font = selectedCell.titleLabel.font
-                groupViewCell.addSubview(titleLabel)
-                titleLabel.frame.origin.y = titleLabel.frame.origin.y + 50
-                titleLabel.alpha = 0.2
-
-                UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
-
-                    titleLabel.frame.origin.y = selectedCell.titleLabel.frame.origin.y
-                    titleLabel.alpha = 1.0
+                
+                // >>> Now rebuild the context content
+                // Add to context view groupDetails
+                context.containerView.addSubview(groupDetailsVC.view)
+                groupDetailsVC.view.addSubview(groupViewCell)
+                
+                // remove temporary view from context container
+                temporaryView.removeFromSuperview()
+                
+                UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                    
+                    
+                    groupViewCell.frame.origin.y = (groupDetailsVC.navigationController?.navigationBar.frame.origin.y)! +
+                        ((groupDetailsVC.navigationController?.navigationBar.frame.height)!) //+ GroupDetailsConstants.standardTopInset
                     
                 }, completion: { (status) in
                     
-                    groupDetailsVC.alphaView.alpha = 0.0
-                    groupViewCell.removeFromSuperview()
-                    context.completeTransition(status)
-
+                    let titleLabel = UILabel(frame: selectedCell.titleLabel.frame)
+                    titleLabel.text = selectedCell.titleLabel.text
+                    titleLabel.font = selectedCell.titleLabel.font
+                    groupViewCell.addSubview(titleLabel)
+                    titleLabel.frame.origin.y = titleLabel.frame.origin.y + 50
+                    titleLabel.alpha = 0.2
+                    
+                    UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
+                        
+                        titleLabel.frame.origin.y = selectedCell.titleLabel.frame.origin.y
+                        titleLabel.alpha = 1.0
+                        
+                    }, completion: { (status) in
+                        
+                        groupDetailsVC.alphaView.alpha = 0.0
+                        groupViewCell.removeFromSuperview()
+                        context.completeTransition(status)
+                        
+                    })
                 })
+
+                
             })
+            
         }
     }
 }

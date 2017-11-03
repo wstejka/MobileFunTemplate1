@@ -14,6 +14,7 @@ struct GroupDetailsConstants {
     
     static let standardLeftInset : CGFloat = 8.0
     static let standardRightInset : CGFloat = 8.0
+    static let standardTopInset : CGFloat = 10.0
 }
 
 extension GroupDetailsViewController : UICollectionViewDataSource {
@@ -89,16 +90,16 @@ extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
 
         var cellSize : CGSize!
         let inset = GroupStatics.insetSize
-        let collectionWidth = Double(collectionView.frame.width - (collectionView.contentInset.left + collectionView.contentInset.right))
+        let collectionWidth = Double(collectionView.frame.width - (GroupDetailsConstants.standardLeftInset + GroupDetailsConstants.standardRightInset))
         // Default: 2 cell per row
         var cellWidth = (collectionWidth - 10) / 2
         var cellHeight : Double = 1.4 * cellWidth
         
         if indexPath.section == 0 && indexPath.row == 0 {
             // One cell
-            cellWidth = collectionWidth // - (2 * inset)
+            cellWidth = Double(collectionView.frame.width) // - (2 * inset)
             collectionView.cellForItem(at: IndexPath(row: 0, section: 0))
-            cellHeight = 1.1 * cellWidth
+            cellHeight = 0.9 * cellWidth
         }
         else if indexPath.section == 0 && indexPath.row == 1 {
 
@@ -147,6 +148,18 @@ extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
         return cellSize
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        
+        var inset = UIEdgeInsets(top: GroupDetailsConstants.standardTopInset,
+                                 left: GroupDetailsConstants.standardLeftInset,
+                                 bottom: 20.0,
+                                 right: GroupDetailsConstants.standardRightInset)
+        if section == 0 {
+            inset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+        }
+        return inset
+    }
+    
 }
 
 class GroupDetailsViewController: UIViewController {
@@ -170,7 +183,10 @@ class GroupDetailsViewController: UIViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         self.tabBarController?.tabBar.isHidden = true
-        collectionView?.contentInset = UIEdgeInsets(top: 10.0, left: GroupDetailsConstants.standardLeftInset, bottom: 20.0, right: GroupDetailsConstants.standardRightInset)
+//        collectionView?.contentInset = UIEdgeInsets(top: GroupDetailsConstants.standardTopInset,
+//                                                    left: GroupDetailsConstants.standardLeftInset,
+//                                                    bottom: 20.0,
+//                                                    right: GroupDetailsConstants.standardRightInset)
 
         
         //  Register custom section header
