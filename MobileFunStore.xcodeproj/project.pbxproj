@@ -176,6 +176,13 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		9EDB351B1FADBFB2002823FA /* Product */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Product;
+			sourceTree = "<group>";
+		};
 		9EDC30FD1F8E8862001C2B64 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
@@ -231,14 +238,14 @@
 			path = MobileFunStoreTests;
 			sourceTree = "<group>";
 		};
-		9EE22D741F8CDCA00041FEC1 /* GroupView */ = {
+		9EE22D741F8CDCA00041FEC1 /* Group */ = {
 			isa = PBXGroup;
 			children = (
 				9E5AFDB31FAB29C400F0ADE3 /* Animation */,
 				9EB9DB2D1FA0AA300085B68E /* Controllers */,
 				9EB9DB2C1FA0AA1C0085B68E /* Views */,
 			);
-			path = GroupView;
+			path = Group;
 			sourceTree = "<group>";
 		};
 		9EE22D771F8D0DFA0041FEC1 /* Extensions */ = {
@@ -256,7 +263,8 @@
 		9EE22D7B1F8D16030041FEC1 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				9EE22D741F8CDCA00041FEC1 /* GroupView */,
+				9EDB351B1FADBFB2002823FA /* Product */,
+				9EE22D741F8CDCA00041FEC1 /* Group */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
