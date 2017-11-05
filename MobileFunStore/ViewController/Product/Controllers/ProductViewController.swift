@@ -12,10 +12,16 @@ class ProductViewController: UIViewController {
 
     // MARK: - Outlets
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var pageControl: UIPageControl!
-    
+
     // MARK: - Vars/ Const
     var product : Product!
+    var productCellWidth : CGFloat! {
+        return tableView.frame.width
+    }
+    let heightToWidthFactor : CGFloat = 0.66
+    var productCellHeight : CGFloat! {
+        return productCellWidth * heightToWidthFactor
+    }
     
     // MARK: - View lifecycle
     
@@ -37,6 +43,8 @@ class ProductViewController: UIViewController {
         let controller = storyboard.instantiateViewController(withIdentifier: "ProductViewController") as! ProductViewController
         return controller
     }
+    
+    
 }
 
 // MARK: - UITableViewDataSource
@@ -54,8 +62,10 @@ extension ProductViewController : UITableViewDataSource {
 
         var cell : UITableViewCell!
         if indexPath.row == 0 {
-            cell = tableView.dequeueReusableCell(withIdentifier: "pageCell", for: indexPath) as! ProductPageTableViewCell            
-            cell.backgroundColor = .orange
+            let productCell = tableView.dequeueReusableCell(withIdentifier: "pageCell", for: indexPath) as! ProductPageTableViewCell
+            productCell.product = product
+            productCell.tableCellFrameSize = CGSize(width: productCellWidth, height: productCellHeight)
+            return productCell
         }
         else {
             cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as! ProductTableViewCell
@@ -72,12 +82,13 @@ extension ProductViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
         if indexPath.row == 0 {
-            return tableView.frame.width
+            return productCellHeight
         }
         else {
             return 100
         }
     }
+    
 }
 
 

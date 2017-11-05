@@ -64,39 +64,50 @@
             </objects>
             <point key="canvasLocation" x="-87.200000000000003" y="-31.03448275862069"/>
         </scene>
-        <!--Page View Controller-->
-        <scene sceneID="cDB-We-9Vq">
-            <objects>
-                <pageViewController storyboardIdentifier="PageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="IpJ-Ru-4r6" customClass="PageViewController" customModule="MobileFunStore" customModuleProvider="target" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="VSn-ZO-ugv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="707" y="-31"/>
-        </scene>
-        <!--Page Image View Controller-->
+        <!--Product Image View Controller-->
         <scene sceneID="KNy-Gn-M58">
             <objects>
-                <viewController storyboardIdentifier="PageImageViewController" id="7Ee-ZZ-TkH" customClass="PageImageViewController" customModule="MobileFunStore" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProductImageViewController" id="7Ee-ZZ-TkH" customClass="ProductImageViewController" customModule="MobileFunStore" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="RVW-z6-dJh">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YSY-q5-xmY">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YSY-q5-xmY">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eqw-eW-N66">
+                                <rect key="frame" x="309" y="617" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="46" id="DcL-s0-ehY"/>
+                                    <constraint firstAttribute="height" constant="30" id="wWv-A9-SCM"/>
+                                </constraints>
+                                <state key="normal" title="Button">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="buttonTapped:" destination="7Ee-ZZ-TkH" eventType="touchUpInside" id="n62-7p-lH0"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="YSY-q5-xmY" firstAttribute="leading" secondItem="mZI-l3-1GO" secondAttribute="leading" id="6lf-tJ-xGu"/>
                             <constraint firstItem="mZI-l3-1GO" firstAttribute="trailing" secondItem="YSY-q5-xmY" secondAttribute="trailing" id="8ca-dK-seE"/>
+                            <constraint firstItem="mZI-l3-1GO" firstAttribute="trailing" secondItem="Eqw-eW-N66" secondAttribute="trailing" constant="20" id="8pB-Sr-822"/>
                             <constraint firstItem="YSY-q5-xmY" firstAttribute="top" secondItem="mZI-l3-1GO" secondAttribute="top" id="dIG-6I-UEf"/>
                             <constraint firstItem="mZI-l3-1GO" firstAttribute="bottom" secondItem="YSY-q5-xmY" secondAttribute="bottom" id="qXf-qa-mtd"/>
+                            <constraint firstItem="mZI-l3-1GO" firstAttribute="bottom" secondItem="Eqw-eW-N66" secondAttribute="bottom" constant="20" id="rQk-Ij-CUn"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="mZI-l3-1GO"/>
                     </view>
+                    <connections>
+                        <outlet property="imageView" destination="YSY-q5-xmY" id="wqq-Ds-F4x"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gv8-e3-M2p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1401" y="-31"/>
+            <point key="canvasLocation" x="774" y="-31"/>
         </scene>
     </scenes>
     <resources>

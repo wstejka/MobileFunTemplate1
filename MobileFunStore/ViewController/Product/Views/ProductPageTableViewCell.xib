@@ -1,36 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ProductPageTableViewCell" customModule="MobileFunStore" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="447" height="387"/>
+            <rect key="frame" x="0.0" y="0.0" width="447" height="304"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="sZx-SX-Dmv">
-                    <rect key="frame" x="0.0" y="0.0" width="447" height="387"/>
-                    <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yCi-DI-HpZ">
+                    <rect key="frame" x="0.0" y="0.0" width="447" height="304"/>
+                </scrollView>
+                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="mMF-xX-688">
+                    <rect key="frame" x="173.5" y="289" width="100" height="10"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="10" id="aTs-OM-TtS"/>
+                        <constraint firstAttribute="width" constant="100" id="eFB-s0-4kl"/>
+                    </constraints>
                 </pageControl>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <accessibility key="accessibilityConfiguration" identifier="cell"/>
             <constraints>
-                <constraint firstItem="sZx-SX-Dmv" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="eIM-Id-0Wg"/>
-                <constraint firstItem="sZx-SX-Dmv" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="onS-wx-EzP"/>
-                <constraint firstAttribute="trailing" secondItem="sZx-SX-Dmv" secondAttribute="trailing" id="v5O-a2-NQ9"/>
-                <constraint firstItem="sZx-SX-Dmv" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="yUL-mU-Zr6"/>
+                <constraint firstItem="yCi-DI-HpZ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="NMf-EP-ka8"/>
+                <constraint firstItem="yCi-DI-HpZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="V9Y-1s-4GQ"/>
+                <constraint firstItem="yCi-DI-HpZ" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailing" id="cFN-MH-AQx"/>
+                <constraint firstAttribute="bottom" secondItem="yCi-DI-HpZ" secondAttribute="bottom" id="i6t-Mc-uQe"/>
+                <constraint firstItem="mMF-xX-688" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="kl7-lY-g44"/>
+                <constraint firstAttribute="bottom" secondItem="mMF-xX-688" secondAttribute="bottom" constant="5" id="v3j-91-Wpc"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <point key="canvasLocation" x="-142" y="-15"/>
+            <connections>
+                <outlet property="pageControl" destination="mMF-xX-688" id="biR-Cd-0io"/>
+                <outlet property="scrollView" destination="yCi-DI-HpZ" id="wDm-OS-eYi"/>
+            </connections>
+            <point key="canvasLocation" x="-142.5" y="-57"/>
         </view>
     </objects>
 </document>

@@ -196,8 +196,8 @@
 			children = (
 				9EDB351D1FADC08D002823FA /* Product.storyboard */,
 				9EDB35241FADC416002823FA /* ProductTableViewCell.swift */,
-				9E5816101FAE696E0084A1D4 /* ProductPageTableViewCell.xib */,
 				9E5816121FAE69A80084A1D4 /* ProductPageTableViewCell.swift */,
+				9E5816101FAE696E0084A1D4 /* ProductPageTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
