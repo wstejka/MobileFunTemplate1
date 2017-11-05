@@ -83,45 +83,11 @@ extension GroupDetailsViewController : UICollectionViewDelegate {
         log.verbose("selected = \(indexPath.row)")
         
         if (indexPath.section != 1) { return }
-        let selectedCell = collectionView.cellForItem(at: indexPath) as? GroupDetailsProductCollectionViewCell
+        lastSelectedCell = collectionView.cellForItem(at: indexPath) as? GroupDetailsProductCollectionViewCell
         
         let controller = ProductViewController.fromStoryboard()
-        controller.product = selectedCell?.product
+        controller.product = lastSelectedCell?.product
         self.navigationController?.pushViewController(controller, animated: true)
-        
-//        // Present selected group subview (if exist) or product view (if doesn't exist)
-//        // for now we have only groupviewcontroller :D
-//        let group = self.groupCollection[indexPath.row]
-//        let documentID = self.groupCollection.getDocumentID(for: indexPath.row)
-//        let selectedCell = tableView.cellForRow(at: indexPath) as? GroupTableViewCell
-//        if group.final == false {
-//            let controller = GroupViewController.fromStoryboard()
-//
-//            controller.query = Firestore.firestore().collection(Utils.collection.group.rawValue).order(by: "order").whereField("parent_id", isEqualTo: documentID)
-//            //query.document(documentID).collection(subgroupID)
-//            controller.navigationItem.leftBarButtonItem = nil
-//            controller.documentID = documentID
-//            self.navigationController?.pushViewController(controller, animated: true)
-//        } else {
-//            let controller = GroupDetailsViewController.fromStoryboard()
-//            controller.group = group
-//            controller.documentID = documentID
-//            controller.topCellFrame = selectedCell?.frame
-//
-//            //            let animation : CATransition = CATransition()
-//            //            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-//            //            animation.duration = 0.5
-//            //            self.navigationController?.view.layer.add(animation, forKey: kCATransitionFromTop)
-//
-//            //            let transition:CATransition = CATransition()
-//            //            transition.duration = 0.5
-//            //            transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-//            //            transition.type = kCATransitionPush
-//            //            transition.subtype = kCATransitionFromLeft
-//            //            self.navigationController!.view.layer.add(transition, forKey: kCATransition)
-//            self.navigationController?.pushViewController(controller, animated: true)
-//
-//        }
     }
 }
 
@@ -191,8 +157,6 @@ extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
 //        }
         else {
 
-//            cellHeight = (Double(arc4random_uniform(300) + 50)) + cellWidth
-//            print("\(cellHeight)")
         }
         
         cellSize = CGSize(width: cellWidth, height: cellHeight)
@@ -226,6 +190,8 @@ class GroupDetailsViewController: UIViewController {
     
     private var productCollection : LocalCollection<Product>!
     private var initialRequest = true
+    
+    var lastSelectedCell : GroupDetailsProductCollectionViewCell?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {

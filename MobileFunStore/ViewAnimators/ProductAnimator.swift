@@ -16,23 +16,38 @@ class ProductAnimator : NSObject, UIViewControllerAnimatedTransitioning {
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         
         let container = transitionContext.containerView
-        let fromVC  = transitionContext.viewController(forKey: .from)
-        let toVC  = transitionContext.viewController(forKey: .to)
+        let fromVC  = transitionContext.viewController(forKey: .from) as! GroupDetailsViewController
+        let toVC  = transitionContext.viewController(forKey: .to) as! ProductViewController
+        
+        
+        let backgroundView = UIView(frame: fromVC.view.frame)
+        container.addSubview(backgroundView)
+        backgroundView.alpha = 0.2
+        
+        guard let productCell = fromVC.lastSelectedCell else { return }
+        // Calculate the selected cell position in superview
+        let rectOfCellInSuperview = fromVC.collectionView.convert(productCell.frame, to: fromVC.collectionView.superview)
 
-//        container.addSubview((toVC?.view)!)
+        let imageView = UIImageView(frame: rectOfCellInSuperview)
+        imageView.image = productCell.imageView.image
+        imageView.contentMode = .scaleAspectFit
+        backgroundView.addSubview(imageView)
         
-        let imageView = UIView(frame: CGRect(x: 0.0,
-                                             y: (fromVC?.view.center.y)!, width: 100.0, height: 100.0))
-        imageView.backgroundColor = .orange
-        container.addSubview(imageView)
+        let inset : CGFloat = 10.0
+        let imageWidth : CGFloat = toVC.productCellWidth - (2 * inset)
+        let imageHeight : CGFloat = (toVC.productCellHeight / toVC.productCellWidth) * imageWidth
+        let imagePositionY : CGFloat = (toVC.navigationController?.navigationBar.frame.origin.y)! +
+            ((toVC.navigationController?.navigationBar.frame.height)!)
         
-        UIView.animate(withDuration: 0.1, animations: {
+        UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
             
-            imageView.frame.size = CGSize(width: 200.0, height: 400.0)
+            imageView.frame.size = CGSize(width: imageWidth, height: imageHeight)
+            imageView.frame.origin = CGPoint(x: inset, y: imagePositionY)
+            backgroundView.alpha = 1.0
         }) { (_) in
             
-            imageView.removeFromSuperview()
-            container.addSubview((toVC?.view)!)
+            backgroundView.removeFromSuperview()
+            container.addSubview(toVC.view)
             transitionContext.completeTransition(true)
         }
     }

@@ -69,7 +69,7 @@ extension ProductViewController : UITableViewDataSource {
         }
         else {
             cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as! ProductTableViewCell
-            cell.backgroundColor = .green
+//            cell.backgroundColor = .green
         }
         
         return cell
