@@ -36,16 +36,16 @@ class GroupDetailsProductCollectionViewCell: UICollectionViewCell {
         // Initialization code
         log.verbose("")
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cellTapped(_:)))
-        self.isUserInteractionEnabled = true
-        self.addGestureRecognizer(tapGesture)
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(cellTapped(_:)))
+//        self.isUserInteractionEnabled = true
+//        self.addGestureRecognizer(tapGesture)
     }
 
-    // MARK: - Methods
-    @objc func cellTapped(_ sender: UITapGestureRecognizer) {
-        log.verbose("")
-        
-    }
+//    // MARK: - Methods
+//    @objc func cellTapped(_ sender: UITapGestureRecognizer) {
+//        log.verbose("")
+//        
+//    }
 
     
 }

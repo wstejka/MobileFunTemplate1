@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Product View Controller-->
+        <scene sceneID="EgI-a4-3KC">
+            <objects>
+                <viewController storyboardIdentifier="ProductViewController" id="ClF-1j-fsl" customClass="ProductViewController" customModule="MobileFunStore" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5H8-QW-Uym">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Pkt-08-Mqg">
+                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="reusableCell" rowHeight="114" id="sVz-IR-1lr" customClass="ProductTableViewCell" customModule="MobileFunStore" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="114"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sVz-IR-1lr" id="DJS-cn-hSJ">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="113.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="ClF-1j-fsl" id="EJM-mI-NQR"/>
+                                    <outlet property="delegate" destination="ClF-1j-fsl" id="ufJ-pY-9Cl"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="P6F-R3-xB4" firstAttribute="trailing" secondItem="Pkt-08-Mqg" secondAttribute="trailing" id="8Hs-hz-jWp"/>
+                            <constraint firstItem="P6F-R3-xB4" firstAttribute="bottom" secondItem="Pkt-08-Mqg" secondAttribute="bottom" id="WUa-a2-LJ0"/>
+                            <constraint firstItem="Pkt-08-Mqg" firstAttribute="top" secondItem="P6F-R3-xB4" secondAttribute="top" id="Zu5-SU-1sf"/>
+                            <constraint firstItem="Pkt-08-Mqg" firstAttribute="leading" secondItem="P6F-R3-xB4" secondAttribute="leading" id="loY-27-4EW"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="P6F-R3-xB4"/>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="BCu-go-kyP">
+                        <rightBarButtonItems>
+                            <barButtonItem image="shopping_cart" id="ZhF-GJ-vie"/>
+                            <barButtonItem image="share" id="raJ-Ec-E0g"/>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="tableView" destination="Pkt-08-Mqg" id="4dw-Ei-VFd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hgS-j6-fP4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-87.200000000000003" y="-31.03448275862069"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="cDB-We-9Vq">
+            <objects>
+                <pageViewController storyboardIdentifier="PageViewController" autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="IpJ-Ru-4r6" customClass="PageViewController" customModule="MobileFunStore" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VSn-ZO-ugv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="707" y="-31"/>
+        </scene>
+        <!--Page Image View Controller-->
+        <scene sceneID="KNy-Gn-M58">
+            <objects>
+                <viewController storyboardIdentifier="PageImageViewController" id="7Ee-ZZ-TkH" customClass="PageImageViewController" customModule="MobileFunStore" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="RVW-z6-dJh">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YSY-q5-xmY">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="YSY-q5-xmY" firstAttribute="leading" secondItem="mZI-l3-1GO" secondAttribute="leading" id="6lf-tJ-xGu"/>
+                            <constraint firstItem="mZI-l3-1GO" firstAttribute="trailing" secondItem="YSY-q5-xmY" secondAttribute="trailing" id="8ca-dK-seE"/>
+                            <constraint firstItem="YSY-q5-xmY" firstAttribute="top" secondItem="mZI-l3-1GO" secondAttribute="top" id="dIG-6I-UEf"/>
+                            <constraint firstItem="mZI-l3-1GO" firstAttribute="bottom" secondItem="YSY-q5-xmY" secondAttribute="bottom" id="qXf-qa-mtd"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="mZI-l3-1GO"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gv8-e3-M2p" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1401" y="-31"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="share" width="25" height="25"/>
+        <image name="shopping_cart" width="25" height="25"/>
+    </resources>
+</document>

@@ -78,8 +78,50 @@ extension GroupDetailsViewController : UICollectionViewDataSource {
 
 extension GroupDetailsViewController : UICollectionViewDelegate {
 
-    @objc func labelTaped(_ sender: UITapGestureRecognizer) {
-        log.verbose("Tap gesture recognizer")
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        log.verbose("selected = \(indexPath.row)")
+        
+        if (indexPath.section != 1) { return }
+        let selectedCell = collectionView.cellForItem(at: indexPath) as? GroupDetailsProductCollectionViewCell
+        
+        let controller = ProductViewController.fromStoryboard()
+        controller.product = selectedCell?.product
+        self.navigationController?.pushViewController(controller, animated: true)
+        
+//        // Present selected group subview (if exist) or product view (if doesn't exist)
+//        // for now we have only groupviewcontroller :D
+//        let group = self.groupCollection[indexPath.row]
+//        let documentID = self.groupCollection.getDocumentID(for: indexPath.row)
+//        let selectedCell = tableView.cellForRow(at: indexPath) as? GroupTableViewCell
+//        if group.final == false {
+//            let controller = GroupViewController.fromStoryboard()
+//
+//            controller.query = Firestore.firestore().collection(Utils.collection.group.rawValue).order(by: "order").whereField("parent_id", isEqualTo: documentID)
+//            //query.document(documentID).collection(subgroupID)
+//            controller.navigationItem.leftBarButtonItem = nil
+//            controller.documentID = documentID
+//            self.navigationController?.pushViewController(controller, animated: true)
+//        } else {
+//            let controller = GroupDetailsViewController.fromStoryboard()
+//            controller.group = group
+//            controller.documentID = documentID
+//            controller.topCellFrame = selectedCell?.frame
+//
+//            //            let animation : CATransition = CATransition()
+//            //            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+//            //            animation.duration = 0.5
+//            //            self.navigationController?.view.layer.add(animation, forKey: kCATransitionFromTop)
+//
+//            //            let transition:CATransition = CATransition()
+//            //            transition.duration = 0.5
+//            //            transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+//            //            transition.type = kCATransitionPush
+//            //            transition.subtype = kCATransitionFromLeft
+//            //            self.navigationController!.view.layer.add(transition, forKey: kCATransition)
+//            self.navigationController?.pushViewController(controller, animated: true)
+//
+//        }
     }
 }
 
@@ -164,7 +206,7 @@ extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
                                  bottom: 20.0,
                                  right: GroupDetailsConstants.standardRightInset)
         if section == 0 {
-            inset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+            inset = UIEdgeInsets.zero
         }
         return inset
     }
@@ -251,6 +293,7 @@ class GroupDetailsViewController: UIViewController {
     
     deinit {
         log.debug("")
+        productCollection?.stopListening()
     }
     
     // MARK: - Methods

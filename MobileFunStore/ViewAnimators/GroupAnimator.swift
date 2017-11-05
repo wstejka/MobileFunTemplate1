@@ -1,33 +1,14 @@
 //
-//  NavigationDelegate.swift
+//  GroupAnimator.swift
 //  MobileFunStore
 //
-//  Created by Wojciech Stejka on 02/11/2017.
+//  Created by Wojciech Stejka on 04/11/2017.
 //  Copyright © 2017 Wojciech Stejka. All rights reserved.
 //
 
 import UIKit
 
-class NavigationDelegate: NSObject , UINavigationControllerDelegate {
-
-    private let animator = Animator()
-    
-    func navigationController(_ navigationController: UINavigationController,
-                              animationControllerFor operation: UINavigationControllerOperation,
-                              from fromVC: UIViewController,
-                              to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        
-        var animator : UIViewControllerAnimatedTransitioning? = nil
-        if let _ = fromVC as? GroupViewController,
-            let _ = toVC as? GroupDetailsViewController {
-            animator = Animator()
-        }
-        return animator
-    }
-    
-}
-
-class Animator: NSObject, UIViewControllerAnimatedTransitioning {
+class GroupAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(using context: UIViewControllerContextTransitioning?) -> TimeInterval {
         if let _ = context?.viewController(forKey: UITransitionContextViewControllerKey.from) as? GroupViewController,
@@ -45,23 +26,12 @@ class Animator: NSObject, UIViewControllerAnimatedTransitioning {
             moveFromGroup(groupVC: groupVC, toGroupDetails: groupDetailsVC, withContext: context)
         }
         // pop
-//        else if let groupVC = context.viewController(forKey: UITransitionContextViewControllerKey.to) as? GroupViewController,
-//            let groupDetailsVC = context.viewController(forKey: UITransitionContextViewControllerKey.from) as? GroupDetailsViewController {
-//            moveFromPosts(groupVC, toCategories: groupDetailsVC, withContext: context)
-//
-//        }
+        //        else if let groupVC = context.viewController(forKey: UITransitionContextViewControllerKey.to) as? GroupViewController,
+        //            let groupDetailsVC = context.viewController(forKey: UITransitionContextViewControllerKey.from) as? GroupDetailsViewController {
+        //            moveFromPosts(groupVC, toCategories: groupDetailsVC, withContext: context)
+        //
+        //        }
         
-    }
-    
-    private var selectedCellFrame: CGRect? = nil
-    private var originalTableViewY: CGFloat? = nil
-    
-    private func createTransitionImageViewWithFrame(frame: CGRect) -> UIImageView {
-        let imageView = UIImageView(frame: frame)
-        imageView.contentMode = .scaleAspectFill
-//        imageView. setupDefaultTopInnerShadow()       <<===
-        imageView.clipsToBounds = true
-        return imageView
     }
     
     private func moveFromGroup(groupVC: GroupViewController, toGroupDetails groupDetailsVC: GroupDetailsViewController, withContext context: UIViewControllerContextTransitioning)
@@ -69,7 +39,7 @@ class Animator: NSObject, UIViewControllerAnimatedTransitioning {
         if let indexPath = groupVC.tableView.indexPathForSelectedRow,
             // Get the original selected tableViewCell
             let selectedCell = groupVC.tableView.cellForRow(at: indexPath) as? GroupTableViewCell {
-//            var collectionCell = groupDetailsVC.collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? GroupDetailsCollectionViewCell
+            //            var collectionCell = groupDetailsVC.collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? GroupDetailsCollectionViewCell
             
             // Create temporary view for transparency effect
             let temporaryView = UIView(frame: context.containerView.frame)
@@ -78,12 +48,12 @@ class Animator: NSObject, UIViewControllerAnimatedTransitioning {
             // Calculate the selected cell position in table view
             let rectOfCell = groupVC.tableView.rectForRow(at: indexPath)
             let rectOfCellInSuperview = groupVC.tableView.convert(rectOfCell, to: groupVC.tableView.superview)
-
+            
             // Create new UIView with the same frame as original TableViewCell
             let groupViewCell = UIView(frame: rectOfCellInSuperview)
             temporaryView.addSubview(groupViewCell)
-//            groupViewCell.backgroundColor = .orange
-
+            //            groupViewCell.backgroundColor = .orange
+            
             // Create image view and add it at the same position in UIView as in original TableViewCell
             let imageView = UIImageView(frame: selectedCell.imageViewHandler.frame)
             imageView.contentMode = .scaleAspectFit
@@ -94,7 +64,7 @@ class Animator: NSObject, UIViewControllerAnimatedTransitioning {
             temporaryView.backgroundColor = .clear
             UIView.animate(withDuration: 0.3, animations: {
                 temporaryView.backgroundColor = .white
-
+                
             }, completion: { (status) in
                 
                 // >>> Now rebuild the context content
@@ -109,7 +79,7 @@ class Animator: NSObject, UIViewControllerAnimatedTransitioning {
                     
                     
                     groupViewCell.frame.origin.y = (groupDetailsVC.navigationController?.navigationBar.frame.origin.y)! +
-                        ((groupDetailsVC.navigationController?.navigationBar.frame.height)!) //+ GroupDetailsConstants.standardTopInset
+                        ((groupDetailsVC.navigationController?.navigationBar.frame.height)!)
                     
                 }, completion: { (status) in
                     
@@ -133,10 +103,8 @@ class Animator: NSObject, UIViewControllerAnimatedTransitioning {
                         
                     })
                 })
-            })            
+            })
         }
     }
 }
-
-
 

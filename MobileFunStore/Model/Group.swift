@@ -27,6 +27,13 @@ struct Group {
 
 }
 
+extension Group : DocumentEquatable {
+
+    var uniqueKey: String {
+        return id
+    }
+}
+
 extension Group : DocumentSerializable {
 
     init?(dictionary: [String : Any]) {

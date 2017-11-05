@@ -29,6 +29,21 @@ extension DocumentIdentifiable {
 
 }
 
+// MARK: - protocol DataEquatable
+
+protocol DocumentEquatable : Equatable {
+    var uniqueKey : String { get }
+}
+
+extension DocumentEquatable {
+    
+    static func ==(rhs : Self, lhs: Self) -> Bool {
+        return rhs.uniqueKey == lhs.uniqueKey ? true : false
+    }
+}
+
+// MARK: - protocol DocumentSerializable
+
 protocol DocumentSerializable {
     
     init?(dictionary : [String : Any])
@@ -36,8 +51,7 @@ protocol DocumentSerializable {
     
 }
 
-
-class LocalCollection<T: DocumentSerializable> {
+class LocalCollection<T: DocumentSerializable> where T : DocumentEquatable {
 
     // MARK - Vars/Cons
     private(set) var items : [T] = []
@@ -65,16 +79,6 @@ class LocalCollection<T: DocumentSerializable> {
         return documents[index].documentID
     }
     
-//    func index(of document: DocumentSnapshot) -> Int? {
-//        for i in 0 ..< documents.count {
-//            if documents[i].documentID == document.documentID {
-//                return i
-//            }
-//        }
-//
-//        return nil
-//    }
-    
     init(query: Query, completionHandler : @escaping Utils.CompletionType) {
         self.items = []
         self.query = query
@@ -82,8 +86,8 @@ class LocalCollection<T: DocumentSerializable> {
     }
     
     func listen() {
-        log.verbose("")
         guard listener == nil else { return }
+        log.verbose("")
         listener = query.addSnapshotListener { [unowned self] (snapshot, error) in
             
             guard let snapshot = snapshot else {

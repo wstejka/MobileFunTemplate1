@@ -26,6 +26,13 @@ struct Product {
 
 }
 
+extension Product : DocumentEquatable {
+    
+    var uniqueKey: String {
+        return id
+    }
+}
+
 extension Product : DocumentSerializable {
     
     init?(dictionary: [String : Any]) {

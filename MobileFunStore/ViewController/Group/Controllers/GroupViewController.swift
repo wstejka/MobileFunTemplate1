@@ -124,6 +124,9 @@ class GroupViewController: UIViewController {
 
             for document in documents {
                 if document.type == .added {
+                    // Check if index is already added. This can happen if this is
+                    
+                    
                     let indexPath = IndexPath(row: Int(document.newIndex), section: 0)
                     addIndexPaths.append(indexPath)
                 }
@@ -165,6 +168,7 @@ class GroupViewController: UIViewController {
     
     deinit {
         log.verbose("")
+        groupCollection?.stopListening()
     }
 
     // MARK: - Methods
