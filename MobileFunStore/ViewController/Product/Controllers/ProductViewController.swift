@@ -12,6 +12,7 @@ class ProductViewController: UIViewController {
 
     // MARK: - Outlets
     @IBOutlet weak var tableView: UITableView!
+    weak var value : UIView!
 
     // MARK: - Vars/ Const
     var product : Product!
@@ -44,7 +45,6 @@ class ProductViewController: UIViewController {
         let controller = storyboard.instantiateViewController(withIdentifier: "ProductViewController") as! ProductViewController
         return controller
     }
-    
     
 }
 
@@ -91,17 +91,17 @@ extension ProductViewController : UITableViewDelegate {
         }
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    }
 }
 
 extension ProductViewController : ProductImageTapped {
-    
-    func productImage(imageView: UIImageView, tappedIn tappedScrollView: UIScrollView) {
-        
-        performSegue(withIdentifier: "TestSegue", sender: nil)
+
+    func product(images: [UIImage], tappedIn atIndex: Int) {
+        let controller = ImageZoomingViewController.fromStoryboard()
+        controller.currentIndex = atIndex
+        controller.images = images
+        present(controller, animated: true)
     }
-    
+        
 }
 
 

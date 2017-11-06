@@ -5,6 +5,7 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -60,7 +61,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="Pkt-08-Mqg" id="4dw-Ei-VFd"/>
-                        <segue destination="BeS-VQ-fmj" kind="presentation" identifier="TestSegue" id="gUP-5v-pF6"/>
+                        <segue destination="BeS-VQ-fmj" kind="presentation" identifier="ImageZoomSegue" id="gUP-5v-pF6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hgS-j6-fP4" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -80,52 +81,51 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cRP-hI-Fk4">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="jNl-n2-tsg">
-                                        <rect key="frame" x="0.0" y="0.0" width="818" height="551"/>
-                                    </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E6R-Oj-t50">
-                                        <rect key="frame" x="10" y="10" width="30" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="30" id="d9B-7p-tJu"/>
-                                            <constraint firstAttribute="height" constant="30" id="dZ7-PF-sQD"/>
-                                        </constraints>
-                                        <state key="normal" image="x_sign"/>
-                                        <connections>
-                                            <action selector="exitButtonPressed:" destination="BeS-VQ-fmj" eventType="touchUpInside" id="D4Z-UG-pTS"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="jNl-n2-tsg" secondAttribute="trailing" id="7ga-qA-z9Z"/>
-                                    <constraint firstAttribute="bottom" secondItem="jNl-n2-tsg" secondAttribute="bottom" id="OZy-ig-VSd"/>
-                                    <constraint firstItem="jNl-n2-tsg" firstAttribute="top" secondItem="cRP-hI-Fk4" secondAttribute="top" id="bo0-AL-uHb"/>
-                                    <constraint firstItem="E6R-Oj-t50" firstAttribute="leading" secondItem="cRP-hI-Fk4" secondAttribute="leading" constant="10" id="cqt-VZ-GVy"/>
-                                    <constraint firstItem="E6R-Oj-t50" firstAttribute="top" secondItem="cRP-hI-Fk4" secondAttribute="top" constant="10" id="he1-0d-bPc"/>
-                                    <constraint firstItem="jNl-n2-tsg" firstAttribute="leading" secondItem="cRP-hI-Fk4" secondAttribute="leading" id="oE3-6C-a0A"/>
-                                </constraints>
+                                <rect key="frame" x="0.0" y="70" width="375" height="540"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BeS-VQ-fmj" id="CQO-05-KUd"/>
+                                </connections>
                             </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E6R-Oj-t50">
+                                <rect key="frame" x="330" y="35" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="d9B-7p-tJu"/>
+                                    <constraint firstAttribute="height" constant="30" id="dZ7-PF-sQD"/>
+                                </constraints>
+                                <state key="normal" image="x_sign"/>
+                                <connections>
+                                    <action selector="exitButtonPressed:" destination="BeS-VQ-fmj" eventType="touchUpInside" id="D4Z-UG-pTS"/>
+                                </connections>
+                            </button>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="Tkd-cJ-evM">
+                                <rect key="frame" x="26" y="620" width="323" height="37"/>
+                            </pageControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="cRP-hI-Fk4" firstAttribute="top" secondItem="fgq-sw-Ba5" secondAttribute="bottom" id="1xi-4a-4HL"/>
+                            <constraint firstItem="cRP-hI-Fk4" firstAttribute="top" secondItem="fgq-sw-Ba5" secondAttribute="bottom" constant="50" id="1xi-4a-4HL"/>
+                            <constraint firstAttribute="trailing" secondItem="E6R-Oj-t50" secondAttribute="trailing" constant="15" id="B4U-PX-BDA"/>
+                            <constraint firstItem="PLz-CW-oeq" firstAttribute="top" secondItem="Tkd-cJ-evM" secondAttribute="bottom" constant="10" id="IN2-72-hum"/>
+                            <constraint firstItem="Tkd-cJ-evM" firstAttribute="centerX" secondItem="Fpd-SX-VcE" secondAttribute="centerX" id="It5-zn-dZT"/>
                             <constraint firstAttribute="trailing" secondItem="cRP-hI-Fk4" secondAttribute="trailing" id="Ojb-yc-ylk"/>
+                            <constraint firstItem="Tkd-cJ-evM" firstAttribute="leading" secondItem="Fpd-SX-VcE" secondAttribute="leadingMargin" constant="10" id="gyF-kC-n4d"/>
+                            <constraint firstItem="Tkd-cJ-evM" firstAttribute="top" secondItem="cRP-hI-Fk4" secondAttribute="bottom" constant="10" id="kAA-NJ-Oup"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Tkd-cJ-evM" secondAttribute="trailing" constant="10" id="muc-XK-ZGG"/>
                             <constraint firstItem="cRP-hI-Fk4" firstAttribute="leading" secondItem="Fpd-SX-VcE" secondAttribute="leading" id="s2Q-6A-mls"/>
-                            <constraint firstItem="PLz-CW-oeq" firstAttribute="top" secondItem="cRP-hI-Fk4" secondAttribute="bottom" id="tRQ-na-If8"/>
+                            <constraint firstItem="E6R-Oj-t50" firstAttribute="top" secondItem="fgq-sw-Ba5" secondAttribute="bottom" constant="15" id="x3u-Lc-dZ7"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="mainScrollView" destination="cRP-hI-Fk4" id="KNf-Ov-Is7"/>
+                        <outlet property="pageControl" destination="Tkd-cJ-evM" id="KUl-Bu-hQf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nSv-Pz-Lnx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="762" y="-31"/>
+            <point key="canvasLocation" x="760.79999999999995" y="-31.03448275862069"/>
         </scene>
     </scenes>
     <resources>
-        <image name="placeholder" width="818" height="551"/>
         <image name="share" width="25" height="25"/>
         <image name="shopping_cart" width="25" height="25"/>
         <image name="x_sign" width="25" height="25"/>

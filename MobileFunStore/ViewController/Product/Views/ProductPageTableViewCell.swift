@@ -10,7 +10,7 @@ import UIKit
 
 protocol ProductImageTapped {
     
-    func productImage(imageView : UIImageView, tappedIn scrollView : UIScrollView)
+    func product(images : [UIImage], tappedIn atIndex : Int)
     
 }
 
@@ -70,6 +70,7 @@ class ProductPageTableViewCell: UITableViewCell {
         scrollView.delegate = self
         
         scrollView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(processGesture)))
+        scrollView.addGestureRecognizer(UIPinchGestureRecognizer(target: self, action: #selector(processGesture)))
         scrollView.isUserInteractionEnabled = true
 
         // Do any additional setup after loading the view, typically from a nib.
@@ -79,19 +80,30 @@ class ProductPageTableViewCell: UITableViewCell {
     
     @objc func processGesture(gesture : UIGestureRecognizer) {
         
-        log.verbose("gesture")
+        log.verbose("")
         // Find the tapped UIImageView
 //        let location = gesture.location(in: scrollView)
         // Get index of current UIImageView
-        let index = scrollView.contentOffset.x / scrollView.frame.size.width
-        guard let tappedImage = scrollView.viewWithTag(Int(index) + cellTagShift) as? UIImageView else { return }
+        let index : Int = Int(scrollView.contentOffset.x / scrollView.frame.size.width)
+//        guard let tappedImage = scrollView.viewWithTag(Int(index) + cellTagShift) as? UIImageView else { return }
         
-        delegate.productImage(imageView: tappedImage, tappedIn: scrollView)
-        
+        delegate.product(images: getImages(), tappedIn: index)
     }
 
     deinit {
         log.verbose("")
+    }
+
+    func getImages() -> [UIImage] {
+        
+        let images = product?.urls.enumerated().map({ (arg) -> UIImage in
+            
+            let (index, _) = arg
+            let imageView = scrollView.viewWithTag(index + cellTagShift) as? UIImageView
+            return (imageView?.image!)!
+        })
+        
+        return images!
     }
     
     func configurePageControl() {

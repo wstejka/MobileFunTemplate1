@@ -6,6 +6,7 @@
 //  Copyright © 2017 Wojciech Stejka. All rights reserved.
 //
 import FirebaseFirestore
+import UIKit
 
 class Utils {
 
@@ -15,6 +16,11 @@ class Utils {
     enum collection : String {
         case group = "Groups"
         case product = "Products"
+    }
+    
+    enum ImageScales : CGFloat {
+        case min = 1.0
+        case max = 2.0
     }
 }
 
