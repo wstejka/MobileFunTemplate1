@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -14,6 +13,10 @@
         <scene sceneID="EgI-a4-3KC">
             <objects>
                 <viewController storyboardIdentifier="ProductViewController" id="ClF-1j-fsl" customClass="ProductViewController" customModule="MobileFunStore" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="PwX-nx-hQh"/>
+                        <viewControllerLayoutGuide type="bottom" id="igB-ZU-nrQ"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="5H8-QW-Uym">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -40,12 +43,11 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="P6F-R3-xB4" firstAttribute="trailing" secondItem="Pkt-08-Mqg" secondAttribute="trailing" id="8Hs-hz-jWp"/>
-                            <constraint firstItem="P6F-R3-xB4" firstAttribute="bottom" secondItem="Pkt-08-Mqg" secondAttribute="bottom" id="WUa-a2-LJ0"/>
-                            <constraint firstItem="Pkt-08-Mqg" firstAttribute="top" secondItem="P6F-R3-xB4" secondAttribute="top" id="Zu5-SU-1sf"/>
-                            <constraint firstItem="Pkt-08-Mqg" firstAttribute="leading" secondItem="P6F-R3-xB4" secondAttribute="leading" id="loY-27-4EW"/>
+                            <constraint firstAttribute="trailing" secondItem="Pkt-08-Mqg" secondAttribute="trailing" id="8Hs-hz-jWp"/>
+                            <constraint firstItem="igB-ZU-nrQ" firstAttribute="top" secondItem="Pkt-08-Mqg" secondAttribute="bottom" id="WUa-a2-LJ0"/>
+                            <constraint firstItem="Pkt-08-Mqg" firstAttribute="top" secondItem="PwX-nx-hQh" secondAttribute="bottom" id="Zu5-SU-1sf"/>
+                            <constraint firstItem="Pkt-08-Mqg" firstAttribute="leading" secondItem="5H8-QW-Uym" secondAttribute="leading" id="loY-27-4EW"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="P6F-R3-xB4"/>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="BCu-go-kyP">
@@ -58,60 +60,74 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="Pkt-08-Mqg" id="4dw-Ei-VFd"/>
+                        <segue destination="BeS-VQ-fmj" kind="presentation" identifier="TestSegue" id="gUP-5v-pF6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hgS-j6-fP4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-87.200000000000003" y="-31.03448275862069"/>
         </scene>
-        <!--Product Image View Controller-->
-        <scene sceneID="KNy-Gn-M58">
+        <!--Image Zooming View Controller-->
+        <scene sceneID="LZu-l5-pjb">
             <objects>
-                <viewController storyboardIdentifier="ProductImageViewController" id="7Ee-ZZ-TkH" customClass="ProductImageViewController" customModule="MobileFunStore" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="RVW-z6-dJh">
+                <viewController storyboardIdentifier="ImageZoomingViewController" id="BeS-VQ-fmj" customClass="ImageZoomingViewController" customModule="MobileFunStore" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fgq-sw-Ba5"/>
+                        <viewControllerLayoutGuide type="bottom" id="PLz-CW-oeq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Fpd-SX-VcE">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YSY-q5-xmY">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cRP-hI-Fk4">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
-                                <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eqw-eW-N66">
-                                <rect key="frame" x="309" y="617" width="46" height="30"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="jNl-n2-tsg">
+                                        <rect key="frame" x="0.0" y="0.0" width="818" height="551"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E6R-Oj-t50">
+                                        <rect key="frame" x="10" y="10" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="d9B-7p-tJu"/>
+                                            <constraint firstAttribute="height" constant="30" id="dZ7-PF-sQD"/>
+                                        </constraints>
+                                        <state key="normal" image="x_sign"/>
+                                        <connections>
+                                            <action selector="exitButtonPressed:" destination="BeS-VQ-fmj" eventType="touchUpInside" id="D4Z-UG-pTS"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="46" id="DcL-s0-ehY"/>
-                                    <constraint firstAttribute="height" constant="30" id="wWv-A9-SCM"/>
+                                    <constraint firstAttribute="trailing" secondItem="jNl-n2-tsg" secondAttribute="trailing" id="7ga-qA-z9Z"/>
+                                    <constraint firstAttribute="bottom" secondItem="jNl-n2-tsg" secondAttribute="bottom" id="OZy-ig-VSd"/>
+                                    <constraint firstItem="jNl-n2-tsg" firstAttribute="top" secondItem="cRP-hI-Fk4" secondAttribute="top" id="bo0-AL-uHb"/>
+                                    <constraint firstItem="E6R-Oj-t50" firstAttribute="leading" secondItem="cRP-hI-Fk4" secondAttribute="leading" constant="10" id="cqt-VZ-GVy"/>
+                                    <constraint firstItem="E6R-Oj-t50" firstAttribute="top" secondItem="cRP-hI-Fk4" secondAttribute="top" constant="10" id="he1-0d-bPc"/>
+                                    <constraint firstItem="jNl-n2-tsg" firstAttribute="leading" secondItem="cRP-hI-Fk4" secondAttribute="leading" id="oE3-6C-a0A"/>
                                 </constraints>
-                                <state key="normal" title="Button">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="buttonTapped:" destination="7Ee-ZZ-TkH" eventType="touchUpInside" id="n62-7p-lH0"/>
-                                </connections>
-                            </button>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="YSY-q5-xmY" firstAttribute="leading" secondItem="mZI-l3-1GO" secondAttribute="leading" id="6lf-tJ-xGu"/>
-                            <constraint firstItem="mZI-l3-1GO" firstAttribute="trailing" secondItem="YSY-q5-xmY" secondAttribute="trailing" id="8ca-dK-seE"/>
-                            <constraint firstItem="mZI-l3-1GO" firstAttribute="trailing" secondItem="Eqw-eW-N66" secondAttribute="trailing" constant="20" id="8pB-Sr-822"/>
-                            <constraint firstItem="YSY-q5-xmY" firstAttribute="top" secondItem="mZI-l3-1GO" secondAttribute="top" id="dIG-6I-UEf"/>
-                            <constraint firstItem="mZI-l3-1GO" firstAttribute="bottom" secondItem="YSY-q5-xmY" secondAttribute="bottom" id="qXf-qa-mtd"/>
-                            <constraint firstItem="mZI-l3-1GO" firstAttribute="bottom" secondItem="Eqw-eW-N66" secondAttribute="bottom" constant="20" id="rQk-Ij-CUn"/>
+                            <constraint firstItem="cRP-hI-Fk4" firstAttribute="top" secondItem="fgq-sw-Ba5" secondAttribute="bottom" id="1xi-4a-4HL"/>
+                            <constraint firstAttribute="trailing" secondItem="cRP-hI-Fk4" secondAttribute="trailing" id="Ojb-yc-ylk"/>
+                            <constraint firstItem="cRP-hI-Fk4" firstAttribute="leading" secondItem="Fpd-SX-VcE" secondAttribute="leading" id="s2Q-6A-mls"/>
+                            <constraint firstItem="PLz-CW-oeq" firstAttribute="top" secondItem="cRP-hI-Fk4" secondAttribute="bottom" id="tRQ-na-If8"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="mZI-l3-1GO"/>
                     </view>
                     <connections>
-                        <outlet property="imageView" destination="YSY-q5-xmY" id="wqq-Ds-F4x"/>
+                        <outlet property="mainScrollView" destination="cRP-hI-Fk4" id="KNf-Ov-Is7"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gv8-e3-M2p" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nSv-Pz-Lnx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="774" y="-31"/>
+            <point key="canvasLocation" x="762" y="-31"/>
         </scene>
     </scenes>
     <resources>
+        <image name="placeholder" width="818" height="551"/>
         <image name="share" width="25" height="25"/>
         <image name="shopping_cart" width="25" height="25"/>
+        <image name="x_sign" width="25" height="25"/>
     </resources>
 </document>

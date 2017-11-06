@@ -24,6 +24,9 @@
 		9E5AFDB91FAD00A900F0ADE3 /* GroupDetailsProductCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E5AFDB81FAD00A900F0ADE3 /* GroupDetailsProductCollectionViewCell.xib */; };
 		9EAC56041F8D1D6F004067C3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9EAC56061F8D1D6F004067C3 /* Localizable.strings */; };
 		9EAC56091F8D1DEF004067C3 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAC56081F8D1DEF004067C3 /* StringExtension.swift */; };
+		9EB44E0C1FB070C9001EF182 /* ImageZoomingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB44E0B1FB070C9001EF182 /* ImageZoomingViewController.swift */; };
+		9EB44E0E1FB07674001EF182 /* PageZoomOneView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB44E0D1FB07674001EF182 /* PageZoomOneView.xib */; };
+		9EB44E101FB0768B001EF182 /* PageZoomOneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB44E0F1FB0768B001EF182 /* PageZoomOneViewController.swift */; };
 		9EB9DB341FA0B6420085B68E /* GroupDetailsTopCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB9DB321FA0B6420085B68E /* GroupDetailsTopCollectionViewCell.swift */; };
 		9EB9DB391FA0C2050085B68E /* GroupDetailsTopCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB9DB381FA0C2050085B68E /* GroupDetailsTopCollectionViewCell.xib */; };
 		9EDB351E1FADC08D002823FA /* Product.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9EDB351D1FADC08D002823FA /* Product.storyboard */; };
@@ -86,6 +89,9 @@
 		9EAC56051F8D1D6F004067C3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9EAC56071F8D1DAF004067C3 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9EAC56081F8D1DEF004067C3 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		9EB44E0B1FB070C9001EF182 /* ImageZoomingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageZoomingViewController.swift; sourceTree = "<group>"; };
+		9EB44E0D1FB07674001EF182 /* PageZoomOneView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PageZoomOneView.xib; sourceTree = "<group>"; };
+		9EB44E0F1FB0768B001EF182 /* PageZoomOneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageZoomOneViewController.swift; sourceTree = "<group>"; };
 		9EB9DB321FA0B6420085B68E /* GroupDetailsTopCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailsTopCollectionViewCell.swift; sourceTree = "<group>"; };
 		9EB9DB381FA0C2050085B68E /* GroupDetailsTopCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupDetailsTopCollectionViewCell.xib; sourceTree = "<group>"; };
 		9EDB351D1FADC08D002823FA /* Product.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Product.storyboard; sourceTree = "<group>"; };
@@ -198,6 +204,8 @@
 				9EDB35241FADC416002823FA /* ProductTableViewCell.swift */,
 				9E5816121FAE69A80084A1D4 /* ProductPageTableViewCell.swift */,
 				9E5816101FAE696E0084A1D4 /* ProductPageTableViewCell.xib */,
+				9EB44E0F1FB0768B001EF182 /* PageZoomOneViewController.swift */,
+				9EB44E0D1FB07674001EF182 /* PageZoomOneView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -206,6 +214,7 @@
 			isa = PBXGroup;
 			children = (
 				9EDB35221FADC10D002823FA /* ProductViewController.swift */,
+				9EB44E0B1FB070C9001EF182 /* ImageZoomingViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -432,6 +441,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9EDC31011F8E9030001C2B64 /* GoogleService-Info.plist in Resources */,
+				9EB44E0E1FB07674001EF182 /* PageZoomOneView.xib in Resources */,
 				9EDB351E1FADC08D002823FA /* Product.storyboard in Resources */,
 				9EB9DB391FA0C2050085B68E /* GroupDetailsTopCollectionViewCell.xib in Resources */,
 				9E5868021FA5B62F00CC058D /* SingleLabelCollectionViewCell.xib in Resources */,
@@ -671,10 +681,12 @@
 				9EE22D761F8CDCBC0041FEC1 /* GroupTableViewCell.swift in Sources */,
 				9E5073E81F97B3F300D90772 /* LocalCollection.swift in Sources */,
 				9EF26A5B1FAE11D00093BCDA /* GroupAnimator.swift in Sources */,
+				9EB44E0C1FB070C9001EF182 /* ImageZoomingViewController.swift in Sources */,
 				9EE22D551F8BA6CD0041FEC1 /* AppDelegate.swift in Sources */,
 				9EDB8DF01FA201EA00545F9B /* UIViewExtension.swift in Sources */,
 				9EAC56091F8D1DEF004067C3 /* StringExtension.swift in Sources */,
 				9EE22D791F8D0E320041FEC1 /* UIImageExtension.swift in Sources */,
+				9EB44E101FB0768B001EF182 /* PageZoomOneViewController.swift in Sources */,
 				9E5816131FAE69A80084A1D4 /* ProductPageTableViewCell.swift in Sources */,
 				9E5AFDB51FAB29FC00F0ADE3 /* NavigationDelegate.swift in Sources */,
 				9E5868001FA4CA6900CC058D /* CGFloatExtension.swift in Sources */,

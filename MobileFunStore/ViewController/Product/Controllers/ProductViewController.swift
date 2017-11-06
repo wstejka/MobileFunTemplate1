@@ -31,6 +31,7 @@ class ProductViewController: UIViewController {
         //  Register custom section header
         tableView.register(UINib(nibName: "ProductPageTableViewCell", bundle: nil), forCellReuseIdentifier: "pageCell")
         
+        
     }
     
     deinit {
@@ -61,10 +62,11 @@ extension ProductViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         var cell : UITableViewCell!
-        if indexPath.row == 0 {
+        if indexPath.row == 2 {
             let productCell = tableView.dequeueReusableCell(withIdentifier: "pageCell", for: indexPath) as! ProductPageTableViewCell
+            productCell.delegate = self
             productCell.product = product
-            productCell.tableCellFrameSize = CGSize(width: productCellWidth, height: productCellHeight)
+            productCell.cellFrameSize = CGSize(width: productCellWidth, height: productCellHeight)
             return productCell
         }
         else {
@@ -81,12 +83,23 @@ extension ProductViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
-        if indexPath.row == 0 {
+        if indexPath.row == 2 {
             return productCellHeight
         }
         else {
             return 100
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    }
+}
+
+extension ProductViewController : ProductImageTapped {
+    
+    func productImage(imageView: UIImageView, tappedIn tappedScrollView: UIScrollView) {
+        
+        performSegue(withIdentifier: "TestSegue", sender: nil)
     }
     
 }

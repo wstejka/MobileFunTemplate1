@@ -8,6 +8,12 @@
 
 import UIKit
 
+protocol ProductImageTapped {
+    
+    func productImage(imageView : UIImageView, tappedIn scrollView : UIScrollView)
+    
+}
+
 class ProductPageTableViewCell: UITableViewCell {
 
     // MARK: - Outlets
@@ -16,6 +22,7 @@ class ProductPageTableViewCell: UITableViewCell {
     
     // MARK: Vars/Consts
     private var urls : [URL?] = []
+    var delegate : ProductImageTapped!
     
     var product : Product? {
         didSet {
@@ -27,11 +34,12 @@ class ProductPageTableViewCell: UITableViewCell {
         }
     }
     
-    var tableCellFrameSize : CGSize? {
+    let cellTagShift = 100
+    var cellFrameSize : CGSize? {
         
         didSet {
             log.verbose("")
-            guard let size = tableCellFrameSize else { return }
+            guard let size = cellFrameSize else { return }
             
             let pagesNumber = urls.count
             self.pageControl.numberOfPages = pagesNumber
@@ -45,6 +53,7 @@ class ProductPageTableViewCell: UITableViewCell {
                                                         size: CGSize(width: widthWithInsets, height: widthWithInsets * factorRatio)))
                 subView.contentMode = .scaleAspectFit
                 subView.sd_setImage(with: urls[index], completed: nil)
+                subView.tag = index + cellTagShift
                 scrollView.addSubview(subView)
 
             }
@@ -58,12 +67,27 @@ class ProductPageTableViewCell: UITableViewCell {
         super.awakeFromNib()
         
         log.verbose("")
-        
         scrollView.delegate = self
+        
+        scrollView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(processGesture)))
+        scrollView.isUserInteractionEnabled = true
 
         // Do any additional setup after loading the view, typically from a nib.
         configurePageControl()
 
+    }
+    
+    @objc func processGesture(gesture : UIGestureRecognizer) {
+        
+        log.verbose("gesture")
+        // Find the tapped UIImageView
+//        let location = gesture.location(in: scrollView)
+        // Get index of current UIImageView
+        let index = scrollView.contentOffset.x / scrollView.frame.size.width
+        guard let tappedImage = scrollView.viewWithTag(Int(index) + cellTagShift) as? UIImageView else { return }
+        
+        delegate.productImage(imageView: tappedImage, tappedIn: scrollView)
+        
     }
 
     deinit {
@@ -71,7 +95,7 @@ class ProductPageTableViewCell: UITableViewCell {
     }
     
     func configurePageControl() {
-        // The total number of pages that are available is based on how many available colors we have.
+        // The total number of pages that are available is based on how many available images we have.
         self.pageControl.currentPage = 0
         self.pageControl.pageIndicatorTintColor = UIColor.black
         self.pageControl.currentPageIndicatorTintColor = UIColor.red
@@ -81,7 +105,7 @@ class ProductPageTableViewCell: UITableViewCell {
     @objc func changePage(sender: AnyObject) -> () {
         
         log.verbose("")
-        let x = CGFloat(pageControl.currentPage) * (tableCellFrameSize?.width)!
+        let x = CGFloat(pageControl.currentPage) * (cellFrameSize?.width)!
         scrollView.setContentOffset(CGPoint(x: x,y :0), animated: true)
     }
 }
@@ -89,17 +113,17 @@ class ProductPageTableViewCell: UITableViewCell {
 extension ProductPageTableViewCell : UIScrollViewDelegate {
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//        log.verbose("")
+        log.verbose("")
 
-        let pageNumber = round(scrollView.contentOffset.x / (tableCellFrameSize?.width)!)
+        let pageNumber = round(scrollView.contentOffset.x / (cellFrameSize?.width)!)
         self.pageControl.currentPage = Int(pageNumber)
-//        UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveEaseOut, animations: { [weak self] in
-//        })
     }
 
 //    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-//        let pageNumber = round(scrollView.contentOffset.x / (tableCellFrameSize?.width)!)
-//        log.verbose("\(pageNumber)")
+//        log.verbose("")
+//    }
+//    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+//        return scrollView.subviews[1]
 //    }
     
 }
