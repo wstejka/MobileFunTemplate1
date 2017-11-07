@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		9E0D21C61FB0D80A00813C0D /* ImageZoomAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E0D21C51FB0D80A00813C0D /* ImageZoomAnimator.swift */; };
+		9E0D21EA1FB2388A00813C0D /* ProductAttributeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E0D21E91FB2388A00813C0D /* ProductAttributeTableViewCell.xib */; };
+		9E0D21EC1FB238B200813C0D /* ProductAttributeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E0D21EB1FB238B200813C0D /* ProductAttributeTableViewCell.swift */; };
 		9E1783321F97D0B8002CE4B0 /* ModelStatics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1783311F97D0B8002CE4B0 /* ModelStatics.swift */; };
 		9E1783341F98C2B7002CE4B0 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1783331F98C2B7002CE4B0 /* Group.swift */; };
 		9E203E5A1FA06720006CE10F /* GroupDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E203E591FA06720006CE10F /* GroupDetailsViewController.swift */; };
@@ -71,6 +73,8 @@
 		8B6C862C9F07CD9019934BCB /* Pods_MobileFunStoreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MobileFunStoreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98114EC217423BE06526F1A3 /* Pods-MobileFunStoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MobileFunStoreTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-MobileFunStoreTests/Pods-MobileFunStoreTests.release.xcconfig"; sourceTree = "<group>"; };
 		9E0D21C51FB0D80A00813C0D /* ImageZoomAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageZoomAnimator.swift; sourceTree = "<group>"; };
+		9E0D21E91FB2388A00813C0D /* ProductAttributeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductAttributeTableViewCell.xib; sourceTree = "<group>"; };
+		9E0D21EB1FB238B200813C0D /* ProductAttributeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductAttributeTableViewCell.swift; sourceTree = "<group>"; };
 		9E1783311F97D0B8002CE4B0 /* ModelStatics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelStatics.swift; sourceTree = "<group>"; };
 		9E1783331F98C2B7002CE4B0 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		9E203E591FA06720006CE10F /* GroupDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailsViewController.swift; sourceTree = "<group>"; };
@@ -202,6 +206,8 @@
 				9EDB35241FADC416002823FA /* ProductTableViewCell.swift */,
 				9E5816121FAE69A80084A1D4 /* ProductPageTableViewCell.swift */,
 				9E5816101FAE696E0084A1D4 /* ProductPageTableViewCell.xib */,
+				9E0D21EB1FB238B200813C0D /* ProductAttributeTableViewCell.swift */,
+				9E0D21E91FB2388A00813C0D /* ProductAttributeTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -440,6 +446,7 @@
 				9EDC31011F8E9030001C2B64 /* GoogleService-Info.plist in Resources */,
 				9EDB351E1FADC08D002823FA /* Product.storyboard in Resources */,
 				9EB9DB391FA0C2050085B68E /* GroupDetailsTopCollectionViewCell.xib in Resources */,
+				9E0D21EA1FB2388A00813C0D /* ProductAttributeTableViewCell.xib in Resources */,
 				9E5868021FA5B62F00CC058D /* SingleLabelCollectionViewCell.xib in Resources */,
 				9EE22D5F1F8BA6CD0041FEC1 /* LaunchScreen.storyboard in Resources */,
 				9EAC56041F8D1D6F004067C3 /* Localizable.strings in Resources */,
@@ -685,6 +692,7 @@
 				9EE22D791F8D0E320041FEC1 /* UIImageExtension.swift in Sources */,
 				9E5816131FAE69A80084A1D4 /* ProductPageTableViewCell.swift in Sources */,
 				9E5AFDB51FAB29FC00F0ADE3 /* NavigationDelegate.swift in Sources */,
+				9E0D21EC1FB238B200813C0D /* ProductAttributeTableViewCell.swift in Sources */,
 				9E5868001FA4CA6900CC058D /* CGFloatExtension.swift in Sources */,
 				9EDB35231FADC10D002823FA /* ProductViewController.swift in Sources */,
 				9E5073E61F97B3C900D90772 /* Product.swift in Sources */,

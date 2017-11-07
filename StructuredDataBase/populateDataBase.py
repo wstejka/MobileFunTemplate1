@@ -191,7 +191,7 @@ def performAllProductTasks(firebaseMananger):
 	original_data = dict(recursion.product_list)
 
 	## CLEAR old Products
-	print "=> Deleting all existing documents"
+	print "=> Deleting all existing products"
 	product_ref = firestore.CollectionReference("Products", client=client)
 	delete_collection_documents(product_ref, 1)
 

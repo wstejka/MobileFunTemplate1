@@ -65,7 +65,9 @@ def recursion(array, ident, parent, level, is_group):
 				"level" : level,
 				"is_group" : False,
 				"quantityInStock" : 0.0,
-				"price" : 0.0
+				"price" : document.price,
+				"currency_type" : document.currency_type,
+				"specification" : document.specification
 
 			}
 		order += 10

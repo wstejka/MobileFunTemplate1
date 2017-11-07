@@ -24,6 +24,8 @@ struct Product {
     var images : [String] = []
     var urls : [String] = []
 
+    var specification : [[String : String]]
+
 }
 
 extension Product : DocumentEquatable {
@@ -46,7 +48,8 @@ extension Product : DocumentSerializable {
             let parent_ref = dictionary["parent_ref"] as? DocumentReference,
             let order = dictionary["order"] as? Int,
             let price = dictionary["price"] as? Float,
-            let quantityInStock = dictionary["quantityInStock"] as? Float
+            let quantityInStock = dictionary["quantityInStock"] as? Float,
+            let specification = dictionary["specification"] as? [[String : String]]
         else {
                 log.error("Lack of mandatory value(s): \(dictionary)")
                 return nil
@@ -64,7 +67,7 @@ extension Product : DocumentSerializable {
 
         self.init(title: title, shortDescription: shortDescription, longDescription: longDescription, id: id,
                   parent_id: parent_id, parent_ref: parent_ref, order: order, quantityInStock: quantityInStock,
-                  price: price, images: cImages, urls: cUrls)
+                  price: price, images: cImages, urls: cUrls, specification: specification)
     }
     
     func dictionary() -> [String : Any] {
@@ -79,7 +82,8 @@ extension Product : DocumentSerializable {
                 "price" : price,
                 "quantityInStock" : quantityInStock,
                 "images" : images,
-                "urls" : urls]
+                "urls" : urls,
+                "specification" : specification]
     }
     
 

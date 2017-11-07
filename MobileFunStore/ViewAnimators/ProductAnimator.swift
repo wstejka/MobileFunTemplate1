@@ -37,7 +37,7 @@ class ProductAnimator : NSObject, UIViewControllerAnimatedTransitioning {
         backgroundView.addSubview(imageView)
         
 //        let inset : CGFloat = 10.0
-//        let imageWidth : CGFloat = toVC.productCellWidth - (2 * inset)
+        let imageWidth : CGFloat = (toVC.tableView.superview?.frame.width)! //toVC.productCellWidth - (2 * inset)
 //        let imageHeight : CGFloat = (toVC.productCellHeight / toVC.productCellWidth) * imageWidth
         let imagePositionY : CGFloat = (toVC.navigationController?.navigationBar.frame.origin.y)! +
             ((toVC.navigationController?.navigationBar.frame.height)!)
@@ -45,7 +45,7 @@ class ProductAnimator : NSObject, UIViewControllerAnimatedTransitioning {
 
         UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
             
-            imageView.frame.size = CGSize(width: toVC.productCellWidth, height: imageHeight * toVC.heightFactor)
+            imageView.frame.size = CGSize(width: imageWidth, height: imageHeight * toVC.heightFactor)
             imageView.frame.origin = CGPoint(x: 0.0, y: imagePositionY)
             backgroundView.alpha = 1.0
         }) { (_) in
