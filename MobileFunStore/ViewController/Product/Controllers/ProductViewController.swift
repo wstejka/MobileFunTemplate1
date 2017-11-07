@@ -20,8 +20,10 @@ class ProductViewController: UIViewController {
         return tableView.frame.width
     }
     let heightToWidthFactor : CGFloat = 0.66
+    let heightFactor : CGFloat = 0.8
     var productCellHeight : CGFloat! {
-        return productCellWidth * heightToWidthFactor
+//        return productCellWidth * heightToWidthFactor
+        return tableView.frame.height * heightFactor
     }
     
     let imageCellIndex = 0
@@ -35,7 +37,6 @@ class ProductViewController: UIViewController {
 
         //  Register custom section header
         tableView.register(UINib(nibName: "ProductPageTableViewCell", bundle: nil), forCellReuseIdentifier: "pageCell")
-        
         
     }
     

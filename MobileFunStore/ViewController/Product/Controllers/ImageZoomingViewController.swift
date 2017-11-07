@@ -37,7 +37,7 @@ class ImageZoomingViewController: UIViewController {
     func setupPageControl() {
         
         // The total number of pages that are available is based on how many available images we have.
-        self.pageControl.currentPage = 0
+        self.pageControl.currentPage = min(currentIndex, 0)
         self.pageControl.pageIndicatorTintColor = UIColor.black
         self.pageControl.currentPageIndicatorTintColor = UIColor.red
         self.pageControl.numberOfPages = images.count

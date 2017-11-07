@@ -10,17 +10,19 @@ import UIKit
 
 class ProductAnimator : NSObject, UIViewControllerAnimatedTransitioning {
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.1
+        return 0.3
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         
+        guard let fromVC  = transitionContext.viewController(forKey: .from) as? GroupDetailsViewController,
+            let toVC  = transitionContext.viewController(forKey: .to) as? ProductViewController else {
+                return
+        }
+        
         let container = transitionContext.containerView
-        let fromVC  = transitionContext.viewController(forKey: .from) as! GroupDetailsViewController
-        let toVC  = transitionContext.viewController(forKey: .to) as! ProductViewController
-        
-        
         let backgroundView = UIView(frame: fromVC.view.frame)
+        backgroundView.backgroundColor = .white
         container.addSubview(backgroundView)
         backgroundView.alpha = 0.2
         
@@ -28,21 +30,23 @@ class ProductAnimator : NSObject, UIViewControllerAnimatedTransitioning {
         // Calculate the selected cell position in superview
         let rectOfCellInSuperview = fromVC.collectionView.convert(productCell.frame, to: fromVC.collectionView.superview)
 
-        let imageView = UIImageView(frame: rectOfCellInSuperview)
+        
+        let imageView = UIImageView(frame: CGRect(origin: rectOfCellInSuperview.origin, size: productCell.imageView.frame.size))
         imageView.image = productCell.imageView.image
         imageView.contentMode = .scaleAspectFit
         backgroundView.addSubview(imageView)
         
-        let inset : CGFloat = 10.0
-        let imageWidth : CGFloat = toVC.productCellWidth - (2 * inset)
-        let imageHeight : CGFloat = (toVC.productCellHeight / toVC.productCellWidth) * imageWidth
+//        let inset : CGFloat = 10.0
+//        let imageWidth : CGFloat = toVC.productCellWidth - (2 * inset)
+//        let imageHeight : CGFloat = (toVC.productCellHeight / toVC.productCellWidth) * imageWidth
         let imagePositionY : CGFloat = (toVC.navigationController?.navigationBar.frame.origin.y)! +
             ((toVC.navigationController?.navigationBar.frame.height)!)
-        
-        UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+        let imageHeight : CGFloat = (toVC.tableView.superview?.frame.height)! - imagePositionY
+
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
             
-            imageView.frame.size = CGSize(width: imageWidth, height: imageHeight)
-            imageView.frame.origin = CGPoint(x: inset, y: imagePositionY)
+            imageView.frame.size = CGSize(width: toVC.productCellWidth, height: imageHeight * toVC.heightFactor)
+            imageView.frame.origin = CGPoint(x: 0.0, y: imagePositionY)
             backgroundView.alpha = 1.0
         }) { (_) in
             

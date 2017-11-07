@@ -46,7 +46,7 @@ class ProductPageTableViewCell: UITableViewCell {
 
             for index in 0..<pagesNumber {
                 
-                let inset : CGFloat = 10.0
+                let inset : CGFloat = 0.0
                 let widthWithInsets = size.width - (2 * inset)
                 let factorRatio = size.height / size.width
                 let subView = UIImageView(frame: CGRect(origin: CGPoint(x: size.width * CGFloat(index) + inset, y: 0.0),
