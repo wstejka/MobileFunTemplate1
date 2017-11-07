@@ -24,6 +24,10 @@ class ProductViewController: UIViewController {
         return productCellWidth * heightToWidthFactor
     }
     
+    let imageCellIndex = 0
+    
+    var animator : ImageZoomAnimator!
+    
     // MARK: - View lifecycle
     
     override func viewDidLoad() {
@@ -62,7 +66,7 @@ extension ProductViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         var cell : UITableViewCell!
-        if indexPath.row == 2 {
+        if indexPath.row == imageCellIndex {
             let productCell = tableView.dequeueReusableCell(withIdentifier: "pageCell", for: indexPath) as! ProductPageTableViewCell
             productCell.delegate = self
             productCell.product = product
@@ -71,7 +75,6 @@ extension ProductViewController : UITableViewDataSource {
         }
         else {
             cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as! ProductTableViewCell
-//            cell.backgroundColor = .green
         }
         
         return cell
@@ -83,7 +86,7 @@ extension ProductViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
-        if indexPath.row == 2 {
+        if indexPath.row == imageCellIndex {
             return productCellHeight
         }
         else {
@@ -99,9 +102,25 @@ extension ProductViewController : ProductImageTapped {
         let controller = ImageZoomingViewController.fromStoryboard()
         controller.currentIndex = atIndex
         controller.images = images
-        present(controller, animated: true)
-    }
+        controller.transitioningDelegate = self
+        controller.modalPresentationStyle = .custom
         
+        self.present(controller, animated: true)
+//        self.navigationController?.pushViewController(controller, animated: true)
+    }
+}
+
+extension ProductViewController : UIViewControllerTransitioningDelegate {
+
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        log.verbose("")
+        animator = ImageZoomAnimator(fromViewController: source)
+        return animator
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return nil
+    }
 }
 
 

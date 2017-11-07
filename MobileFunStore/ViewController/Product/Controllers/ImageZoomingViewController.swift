@@ -100,9 +100,9 @@ extension ImageZoomingViewController : UIScrollViewDelegate {
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         
         log.verbose("\(scale)")
-        if scale == Utils.ImageScales.min.rawValue {
-            dismiss(animated: true, completion: nil)
-        }
+//        if scale == Utils.ImageScales.min.rawValue {
+//            dismiss(animated: true, completion: nil)
+//        }
     }
     
 }
