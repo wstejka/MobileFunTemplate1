@@ -157,6 +157,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9E0D21ED1FB309A200813C0D /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		9EAC56011F8D1A84004067C3 /* Internationalization */ = {
 			isa = PBXGroup;
 			children = (
@@ -252,6 +259,7 @@
 		9EE22D531F8BA6CD0041FEC1 /* MobileFunStore */ = {
 			isa = PBXGroup;
 			children = (
+				9E0D21ED1FB309A200813C0D /* Utils */,
 				9EDC30FD1F8E8862001C2B64 /* Scripts */,
 				9EAC56011F8D1A84004067C3 /* Internationalization */,
 				9EE22D771F8D0DFA0041FEC1 /* Extensions */,

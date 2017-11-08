@@ -22,10 +22,11 @@ class ProductViewController: UIViewController {
     let heightToWidthFactor : CGFloat = 0.66
     let heightFactor : CGFloat = 0.8
     var productCellHeight : CGFloat! {
-//        return productCellWidth * heightToWidthFactor
         return tableView.frame.height * heightFactor
     }
     
+    // Tbale view properties
+    let numberOfSections = 3
     let imageCellIndex = 0
     let bottomImageCellPlaceholdersNumber = 1
     let detailsCellPlaceholdersNumber = 1
@@ -65,39 +66,42 @@ class ProductViewController: UIViewController {
 extension ProductViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return imageCellIndex + 1 + detailsCellPlaceholdersNumber + product.specification.count + bottomImageCellPlaceholdersNumber
+
+        var numberOfRowsInSection = 0
+        if section == 0 {
+            numberOfRowsInSection = imageCellIndex + 1 + detailsCellPlaceholdersNumber
+        }
+        else if section == 1 {
+            numberOfRowsInSection = product.specification.count
+        }
+        else if section == 2 {
+            numberOfRowsInSection = bottomImageCellPlaceholdersNumber
+        }
+        return numberOfRowsInSection
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return numberOfSections
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         var cell : UITableViewCell!
-        if indexPath.row < imageCellIndex {
-            
-            cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as! ProductTableViewCell
-            cell.backgroundColor = .blue
-            
+        if indexPath.section == 0 {
+            if indexPath.row == imageCellIndex {
+                let productCell = tableView.dequeueReusableCell(withIdentifier: "pageCell", for: indexPath) as! ProductPageTableViewCell
+                productCell.delegate = self
+                productCell.product = product
+                productCell.cellFrameSize = CGSize(width: productCellWidth, height: productCellHeight)
+                return productCell
+            }
+            else if indexPath.row == imageCellIndex + 1 {
+                cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as! ProductTableViewCell
+            }
         }
-        else if indexPath.row == imageCellIndex {
-            let productCell = tableView.dequeueReusableCell(withIdentifier: "pageCell", for: indexPath) as! ProductPageTableViewCell
-            productCell.delegate = self
-            productCell.product = product
-            productCell.cellFrameSize = CGSize(width: productCellWidth, height: productCellHeight)
-            return productCell
-        }
-        else if indexPath.row == imageCellIndex + 1 {
+        else if indexPath.section == 1 {
             
-            cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as! ProductTableViewCell
-
-        }
-        else if (indexPath.row > imageCellIndex + detailsCellPlaceholdersNumber) &&
-            (indexPath.row <= imageCellIndex + detailsCellPlaceholdersNumber + product.specification.count) {
-            
-            let specIndex = indexPath.row - (imageCellIndex + detailsCellPlaceholdersNumber + 1)
-            let attribute = product.specification[specIndex].first
+            let attribute = product.specification[indexPath.row].first
             let attributeCell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! ProductAttributeTableViewCell
             attributeCell.attributeKeyLabel.text = attribute?.key
             attributeCell.attributeValueLabel.text = attribute?.value
@@ -118,37 +122,55 @@ extension ProductViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
-        if indexPath.row < imageCellIndex {
-            
-            return 100.0
+        var heightForRow : CGFloat = 100.0
+        if indexPath.section == 0 {
+            if indexPath.row == imageCellIndex {
+                heightForRow = productCellHeight
+            }
+            else if indexPath.row == imageCellIndex + 1 {
+                heightForRow = max(100.0, tableView.frame.height - productCellHeight)
+            }
         }
-        else if indexPath.row == imageCellIndex {
-            return productCellHeight
-        }
-        else if indexPath.row == imageCellIndex + 1 {
-                return max(100.0, tableView.frame.height - productCellHeight)
-        }
-        else if (indexPath.row > imageCellIndex + detailsCellPlaceholdersNumber) &&
-            (indexPath.row <= imageCellIndex + detailsCellPlaceholdersNumber + product.specification.count) {
+        else if indexPath.section == 1 {
             
-            let specIndex = indexPath.row - (imageCellIndex + detailsCellPlaceholdersNumber + 1)
-            let attribute = product.specification[specIndex].first
-//            let cellFrame = tableView.rectForRow(at: indexPath)
+            let attribute = product.specification[indexPath.row].first
             
-
             // Calculate cell height depends on text
             let inset = 10.0
             let labelWidth = (tableView.frame.width / 2) - CGFloat(1.5 * inset)
             let keyTextSize = attribute?.key.height(constraintedWidth: labelWidth, font: defaultFont)
             let valueTextSize = attribute?.value.height(constraintedWidth: labelWidth, font: defaultFont)
             
-            return max(keyTextSize!, valueTextSize!) + 5.0
+            heightForRow = max(keyTextSize!, valueTextSize!) + 5.0
         }
         
-        return 100.0
+        return heightForRow
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+        var heightForHeader : CGFloat = 0.001
+        if section == 1 {
+            heightForHeader = 30.0
+        }
+        return heightForHeader
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        var titleForHeader = ""
+        if section == 1 {
+            titleForHeader = "Specification"
+        }
+        return titleForHeader
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.001
+    }
+        
 }
+
 
 extension ProductViewController : ProductImageTapped {
 
@@ -159,8 +181,8 @@ extension ProductViewController : ProductImageTapped {
         controller.transitioningDelegate = self
         controller.modalPresentationStyle = .custom
         
+        // Present View modally
         self.present(controller, animated: true)
-//        self.navigationController?.pushViewController(controller, animated: true)
     }
 }
 
