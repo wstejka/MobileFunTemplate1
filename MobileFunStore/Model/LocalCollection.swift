@@ -33,6 +33,7 @@ extension DocumentIdentifiable {
 
 protocol DocumentEquatable : Equatable {
     var uniqueKey : String { get }
+    func documentChanged(document : Self) -> Bool
 }
 
 extension DocumentEquatable {
@@ -55,7 +56,9 @@ class LocalCollection<T: DocumentSerializable> where T : DocumentEquatable {
 
     // MARK - Vars/Cons
     private(set) var items : [T] = []
-    fileprivate let completionHandler : Utils.CompletionType
+    private var oldItemsDict : [String : T] = [:]
+    private var itemsDict : [String : T] = [:]
+    fileprivate let completionHandler : ModelUtils.CompletionType
     fileprivate(set) var query : Query
     fileprivate(set) var documents: [DocumentSnapshot] = []
     
@@ -79,7 +82,7 @@ class LocalCollection<T: DocumentSerializable> where T : DocumentEquatable {
         return documents[index].documentID
     }
     
-    init(query: Query, completionHandler : @escaping Utils.CompletionType) {
+    init(query: Query, completionHandler : @escaping ModelUtils.CompletionType) {
         self.items = []
         self.query = query
         self.completionHandler = completionHandler
@@ -88,12 +91,18 @@ class LocalCollection<T: DocumentSerializable> where T : DocumentEquatable {
     func listen() {
         guard listener == nil else { return }
         log.verbose("")
+
         listener = query.addSnapshotListener { [unowned self] (snapshot, error) in
             
             guard let snapshot = snapshot else {
                 log.error("Error fetching snapshot: \(String(describing: error))")
                 return
             }
+            let oldIDs = self.items.map({ (document) -> String in
+                return document.uniqueKey
+            })
+            self.oldItemsDict = self.getDict(fromArray: self.items)
+            
             let models = snapshot.documents.map({ (singlesnapshot) -> T in
                 log.verbose("\(singlesnapshot.data())")
                 guard let model = T(dictionary: singlesnapshot.data()) else {
@@ -102,9 +111,33 @@ class LocalCollection<T: DocumentSerializable> where T : DocumentEquatable {
                 return model
             })
             self.items = models
+            self.itemsDict = self.getDict(fromArray: self.items)
+
             self.documents = snapshot.documents
-            self.completionHandler(snapshot.documentChanges)
+            self.completionHandler(snapshot.documentChanges, oldIDs)
         }
+    }
+
+    private func getDict(fromArray : [T]) -> [String : T] {
+        
+        let itemsDict = fromArray.reduce([String : T]()) { (prevDict, object) -> [String : T] in
+            
+            var prevDict = prevDict
+            prevDict[object.uniqueKey] = object
+            return prevDict
+        }
+        return itemsDict
+    }
+    
+    func documentChanged(document id : String) -> Bool {
+        
+        guard let oldDocument = oldItemsDict[id] else {
+            return true
+        }
+        guard let newDocument = itemsDict[id] else {
+            return true
+        }
+        return oldDocument.documentChanged(document: newDocument)
     }
     
     func stopListening() {
@@ -127,7 +160,7 @@ class LocalCollection<T: DocumentSerializable> where T : DocumentEquatable {
                 return document
             })
             self?.items = documents
-            self?.completionHandler(snapshot.documentChanges)
+            self?.completionHandler(snapshot.documentChanges, [])
         }
     }
     

@@ -10,6 +10,7 @@
 		9E0D21C61FB0D80A00813C0D /* ImageZoomAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E0D21C51FB0D80A00813C0D /* ImageZoomAnimator.swift */; };
 		9E0D21EA1FB2388A00813C0D /* ProductAttributeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9E0D21E91FB2388A00813C0D /* ProductAttributeTableViewCell.xib */; };
 		9E0D21EC1FB238B200813C0D /* ProductAttributeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E0D21EB1FB238B200813C0D /* ProductAttributeTableViewCell.swift */; };
+		9E0D21EF1FB30A8000813C0D /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E0D21EE1FB30A8000813C0D /* Utils.swift */; };
 		9E1783321F97D0B8002CE4B0 /* ModelStatics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1783311F97D0B8002CE4B0 /* ModelStatics.swift */; };
 		9E1783341F98C2B7002CE4B0 /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1783331F98C2B7002CE4B0 /* Group.swift */; };
 		9E203E5A1FA06720006CE10F /* GroupDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E203E591FA06720006CE10F /* GroupDetailsViewController.swift */; };
@@ -75,6 +76,7 @@
 		9E0D21C51FB0D80A00813C0D /* ImageZoomAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageZoomAnimator.swift; sourceTree = "<group>"; };
 		9E0D21E91FB2388A00813C0D /* ProductAttributeTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductAttributeTableViewCell.xib; sourceTree = "<group>"; };
 		9E0D21EB1FB238B200813C0D /* ProductAttributeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductAttributeTableViewCell.swift; sourceTree = "<group>"; };
+		9E0D21EE1FB30A8000813C0D /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		9E1783311F97D0B8002CE4B0 /* ModelStatics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelStatics.swift; sourceTree = "<group>"; };
 		9E1783331F98C2B7002CE4B0 /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		9E203E591FA06720006CE10F /* GroupDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailsViewController.swift; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 		9E0D21ED1FB309A200813C0D /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				9E0D21EE1FB30A8000813C0D /* Utils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -320,8 +323,8 @@
 			children = (
 				9E1783311F97D0B8002CE4B0 /* ModelStatics.swift */,
 				9E5073E51F97B3C900D90772 /* Product.swift */,
-				9E5073E71F97B3F300D90772 /* LocalCollection.swift */,
 				9E1783331F98C2B7002CE4B0 /* Group.swift */,
+				9E5073E71F97B3F300D90772 /* LocalCollection.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -681,6 +684,7 @@
 				9E203E5A1FA06720006CE10F /* GroupDetailsViewController.swift in Sources */,
 				9E0D21C61FB0D80A00813C0D /* ImageZoomAnimator.swift in Sources */,
 				9E5AFDB71FAD009900F0ADE3 /* GroupDetailsProductCollectionViewCell.swift in Sources */,
+				9E0D21EF1FB30A8000813C0D /* Utils.swift in Sources */,
 				9E5868041FA5B6B200CC058D /* SingleLabelCollectionViewCell.swift in Sources */,
 				9EDB8DC21FA12CB100545F9B /* GroupDetailsCollectionViewCell.swift in Sources */,
 				9E5867FF1FA4CA6900CC058D /* UIColorExtension.swift in Sources */,

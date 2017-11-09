@@ -183,13 +183,13 @@ class GroupDetailsViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var alphaView: UIView!
     
-    // MARK: - Const/Var
+    // MARK: - Const/Vars
     var group : Group!
     var documentID : String!
     var topCellFrame : CGRect!
     
     private var productCollection : LocalCollection<Product>!
-    private var initialRequest = true
+    private let sectionWithFirestoreData = 1
     
     var lastSelectedCell : GroupDetailsProductCollectionViewCell?
     
@@ -209,39 +209,50 @@ class GroupDetailsViewController: UIViewController {
 
         let query = Firestore.firestore().collection(Utils.collection.product.rawValue).whereField("parent_id", isEqualTo: group.id).order(by: "order")
         
-        productCollection = LocalCollection(query: query, completionHandler: { [weak self] (documents) in
+        productCollection = LocalCollection(query: query, completionHandler: { [weak self] (documents, oldIDs) in
             
             guard let weakSelf = self else { return }
-            if weakSelf.initialRequest == true {
-                weakSelf.initialRequest = false
+            if oldIDs.count == 0 {
                 weakSelf.collectionView.reloadData()
                 return
             }
             
             var addIndexPaths: [IndexPath] = []
             var delIndexPaths: [IndexPath] = []
+            var modIndexPaths: [IndexPath] = []
             
             for document in documents {
+                
+                let id = document.document.documentID
+                if weakSelf.productCollection.documentChanged(document: id) == false {
+                    // Document didn't change. Nothing to do here
+                    continue
+                }
                 if document.type == .added {
-                    let indexPath = IndexPath(row: Int(document.newIndex), section: 0)
-                    addIndexPaths.append(indexPath)
+                    let indexPath = IndexPath(row: Int(document.newIndex), section: weakSelf.sectionWithFirestoreData)
+                    if oldIDs.contains(document.document.documentID) == true {
+                        modIndexPaths.append(indexPath)
+                    }
+                    else {
+                        addIndexPaths.append(indexPath)
+                    }
                 }
                 else if document.type == .removed {
-                    let indexPath = IndexPath(row: Int(document.oldIndex), section: 0)
+                    let indexPath = IndexPath(row: Int(document.oldIndex), section: weakSelf.sectionWithFirestoreData)
                     delIndexPaths.append(indexPath)
                 }
                 else if document.type == DocumentChangeType.modified {
-                    let newIndexPath = IndexPath(row: Int(document.newIndex), section: 0)
-                    let oldIndexPath = IndexPath(row: Int(document.oldIndex), section: 0)
-                    addIndexPaths.append(newIndexPath)
-                    delIndexPaths.append(oldIndexPath)
-                    
+                    let modIndexPath = IndexPath(row: Int(document.oldIndex), section: weakSelf.sectionWithFirestoreData)
+                    modIndexPaths.append(modIndexPath)
                 }
             }
+            
             // let's do this in batch to avoid crash
             weakSelf.collectionView.performBatchUpdates({
                 weakSelf.collectionView.insertItems(at: addIndexPaths)
-                weakSelf.collectionView.insertItems(at: delIndexPaths)
+                weakSelf.collectionView.deleteItems(at: delIndexPaths)
+                weakSelf.collectionView.reloadItems(at: modIndexPaths)
+
             })
         })
     }
@@ -253,13 +264,11 @@ class GroupDetailsViewController: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-//        productCollection?.stopListening()
-//        initialRequest = true
+        productCollection?.stopListening()
     }
     
     deinit {
         log.debug("")
-        productCollection?.stopListening()
     }
     
     // MARK: - Methods

@@ -26,6 +26,7 @@ extension GroupViewController : UITableViewDataSource {
 //        log.verbose("entered: \(indexPath.row)")
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! GroupTableViewCell
         cell.selectionStyle = .none
+        cell.tableWidth = tableView.frame.width
         cell.group = groupCollection[indexPath.row]            
         return cell
     }
@@ -57,17 +58,6 @@ extension GroupViewController : UITableViewDelegate {
             controller.documentID = documentID
             controller.topCellFrame = selectedCell?.frame
 
-//            let animation : CATransition = CATransition()
-//            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-//            animation.duration = 0.5
-//            self.navigationController?.view.layer.add(animation, forKey: kCATransitionFromTop)
-
-//            let transition:CATransition = CATransition()
-//            transition.duration = 0.5
-//            transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-//            transition.type = kCATransitionPush
-//            transition.subtype = kCATransitionFromLeft
-//            self.navigationController!.view.layer.add(transition, forKey: kCATransition)
             self.navigationController?.pushViewController(controller, animated: true)
 
         }
@@ -97,9 +87,6 @@ class GroupViewController: UIViewController {
         return Firestore.firestore().collection("Groups").order(by: "order").whereField("parent_id", isEqualTo: "")
     }()
     
-    var initialRequest : Bool = true
-    private var tableViewOffset = CGPoint.zero
-
     // MARK: - class lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,41 +97,50 @@ class GroupViewController: UIViewController {
         tableView.separatorStyle = .none
         self.tableView.refreshControl = self.refreshControl
                 
-        groupCollection = LocalCollection(query: query, completionHandler: { [weak self] (documents) in
+        groupCollection = LocalCollection(query: query, completionHandler: { [weak self] (documents, oldIDs) in
             
             guard let weakSelf = self else { return }
-            if weakSelf.initialRequest == true {
-                weakSelf.initialRequest = false
+            if oldIDs.count == 0 {
                 weakSelf.tableView.reloadData()
                 return
             }
-            
+
             var addIndexPaths: [IndexPath] = []
             var delIndexPaths: [IndexPath] = []
+            var modIndexPaths: [IndexPath] = []
 
             for document in documents {
+                
+                let id = document.document.documentID
+                if weakSelf.groupCollection.documentChanged(document: id) == false {
+                    // Document didn't change. Nothing to do here
+                    continue
+                }
+                
                 if document.type == .added {
-                    // Check if index is already added. This can happen if this is                    
-                    
                     let indexPath = IndexPath(row: Int(document.newIndex), section: 0)
-                    addIndexPaths.append(indexPath)
+                    if oldIDs.contains(id) == true {
+                        modIndexPaths.append(indexPath)
+                    }
+                    else {
+                        addIndexPaths.append(indexPath)
+                    }
                 }
                 else if document.type == .removed {
                     let indexPath = IndexPath(row: Int(document.oldIndex), section: 0)
                     delIndexPaths.append(indexPath)
                 }
                 else if document.type == DocumentChangeType.modified {
-                    let newIndexPath = IndexPath(row: Int(document.newIndex), section: 0)
-                    let oldIndexPath = IndexPath(row: Int(document.oldIndex), section: 0)
-                    addIndexPaths.append(newIndexPath)
-                    delIndexPaths.append(oldIndexPath)
-
+                    let indexPath = IndexPath(row: Int(document.oldIndex), section: 0)
+                    modIndexPaths.append(indexPath)
                 }
             }
+            
             // let's do this in batch to avoid crash
             weakSelf.tableView.performBatchUpdates({
                 weakSelf.tableView.insertRows(at: addIndexPaths, with: .automatic)
                 weakSelf.tableView.deleteRows(at: delIndexPaths, with: .automatic)
+                weakSelf.tableView.reloadRows(at: modIndexPaths, with: .automatic)
             })
         })
     }
@@ -157,17 +153,15 @@ class GroupViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        tableView.contentOffset = tableViewOffset
     }
         
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-//        groupCollection?.stopListening()
+        groupCollection?.stopListening()
     }
     
     deinit {
         log.verbose("")
-        groupCollection?.stopListening()
     }
 
     // MARK: - Methods

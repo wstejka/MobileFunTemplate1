@@ -15,7 +15,7 @@ struct Product {
     var longDescription : String
     var id : String
     var parent_id : String
-    var parent_ref : DocumentReference
+    var parent_ref : DocumentReference?
     var order : Int
     var quantityInStock : Float
     var price : Float
@@ -29,6 +29,20 @@ struct Product {
 }
 
 extension Product : DocumentEquatable {
+
+    func documentChanged(document: Product) -> Bool {
+        var hasChanged = false
+        
+        if document.title != title {
+            hasChanged = true
+        }
+        else if document.shortDescription != shortDescription {
+            hasChanged = true
+        }
+        return hasChanged
+    }
+
+    
     
     var uniqueKey: String {
         return id
@@ -45,7 +59,6 @@ extension Product : DocumentSerializable {
             let longDescription = dictionary["longDescription"] as? String,
             let id = dictionary["id"] as? String,
             let parent_id = dictionary["parent_id"] as? String,
-            let parent_ref = dictionary["parent_ref"] as? DocumentReference,
             let order = dictionary["order"] as? Int,
             let price = dictionary["price"] as? Float,
             let quantityInStock = dictionary["quantityInStock"] as? Float,
@@ -64,9 +77,14 @@ extension Product : DocumentSerializable {
         if let urls = dictionary["urls"] as? [String] {
             cUrls = urls
         }
+        var cParentRef : DocumentReference? = nil
+        if let parent_ref = dictionary["parent_ref"] as? DocumentReference {
+            cParentRef = parent_ref
+        }
+
 
         self.init(title: title, shortDescription: shortDescription, longDescription: longDescription, id: id,
-                  parent_id: parent_id, parent_ref: parent_ref, order: order, quantityInStock: quantityInStock,
+                  parent_id: parent_id, parent_ref: cParentRef, order: order, quantityInStock: quantityInStock,
                   price: price, images: cImages, urls: cUrls, specification: specification)
     }
     
@@ -77,7 +95,6 @@ extension Product : DocumentSerializable {
                 "longDescription" : longDescription,
                 "id" : id,
                 "parent_id" : parent_id,
-                "parent_ref" : parent_ref,
                 "order" : order,
                 "price" : price,
                 "quantityInStock" : quantityInStock,

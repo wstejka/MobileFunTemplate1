@@ -17,22 +17,28 @@ class GroupTableViewCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var titleHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var titleLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var titleTrailingConstraint: NSLayoutConstraint!
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
     
+    var tableWidth : CGFloat!
     var group : Group? {
         didSet {
             guard let group = group else { return  }
             
             titleLabel.text = group.title
             descriptionLabel.text = group.shortDescription
-            let titleHeight = titleLabel.text?.height(constraintedWidth: titleLabel.frame.width,
+            let titleWidthWithConstraint = tableWidth - (titleTrailingConstraint.constant + titleLeadingConstraint.constant)
+            let titleHeight = titleLabel.text?.height(constraintedWidth: titleWidthWithConstraint,
                                                       font: titleLabel.font)
             titleHeightConstraint.constant = titleHeight!
             titleLabel.setNeedsUpdateConstraints()
+            log.verbose("\(group.title, titleLabel.frame.width, titleLabel.superview?.frame.width ,titleHeight)")
 
             if !group.url.isEmpty {
                 let url = URL(string: group.url)

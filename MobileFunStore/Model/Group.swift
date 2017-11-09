@@ -28,6 +28,19 @@ struct Group {
 }
 
 extension Group : DocumentEquatable {
+    
+    func documentChanged(document: Group) -> Bool {
+        
+        var hasChanged = false
+        if document.title != title {
+            hasChanged = true
+        }
+        else if document.shortDescription != shortDescription {
+            hasChanged = true
+        }
+        return hasChanged
+    }
+    
 
     var uniqueKey: String {
         return id

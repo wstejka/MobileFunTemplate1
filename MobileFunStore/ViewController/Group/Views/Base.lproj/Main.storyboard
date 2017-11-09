@@ -77,6 +77,8 @@
                                             <outlet property="imageViewHandler" destination="0He-q9-5QT" id="AXi-nc-eRA"/>
                                             <outlet property="titleHeightConstraint" destination="lkG-EB-IzC" id="c7T-XK-VHl"/>
                                             <outlet property="titleLabel" destination="Abo-1R-l41" id="NC6-D7-8eh"/>
+                                            <outlet property="titleLeadingConstraint" destination="RQt-Jd-g2U" id="Oe2-hi-clA"/>
+                                            <outlet property="titleTrailingConstraint" destination="COC-FF-BJl" id="1YU-h2-Oys"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -101,7 +103,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1639" y="-214"/>
+            <point key="canvasLocation" x="1637.5999999999999" y="-214.54272863568218"/>
         </scene>
         <!--Group Details View Controller-->
         <scene sceneID="wLM-Cp-6Pv">

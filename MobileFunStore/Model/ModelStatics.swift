@@ -8,19 +8,9 @@
 import FirebaseFirestore
 import UIKit
 
-class Utils {
+class ModelUtils {
 
-    typealias CompletionType = ([DocumentChange]) -> Void
-    static let insetSize : Double = 8.0
-    
-    enum collection : String {
-        case group = "Groups"
-        case product = "Products"
-    }
-    
-    enum ImageScales : CGFloat {
-        case min = 1.0
-        case max = 2.0
-    }
+    typealias CompletionType = ([DocumentChange], [String]) -> Void
+
 }
 
