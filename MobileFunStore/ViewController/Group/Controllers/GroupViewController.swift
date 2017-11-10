@@ -23,7 +23,6 @@ extension GroupViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-//        log.verbose("entered: \(indexPath.row)")
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! GroupTableViewCell
         cell.selectionStyle = .none
         cell.tableWidth = tableView.frame.width
@@ -48,7 +47,6 @@ extension GroupViewController : UITableViewDelegate {
             let controller = GroupViewController.fromStoryboard()
 
             controller.query = Firestore.firestore().collection(Utils.collection.group.rawValue).order(by: "order").whereField("parent_id", isEqualTo: documentID)
-            //query.document(documentID).collection(subgroupID)
             controller.navigationItem.leftBarButtonItem = nil
             controller.documentID = documentID
             self.navigationController?.pushViewController(controller, animated: true)

@@ -36,9 +36,9 @@ class ProductImageTableViewCell: UITableViewCell {
                 return URL(string: urlName)
             })
             
+            imagesInScrollView = []
             // Build content of embeded pageView
             let size = self.frame.size
-            
             let pagesNumber = urls.count
             self.pageControl.numberOfPages = pagesNumber
 

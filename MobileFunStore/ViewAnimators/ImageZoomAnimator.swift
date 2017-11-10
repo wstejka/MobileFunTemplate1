@@ -46,10 +46,11 @@ class ImageZoomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             backgroundView.addSubview(imageView)
             
             
-            UIView.animate(withDuration: 0.2, delay: 0.0, options: UIViewAnimationOptions.curveLinear, animations: {
+            UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
                 
                 backgroundView.alpha = 1.0
-                imageView.frame = toVC.mainScrollView.frame
+                imageView.frame = CGRect(origin: toVC.mainScrollView.frame.origin,
+                                         size: toVC.scrollViewSize)
                 
             }) { (_) in
                 

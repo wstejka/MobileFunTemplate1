@@ -38,7 +38,6 @@ class GroupTableViewCell: UITableViewCell {
                                                       font: titleLabel.font)
             titleHeightConstraint.constant = titleHeight!
             titleLabel.setNeedsUpdateConstraints()
-            log.verbose("\(group.title, titleLabel.frame.width, titleLabel.superview?.frame.width ,titleHeight)")
 
             if !group.url.isEmpty {
                 let url = URL(string: group.url)
@@ -47,9 +46,6 @@ class GroupTableViewCell: UITableViewCell {
                         log.error("\(error!)")
                     }
                 }
-
-//                Storage.storage().reference().child(group.imageName).downloadURL { [unowned self] (url, error) in
-//                }
             }
         }
     }

@@ -13,6 +13,9 @@ class ImageZoomingViewController: UIViewController {
     // MARK: Outlets
     @IBOutlet weak var mainScrollView: UIScrollView!
     @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var mainScrollViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var mainScrollViewBottomConstraint: NSLayoutConstraint!
+    
 
     var currentIndex : Int!
     var images : [UIImage]!
@@ -42,15 +45,21 @@ class ImageZoomingViewController: UIViewController {
         self.pageControl.pageIndicatorTintColor = UIColor.black
         self.pageControl.currentPageIndicatorTintColor = UIColor.red
     }
+    
+    var scrollViewSize : CGSize {
+        return CGSize(width: view.frame.width, height: view.frame.height - (mainScrollViewTopConstraint.constant + mainScrollViewBottomConstraint.constant + UIApplication.shared.statusBarFrame.size.height))
+    }
 
     func setupScrollView() {
         
         mainScrollView.isPagingEnabled = true
         mainScrollView.showsHorizontalScrollIndicator = false
         mainScrollView.showsVerticalScrollIndicator = false
+        
         for arg in images.enumerated() {
             // create scroll per image to handle zomming correctly
-            let scrollView = UIScrollView(frame: view.frame)
+            let scrollView = UIScrollView(frame: CGRect(origin: CGPoint(x: CGFloat(arg.offset) * scrollViewSize.width , y: 0.0),
+                                                        size: scrollViewSize))
             
             scrollView.minimumZoomScale = Utils.ImageScales.min.rawValue
             scrollView.maximumZoomScale = Utils.ImageScales.max.rawValue
@@ -58,21 +67,21 @@ class ImageZoomingViewController: UIViewController {
             scrollView.showsVerticalScrollIndicator = false
             scrollView.showsHorizontalScrollIndicator = false
             scrollView.delegate = self
-            scrollView.contentSize = CGSize(width: view.frame.width, height: scrollView.frame.height)
-            scrollView.frame.origin = CGPoint(x: CGFloat(arg.offset) * view.frame.width , y: 0.0)
+            scrollView.contentSize = scrollViewSize
             scrollView.tag = arg.offset + cellTagShift
+//            scrollView.backgroundColor = (scrollView.tag % 2) == 0 ? .green : .orange
+            scrollView.clipsToBounds = true
             mainScrollView.addSubview(scrollView)
 
-            let imageView = UIImageView(frame: view.frame)
+            let imageView = UIImageView(frame: CGRect(origin: .zero, size: scrollViewSize))
             imageView.image = arg.element
             imageView.contentMode = .scaleAspectFit
-            imageView.clipsToBounds = true
             imageViews.append(imageView)
             scrollView.addSubview(imageView)
         }
         
-        mainScrollView.contentSize = CGSize(width: CGFloat(images.count) * view.frame.width, height: mainScrollView.frame.height)
-        mainScrollView.contentOffset = CGPoint(x: CGFloat(currentIndex) * view.frame.width, y: 0.0)
+        mainScrollView.contentSize = CGSize(width: CGFloat(images.count) * scrollViewSize.width, height: scrollViewSize.height)
+        mainScrollView.contentOffset = CGPoint(x: CGFloat(currentIndex) * scrollViewSize.width, y: 0.0)
     }
 
     static func fromStoryboard(_ storyboard: UIStoryboard = UIStoryboard(name: "Product", bundle: nil)) -> ImageZoomingViewController {
