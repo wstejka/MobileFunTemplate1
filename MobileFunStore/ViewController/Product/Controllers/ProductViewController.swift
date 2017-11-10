@@ -8,33 +8,58 @@
 
 import UIKit
 
+enum ProductItemType : Int {
+    case image
+    case priceWithNote
+    case description
+    case attributes
+    case bottom
+}
+
+protocol ProductSectionItem {
+    
+    var title : String { get }
+    var type : ProductItemType { get }
+    var rows : Int { get }
+    func cellHeight(tableSize: CGSize, cellForRowAt indexPath: IndexPath) -> CGFloat
+    
+}
+
+extension ProductSectionItem {
+    
+    var title : String {
+        return ""
+    }
+    var rows : Int {
+        return 1
+    }
+}
+
+
 class ProductViewController: UIViewController {
 
     // MARK: - Outlets
     @IBOutlet weak var tableView: UITableView!
-    weak var value : UIView!
 
     // MARK: - Vars/ Const
-    var product : Product!
-    var productCellWidth : CGFloat! {
-        return tableView.frame.width
-    }
-    let heightToWidthFactor : CGFloat = 0.66
+//    
+//    var productCellWidth : CGFloat! {
+//        return tableView.frame.width
+//    }
+//    let heightToWidthFactor : CGFloat = 0.66
     let heightFactor : CGFloat = 0.8
-    var productCellHeight : CGFloat! {
-        return tableView.frame.height * heightFactor
-    }
+//    var productCellHeight : CGFloat! {
+//        return tableView.frame.height * heightFactor
+//    }
     
-    // Tbale view properties
-    let numberOfSections = 3
-    let imageCellIndex = 0
-    let bottomImageCellPlaceholdersNumber = 1
-    let detailsCellPlaceholdersNumber = 1
-    let defaultFontSize : CGFloat = 13.0
-    var defaultFont : UIFont {
-        return UIFont(name: "AvenirNext-Regular", size: defaultFontSize)!
-    }
     var animator : ImageZoomAnimator!
+    var product : Product!
+    var items : [ProductSectionItem] = []
+    func indexOfItem(type : ProductItemType) -> Int? {
+        
+        let index = items.index(where: { (item) -> Bool in item.type == type })
+        return index?.hashValue
+    }
     
     // MARK: - View lifecycle
     
@@ -42,11 +67,21 @@ class ProductViewController: UIViewController {
         super.viewDidLoad()
 
         tableView.allowsSelection = false
+        
         //  Register custom section header
-        tableView.register(UINib(nibName: "ProductPageTableViewCell", bundle: nil), forCellReuseIdentifier: "pageCell")
+        tableView.register(UINib(nibName: "ProductImageTableViewCell", bundle: nil), forCellReuseIdentifier: "imageCell")
         tableView.register(UINib(nibName: "ProductAttributeTableViewCell", bundle: nil), forCellReuseIdentifier: "attributeCell")
         
-        
+        // Reflect View Structure here
+        let imageSectionItem = ImagesSectionItem(product : product)
+        let priceWithNoteItem = PriceWithNoteSectionItem(product: product)
+        let descriptionSectionItem = DescriptionSectionItem(description: product.longDescription)
+        let attributesSectionItem = AttributesSectionItem(attributes: product.attributes)
+        let bottomSectionItem = BottomSectionItem()
+        items = [imageSectionItem, priceWithNoteItem, descriptionSectionItem, attributesSectionItem, bottomSectionItem]
+
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
     deinit {
@@ -67,53 +102,51 @@ extension ProductViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
-        var numberOfRowsInSection = 0
-        if section == 0 {
-            numberOfRowsInSection = imageCellIndex + 1 + detailsCellPlaceholdersNumber
-        }
-        else if section == 1 {
-            numberOfRowsInSection = product.specification.count
-        }
-        else if section == 2 {
-            numberOfRowsInSection = bottomImageCellPlaceholdersNumber
-        }
-        return numberOfRowsInSection
+        let item = items[section]
+        return item.rows
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return numberOfSections
+        return items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        var cell : UITableViewCell!
-        if indexPath.section == 0 {
-            if indexPath.row == imageCellIndex {
-                let productCell = tableView.dequeueReusableCell(withIdentifier: "pageCell", for: indexPath) as! ProductPageTableViewCell
-                productCell.delegate = self
-                productCell.product = product
-                productCell.cellFrameSize = CGSize(width: productCellWidth, height: productCellHeight)
-                return productCell
+        let item = items[indexPath.section]
+        switch item.type {
+        case .image:
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as? ProductImageTableViewCell {
+                cell.delegate = self
+                cell.item = item
+                return cell
             }
-            else if indexPath.row == imageCellIndex + 1 {
-                cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as! ProductTableViewCell
+        case .priceWithNote:
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as? ProductTableViewCell {
+                cell.item = item
+                return cell
+            }
+        case .description:
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as? ProductTableViewCell {
+                cell.item = item
+                return cell
+            }
+        case .attributes:
+            
+            if let item = item as? AttributesSectionItem,
+                let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as? ProductAttributeTableViewCell {
+                cell.attribute = item.attributes[indexPath.row]
+                
+                return cell
+            }
+        case .bottom:
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as? ProductTableViewCell {
+                cell.item = item
+                return cell
             }
         }
-        else if indexPath.section == 1 {
-            
-            let attribute = product.specification[indexPath.row].first
-            let attributeCell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as! ProductAttributeTableViewCell
-            attributeCell.attributeKeyLabel.text = attribute?.key
-            attributeCell.attributeValueLabel.text = attribute?.value
-            
-            return attributeCell
-        }
-        else {
-            
-            cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as! ProductTableViewCell
-        }
-
-        return cell
+        
+        return UITableViewCell()
+        
     }
     
 }
@@ -122,47 +155,26 @@ extension ProductViewController : UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 
-        var heightForRow : CGFloat = 100.0
-        if indexPath.section == 0 {
-            if indexPath.row == imageCellIndex {
-                heightForRow = productCellHeight
-            }
-            else if indexPath.row == imageCellIndex + 1 {
-                heightForRow = max(100.0, tableView.frame.height - productCellHeight)
-            }
-        }
-        else if indexPath.section == 1 {
-            
-            let attribute = product.specification[indexPath.row].first
-            
-            // Calculate cell height depends on text
-            let inset = 10.0
-            let labelWidth = (tableView.frame.width / 2) - CGFloat(1.5 * inset)
-            let keyTextSize = attribute?.key.height(constraintedWidth: labelWidth, font: defaultFont)
-            let valueTextSize = attribute?.value.height(constraintedWidth: labelWidth, font: defaultFont)
-            
-            heightForRow = max(keyTextSize!, valueTextSize!) + 5.0
-        }
-        
-        return heightForRow
+        let item = items[indexPath.section]
+        return item.cellHeight(tableSize: tableView.frame.size, cellForRowAt: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        
-        var heightForHeader : CGFloat = 0.001
-        if section == 1 {
-            heightForHeader = 30.0
-        }
-        return heightForHeader
+
+//        var heightForHeader : CGFloat = 0.001
+//        if section == sections.descriptionSection.rawValue {
+//            heightForHeader = 30.0
+//        }
+//        if section == sections.attributesSection.rawValue {
+//            heightForHeader = 30.0
+//        }
+        return 0.001
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        
-        var titleForHeader = ""
-        if section == 1 {
-            titleForHeader = "Specification"
-        }
-        return titleForHeader
+
+        let item = items[section]
+        return item.title
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -189,7 +201,6 @@ extension ProductViewController : ProductImageTapped {
 extension ProductViewController : UIViewControllerTransitioningDelegate {
 
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        log.verbose("")
         animator = ImageZoomAnimator(fromViewController: source)
         return animator
     }
@@ -200,3 +211,102 @@ extension ProductViewController : UIViewControllerTransitioningDelegate {
 }
 
 
+// MARK: - ProductSectionItems classes
+
+class ImagesSectionItem : ProductSectionItem {
+    
+    let heightFactor : CGFloat = 0.8
+    func cellHeight(tableSize: CGSize, cellForRowAt indexPath: IndexPath) -> CGFloat {
+        return tableSize.height * heightFactor
+    }
+    
+    var type: ProductItemType {
+        return .image
+    }
+    
+    let product : Product
+    init(product : Product) {
+        self.product = product
+    }
+}
+
+class PriceWithNoteSectionItem : ProductSectionItem {
+    
+    func cellHeight(tableSize: CGSize, cellForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50.0
+    }
+    
+    var type: ProductItemType {
+        return .priceWithNote
+    }
+
+    let product : Product
+    init(product : Product) {
+        self.product = product
+
+    }
+}
+
+class DescriptionSectionItem : ProductSectionItem {
+    
+    func cellHeight(tableSize: CGSize, cellForRowAt indexPath: IndexPath) -> CGFloat {
+        let inset = 10.0
+        let labelWidth = tableSize.width - CGFloat(2 * inset)
+        let labelHeight = self.description.height(constraintedWidth: labelWidth, font: Utils.getDefaultFont(size: 13.0))
+        return labelHeight
+    }
+    
+    var type: ProductItemType {
+        return .description
+    }
+    var title: String {
+        return "Description"
+    }
+    
+    let description : String
+    init(description : String) {
+        self.description = description
+    }
+}
+
+class AttributesSectionItem : ProductSectionItem {
+    
+    func cellHeight(tableSize: CGSize, cellForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        let attribute = attributes[indexPath.row]
+        
+        // Calculate cell height depends on text
+        let inset = 10.0
+        let labelWidth = (tableSize.width / 2) - CGFloat(1.5 * inset)
+        let keyTextSize = attribute.key.height(constraintedWidth: labelWidth, font: Utils.getDefaultFont(size: 13.0))
+        let valueTextSize = attribute.value.height(constraintedWidth: labelWidth, font: Utils.getDefaultFont(size: 13.0))
+        
+        return max(keyTextSize, valueTextSize) + 10.0
+
+    }
+
+    var rows: Int {
+        return attributes.count
+    }
+    var type: ProductItemType {
+        return .attributes
+    }
+    var title: String {
+        return "Specification"
+    }
+
+    let attributes : [Attribute]
+    init(attributes : [Attribute]) {
+        self.attributes = attributes
+    }
+}
+
+class BottomSectionItem : ProductSectionItem {
+    func cellHeight(tableSize: CGSize, cellForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100.0
+    }
+
+    var type: ProductItemType {
+        return .bottom
+    }
+}

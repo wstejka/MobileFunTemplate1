@@ -1,5 +1,5 @@
 //
-//  ProductPageTableViewCell.swift
+//  ProductImageTableViewCell.swift
 //  MobileFunStore
 //
 //  Created by Wojciech Stejka on 04/11/2017.
@@ -14,7 +14,7 @@ protocol ProductImageTapped {
     
 }
 
-class ProductPageTableViewCell: UITableViewCell {
+class ProductImageTableViewCell: UITableViewCell {
 
     // MARK: - Outlets
     @IBOutlet weak var scrollView: UIScrollView!
@@ -22,47 +22,47 @@ class ProductPageTableViewCell: UITableViewCell {
     
     // MARK: Vars/Consts
     private var urls : [URL?] = []
+    private var imagesInScrollView : [UIImageView] = []
     var delegate : ProductImageTapped!
+    var imageSectionItem : ImagesSectionItem!
+    let cellTagShift = 100
+
     
-    var product : Product? {
+    var item : ProductSectionItem? {
         didSet {
-            guard let product = product else { return }
-            urls = product.urls.map({ (urlName) -> URL? in
+            guard let item = item as? ImagesSectionItem else { return }
+            self.imageSectionItem = item
+            urls = item.product.urls.map({ (urlName) -> URL? in
                 return URL(string: urlName)
             })
-            log.verbose("")
-        }
-    }
-    
-    let cellTagShift = 100
-    var cellFrameSize : CGSize? {
-        
-        didSet {
-            log.verbose("")
-            guard let size = cellFrameSize else { return }
+            
+            // Build content of embeded pageView
+            let size = self.frame.size
             
             let pagesNumber = urls.count
             self.pageControl.numberOfPages = pagesNumber
 
             for index in 0..<pagesNumber {
                 
-                let inset : CGFloat = 0.0
-                let widthWithInsets = size.width - (2 * inset)
                 let factorRatio = size.height / size.width
-                let subView = UIImageView(frame: CGRect(origin: CGPoint(x: size.width * CGFloat(index) + inset, y: 0.0),
-                                                        size: CGSize(width: widthWithInsets, height: widthWithInsets * factorRatio)))
+                let subView = UIImageView(frame: CGRect(origin: CGPoint(x: size.width * CGFloat(index), y: 0.0),
+                                                        size: CGSize(width: size.width, height: size.width * factorRatio)))
                 subView.contentMode = .scaleAspectFit
                 subView.sd_setImage(with: urls[index], completed: nil)
                 subView.tag = index + cellTagShift
+//                subView.backgroundColor = (subView.tag % 2) == 0 ? .blue : .orange
+                imagesInScrollView.append(subView)
+                
                 scrollView.addSubview(subView)
-
+                
             }
             scrollView.contentSize = CGSize(width: size.width * CGFloat(urls.count),
-                                                 height: size.height)
-            scrollView.isPagingEnabled = true            
+                                            height: size.height * imageSectionItem.heightFactor)
+            scrollView.isPagingEnabled = true
         }
-    }
 
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -82,30 +82,15 @@ class ProductPageTableViewCell: UITableViewCell {
         
         log.verbose("")
         // Find the tapped UIImageView
-//        let location = gesture.location(in: scrollView)
-        // Get index of current UIImageView
-        let index : Int = Int(scrollView.contentOffset.x / scrollView.frame.size.width)
-//        guard let tappedImage = scrollView.viewWithTag(Int(index) + cellTagShift) as? UIImageView else { return }
-        
-        delegate.product(images: getImages(), tappedIn: index)
+        let index : Int = Int(scrollView.contentOffset.x / self.frame.size.width)
+        let images = imagesInScrollView.map { $0.image } as! [UIImage]
+        delegate.product(images: images, tappedIn: index)
     }
 
     deinit {
         log.verbose("")
     }
 
-    func getImages() -> [UIImage] {
-        
-        let images = product?.urls.enumerated().map({ (arg) -> UIImage in
-            
-            let (index, _) = arg
-            let imageView = scrollView.viewWithTag(index + cellTagShift) as? UIImageView
-            return (imageView?.image!)!
-        })
-        
-        return images!
-    }
-    
     func configurePageControl() {
         // The total number of pages that are available is based on how many available images we have.
         self.pageControl.currentPage = 0
@@ -117,17 +102,17 @@ class ProductPageTableViewCell: UITableViewCell {
     @objc func changePage(sender: AnyObject) -> () {
         
         log.verbose("")
-        let x = CGFloat(pageControl.currentPage) * (cellFrameSize?.width)!
+        let x = CGFloat(pageControl.currentPage) * self.frame.size.width
         scrollView.setContentOffset(CGPoint(x: x,y :0), animated: true)
     }
 }
 
-extension ProductPageTableViewCell : UIScrollViewDelegate {
+extension ProductImageTableViewCell : UIScrollViewDelegate {
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         log.verbose("")
 
-        let pageNumber = round(scrollView.contentOffset.x / (cellFrameSize?.width)!)
+        let pageNumber = round(scrollView.contentOffset.x / self.frame.size.width)
         self.pageControl.currentPage = Int(pageNumber)
     }
 

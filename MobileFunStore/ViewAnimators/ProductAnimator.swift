@@ -36,9 +36,7 @@ class ProductAnimator : NSObject, UIViewControllerAnimatedTransitioning {
         imageView.contentMode = .scaleAspectFit
         backgroundView.addSubview(imageView)
         
-//        let inset : CGFloat = 10.0
-        let imageWidth : CGFloat = (toVC.tableView.superview?.frame.width)! //toVC.productCellWidth - (2 * inset)
-//        let imageHeight : CGFloat = (toVC.productCellHeight / toVC.productCellWidth) * imageWidth
+        let imageWidth : CGFloat = (toVC.tableView.superview?.frame.width)!
         let imagePositionY : CGFloat = (toVC.navigationController?.navigationBar.frame.origin.y)! +
             ((toVC.navigationController?.navigationBar.frame.height)!)
         let imageHeight : CGFloat = (toVC.tableView.superview?.frame.height)! - imagePositionY

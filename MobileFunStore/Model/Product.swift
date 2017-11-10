@@ -24,8 +24,12 @@ struct Product {
     var images : [String] = []
     var urls : [String] = []
 
-    var specification : [[String : String]]
+    var attributes : [Attribute]
+}
 
+struct Attribute {
+    let key : String
+    let value : String
 }
 
 extension Product : DocumentEquatable {
@@ -62,10 +66,20 @@ extension Product : DocumentSerializable {
             let order = dictionary["order"] as? Int,
             let price = dictionary["price"] as? Float,
             let quantityInStock = dictionary["quantityInStock"] as? Float,
-            let specification = dictionary["specification"] as? [[String : String]]
+            let attributesAsDict = dictionary["specification"] as? [[String : String]]
         else {
                 log.error("Lack of mandatory value(s): \(dictionary)")
                 return nil
+        }
+        
+        // convert every attribute(dict) to Attribute
+        let attributes = attributesAsDict.reduce([Attribute]()) { (array, object) -> [Attribute] in
+            
+            guard let pair = object.first else { return array }
+            let attribute = Attribute(key: pair.key, value: pair.value)
+            var mutableArray = array
+            mutableArray.append(attribute)
+            return mutableArray
         }
         
         // Optional values
@@ -85,7 +99,7 @@ extension Product : DocumentSerializable {
 
         self.init(title: title, shortDescription: shortDescription, longDescription: longDescription, id: id,
                   parent_id: parent_id, parent_ref: cParentRef, order: order, quantityInStock: quantityInStock,
-                  price: price, images: cImages, urls: cUrls, specification: specification)
+                  price: price, images: cImages, urls: cUrls, attributes: attributes)
     }
     
     func dictionary() -> [String : Any] {
@@ -100,7 +114,7 @@ extension Product : DocumentSerializable {
                 "quantityInStock" : quantityInStock,
                 "images" : images,
                 "urls" : urls,
-                "specification" : specification]
+                "attributes" : attributes]
     }
     
 

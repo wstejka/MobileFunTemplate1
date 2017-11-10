@@ -36,10 +36,6 @@
                                     </tableViewCell>
                                 </prototypes>
                                 <sections/>
-                                <connections>
-                                    <outlet property="dataSource" destination="ClF-1j-fsl" id="EJM-mI-NQR"/>
-                                    <outlet property="delegate" destination="ClF-1j-fsl" id="ufJ-pY-9Cl"/>
-                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

@@ -14,6 +14,14 @@ class ProductAttributeTableViewCell: UITableViewCell {
     @IBOutlet weak var attributeKeyLabel: UILabel!
     @IBOutlet weak var attributeValueLabel: UILabel!
     
+    var attribute : Attribute! {
+        
+        didSet {
+            attributeKeyLabel.text = attribute.key
+            attributeValueLabel.text = attribute.value
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

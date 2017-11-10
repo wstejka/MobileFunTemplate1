@@ -10,6 +10,12 @@ import UIKit
 
 class ProductTableViewCell: UITableViewCell {
 
+    var item : ProductSectionItem? {
+        didSet {
+            log.verbose("")
+        }
+        
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

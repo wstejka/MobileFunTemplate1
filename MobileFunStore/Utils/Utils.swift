@@ -22,5 +22,9 @@ class Utils {
         case min = 1.0
         case max = 2.0
     }
+    
+    static func getDefaultFont(size: CGFloat) -> UIFont {        
+        return UIFont(name: "AvenirNext-Regular", size: size)!
+    }
 }
 
