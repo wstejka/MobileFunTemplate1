@@ -1,5 +1,5 @@
 //
-//  GroupTableViewCell.swift
+//  GroupCell.swift
 //  MobileFunStore
 //
 //  Created by Wojciech Stejka on 10/10/2017.
@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import FirebaseStorageUI
 
-class GroupTableViewCell: UITableViewCell {
+class GroupCell: UITableViewCell {
 
     
     @IBOutlet weak var imageViewHandler: UIImageView!

@@ -1,5 +1,5 @@
 //
-//  GroupDetailsImageCVCell.swift
+//  GroupDetailsImageCell.swift
 //  MobileFunStore
 //
 //  Created by Wojciech Stejka on 25/10/2017.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GroupDetailsImageCVCell: UICollectionViewCell {
+class GroupDetailsImageCell: UICollectionViewCell {
 
     // MARK: - Outlets
     

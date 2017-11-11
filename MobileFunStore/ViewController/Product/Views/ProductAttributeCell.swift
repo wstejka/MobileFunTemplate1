@@ -1,5 +1,5 @@
 //
-//  ProductAttributeTableViewCell.swift
+//  ProductAttributeCell.swift
 //  MobileFunStore
 //
 //  Created by Wojciech Stejka on 07/11/2017.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProductAttributeTableViewCell: UITableViewCell {
+class ProductAttributeCell: UITableViewCell {
 
     
     @IBOutlet weak var attributeKeyLabel: UILabel!

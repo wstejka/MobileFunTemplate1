@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/wstejka/Documents/xCode/MYProjects/MobileFunTemplate1/MobileFunStore/ViewController/GroupDetails/Views/GroupDetails.storyboard">
-   </FileRef>
-   <FileRef
       location = "group:MobileFunStore.xcodeproj">
    </FileRef>
    <FileRef

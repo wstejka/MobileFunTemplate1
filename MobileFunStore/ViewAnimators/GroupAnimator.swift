@@ -38,7 +38,7 @@ class GroupAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     {
         if let indexPath = groupVC.tableView.indexPathForSelectedRow,
             // Get the original selected tableViewCell
-            let selectedCell = groupVC.tableView.cellForRow(at: indexPath) as? GroupTableViewCell {
+            let selectedCell = groupVC.tableView.cellForRow(at: indexPath) as? GroupCell {
             //            var collectionCell = groupDetailsVC.collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? GroupDetailsCollectionViewCell
             
             // Create temporary view for transparency effect

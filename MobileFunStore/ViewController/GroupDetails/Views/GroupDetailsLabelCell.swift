@@ -1,5 +1,5 @@
 //
-//  SingleLabelCollectionViewCell.swift
+//  GroupDetailsLabelCell.swift
 //  MobileFunStore
 //
 //  Created by Wojciech Stejka on 29/10/2017.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SingleLabelCollectionViewCell: UICollectionViewCell {
+class GroupDetailsLabelCell : UICollectionViewCell {
     
     @IBOutlet weak var textLabel: UILabel!
 

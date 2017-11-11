@@ -32,7 +32,7 @@ class GroupDetailsViewController: UIViewController {
     private var productCollection : LocalCollection<Product>!
     private let sectionWithFirestoreData = 1
     
-    var lastSelectedCell : GroupDetailsProductCollectionViewCell?
+    var lastSelectedCell : GroupDetailsProductCell?
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -44,9 +44,9 @@ class GroupDetailsViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = true
         
         //  Register custom section header
-        collectionView.register(UINib(nibName: "SingleLabelCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "labelCell")
-        collectionView.register(UINib(nibName: "GroupDetailsTopCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "groupCell")
-        collectionView.register(UINib(nibName: "GroupDetailsProductCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "productCell")
+        collectionView.register(UINib(nibName: "GroupDetailsLabelCell", bundle: nil), forCellWithReuseIdentifier: "labelCell")
+        collectionView.register(UINib(nibName: "GroupDetailsImageCell", bundle: nil), forCellWithReuseIdentifier: "groupCell")
+        collectionView.register(UINib(nibName: "GroupDetailsProductCell", bundle: nil), forCellWithReuseIdentifier: "productCell")
 
         let query = Firestore.firestore().collection(Utils.collection.product.rawValue).whereField("parent_id", isEqualTo: group.id).order(by: "order")
         
@@ -114,7 +114,7 @@ class GroupDetailsViewController: UIViewController {
     
     // MARK: - Methods
     
-    static func fromStoryboard(_ storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)) -> GroupDetailsViewController {
+    static func fromStoryboard(_ storyboard: UIStoryboard = UIStoryboard(name: "GroupDetails", bundle: nil)) -> GroupDetailsViewController {
         let controller = storyboard.instantiateViewController(withIdentifier: "GroupDetailsViewController") as! GroupDetailsViewController
         return controller
     }
@@ -152,27 +152,27 @@ extension GroupDetailsViewController : UICollectionViewDataSource {
         
         var reusableCell : UICollectionViewCell!
         if indexPath.section == 0 && indexPath.row == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "groupCell", for: indexPath) as! GroupDetailsImageCVCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "groupCell", for: indexPath) as! GroupDetailsImageCell
             cell.collectionView = collectionView
             cell.group = group
             
             return cell
         }
         else if indexPath.section == 0 && indexPath.row == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "labelCell", for: indexPath) as! SingleLabelCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "labelCell", for: indexPath) as! GroupDetailsLabelCell
             cell.collectionView = collectionView
             cell.textLabel.text = group.longDescription
             
             return cell
         }
         else if indexPath.section == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productCell", for: indexPath) as! GroupDetailsProductCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productCell", for: indexPath) as! GroupDetailsProductCell
             
             cell.product = productCollection[indexPath.row]
             return cell
         }
         else if indexPath.section == 2 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reusableCell", for: indexPath) as! GroupDetailsCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reusableCell", for: indexPath) as! GroupDetailsCell
             cell.backgroundColor = .blue
             
             reusableCell = cell
@@ -190,7 +190,7 @@ extension GroupDetailsViewController : UICollectionViewDelegate {
         log.verbose("selected = \(indexPath.row)")
         
         if (indexPath.section != 1) { return }
-        lastSelectedCell = collectionView.cellForItem(at: indexPath) as? GroupDetailsProductCollectionViewCell
+        lastSelectedCell = collectionView.cellForItem(at: indexPath) as? GroupDetailsProductCell
         
         let controller = ProductViewController.fromStoryboard()
         controller.product = lastSelectedCell?.product
@@ -228,7 +228,7 @@ extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
             let height : CGFloat!
             let widthWithInsets = CGFloat(cellWidth - (2 * inset))
             
-            if let cell = collectionView.cellForItem(at: indexPath) as? SingleLabelCollectionViewCell {
+            if let cell = collectionView.cellForItem(at: indexPath) as? GroupDetailsLabelCell {
                 
                 if cell.tag == 0 {
                     height = cell.textLabel.text?.height(constraintedWidth: widthWithInsets,

@@ -23,7 +23,7 @@ extension GroupViewController : UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! GroupTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! GroupCell
         cell.selectionStyle = .none
         cell.tableWidth = tableView.frame.width
         cell.group = groupCollection[indexPath.row]            
@@ -42,7 +42,7 @@ extension GroupViewController : UITableViewDelegate {
         // for now we have only groupviewcontroller :D
         let group = self.groupCollection[indexPath.row]
         let documentID = self.groupCollection.getDocumentID(for: indexPath.row)
-        let selectedCell = tableView.cellForRow(at: indexPath) as? GroupTableViewCell
+        let selectedCell = tableView.cellForRow(at: indexPath) as? GroupCell
         if group.final == false {
             let controller = GroupViewController.fromStoryboard()
 
@@ -51,6 +51,8 @@ extension GroupViewController : UITableViewDelegate {
             controller.documentID = documentID
             self.navigationController?.pushViewController(controller, animated: true)
         } else {
+            
+            
             let controller = GroupDetailsViewController.fromStoryboard()
             controller.group = group
             controller.documentID = documentID

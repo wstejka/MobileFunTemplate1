@@ -1,5 +1,5 @@
 //
-//  ProductTableViewCell.swift
+//  ProductCell.swift
 //  MobileFunStore
 //
 //  Created by Wojciech Stejka on 04/11/2017.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProductTableViewCell: UITableViewCell {
+class ProductCell: UITableViewCell {
 
     var item : ProductSectionItem? {
         didSet {

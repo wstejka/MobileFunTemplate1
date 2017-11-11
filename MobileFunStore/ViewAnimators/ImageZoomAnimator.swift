@@ -35,7 +35,7 @@ class ImageZoomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             backgroundView.alpha = 0.5
 
             let section = fromVC.indexOfItem(type: .image)!
-            guard let imageCell = fromVC.tableView.cellForRow(at: IndexPath(row: 0, section: section)) as? ProductImageTableViewCell else { return }
+            guard let imageCell = fromVC.tableView.cellForRow(at: IndexPath(row: 0, section: section)) as? ProductImageCell else { return }
 //            let snapshot = imageCell.snapshotView(afterScreenUpdates: false)
             // Calculate the selected cell position in superview
             let rectOfCellInSuperview = fromVC.tableView.convert(imageCell.frame, to: fromVC.tableView.superview)

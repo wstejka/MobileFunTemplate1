@@ -1,5 +1,5 @@
 //
-//  ProductImageTableViewCell.swift
+//  ProductImageCell.swift
 //  MobileFunStore
 //
 //  Created by Wojciech Stejka on 04/11/2017.
@@ -14,7 +14,7 @@ protocol ProductImageTapped {
     
 }
 
-class ProductImageTableViewCell: UITableViewCell {
+class ProductImageCell: UITableViewCell {
 
     // MARK: - Outlets
     @IBOutlet weak var scrollView: UIScrollView!
@@ -107,7 +107,7 @@ class ProductImageTableViewCell: UITableViewCell {
     }
 }
 
-extension ProductImageTableViewCell : UIScrollViewDelegate {
+extension ProductImageCell : UIScrollViewDelegate {
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         log.verbose("")

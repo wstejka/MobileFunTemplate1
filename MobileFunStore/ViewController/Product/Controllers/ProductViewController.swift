@@ -42,8 +42,8 @@ class ProductViewController: UIViewController {
         tableView.allowsSelection = false
         
         //  Register custom section header
-        tableView.register(UINib(nibName: "ProductImageTableViewCell", bundle: nil), forCellReuseIdentifier: "imageCell")
-        tableView.register(UINib(nibName: "ProductAttributeTableViewCell", bundle: nil), forCellReuseIdentifier: "attributeCell")
+        tableView.register(UINib(nibName: "ProductImageCell", bundle: nil), forCellReuseIdentifier: "imageCell")
+        tableView.register(UINib(nibName: "ProductAttributeCell", bundle: nil), forCellReuseIdentifier: "attributeCell")
         
         // Reflect View Structure here
         let imageSectionItem = ImagesSectionItem(product : product)
@@ -88,31 +88,31 @@ extension ProductViewController : UITableViewDataSource {
         let item = items[indexPath.section]
         switch item.type {
         case .image:
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as? ProductImageTableViewCell {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as? ProductImageCell {
                 cell.delegate = self
                 cell.item = item
                 return cell
             }
         case .priceWithNote:
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as? ProductTableViewCell {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as? ProductCell {
                 cell.item = item
                 return cell
             }
         case .description:
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as? ProductTableViewCell {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as? ProductCell {
                 cell.item = item
                 return cell
             }
         case .attributes:
             
             if let item = item as? AttributesSectionItem,
-                let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as? ProductAttributeTableViewCell {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as? ProductAttributeCell {
                 cell.attribute = item.attributes[indexPath.row]
                 
                 return cell
             }
         case .bottom:
-            if let cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as? ProductTableViewCell {
+            if let cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as? ProductCell {
                 cell.item = item
                 return cell
             }

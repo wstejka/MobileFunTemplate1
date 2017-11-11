@@ -1,5 +1,5 @@
 //
-//  GroupDetailsProductCollectionViewCell.swift
+//  GroupDetailsProductCell.swift
 //  MobileFunStore
 //
 //  Created by Wojciech Stejka on 03/11/2017.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GroupDetailsProductCollectionViewCell: UICollectionViewCell {
+class GroupDetailsProductCell: UICollectionViewCell {
     
     // MARK: Outlets
     
