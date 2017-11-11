@@ -24,14 +24,14 @@ class ProductImageCell: UITableViewCell {
     private var urls : [URL?] = []
     private var imagesInScrollView : [UIImageView] = []
     var delegate : ProductImageTapped!
-    var imageSectionItem : ImagesSectionItem!
+    var imageViewModel : ImagesViewModel!
     let cellTagShift = 100
 
     
-    var item : ProductSectionItem? {
+    var item : ProductViewModel? {
         didSet {
-            guard let item = item as? ImagesSectionItem else { return }
-            self.imageSectionItem = item
+            guard let item = item as? ImagesViewModel else { return }
+            self.imageViewModel = item
             urls = item.product.urls.map({ (urlName) -> URL? in
                 return URL(string: urlName)
             })
@@ -57,7 +57,7 @@ class ProductImageCell: UITableViewCell {
                 
             }
             scrollView.contentSize = CGSize(width: size.width * CGFloat(urls.count),
-                                            height: size.height * imageSectionItem.heightFactor)
+                                            height: size.height * imageViewModel.heightFactor)
             scrollView.isPagingEnabled = true
         }
 

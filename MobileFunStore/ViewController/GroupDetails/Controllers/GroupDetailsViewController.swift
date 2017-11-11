@@ -25,7 +25,21 @@ class GroupDetailsViewController: UIViewController {
     @IBOutlet weak var alphaView: UIView!
     
     // MARK: - Const/Vars
-    var group : Group!
+    var items : [GroupDetailsViewModel] = []
+    var group : Group! {
+        didSet {
+            let imageViewModel = GDImagesViewModel(group: group)
+            
+            let titleLabel = LabelViewModel(text: group.title, font: UIFont.avenir(name: .demiBold, size: 18.0))
+            let shortDesc = LabelViewModel(text: group.shortDescription, font: UIFont.avenir(name: .regular, size: 16.0))
+            let longDesc = LabelViewModel(text: group.longDescription, font: UIFont.avenir(name: .regular, size: 16.0))
+            let textViewModel = GDTextViewModel(items: [titleLabel, shortDesc, longDesc])
+
+            let productsViewModel = GDProductsViewModel(productCollection: productCollection)
+            let bottomViewModel = GDBottomViewModel()
+            items = [imageViewModel, textViewModel, productsViewModel, bottomViewModel]
+        }
+    }
     var documentID : String!
     var topCellFrame : CGRect!
     
@@ -33,6 +47,12 @@ class GroupDetailsViewController: UIViewController {
     private let sectionWithFirestoreData = 1
     
     var lastSelectedCell : GroupDetailsProductCell?
+    
+    func indexOfItem(type : GroupDetailsSectionType) -> Int? {        
+        let index = items.index(where: { (item) -> Bool in item.type == type })
+        return index?.hashValue
+    }
+
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -153,14 +173,14 @@ extension GroupDetailsViewController : UICollectionViewDataSource {
         var reusableCell : UICollectionViewCell!
         if indexPath.section == 0 && indexPath.row == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "groupCell", for: indexPath) as! GroupDetailsImageCell
-            cell.collectionView = collectionView
-            cell.group = group
+//            cell.collectionView = collectionView
+//            cell.group = group
             
             return cell
         }
         else if indexPath.section == 0 && indexPath.row == 1 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "labelCell", for: indexPath) as! GroupDetailsLabelCell
-            cell.collectionView = collectionView
+//            cell.collectionView = collectionView
             cell.textLabel.text = group.longDescription
             
             return cell
@@ -281,34 +301,92 @@ extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
     
 }
 
-// MARK: - GroupDetailsSectionItem
 
-enum GroupDetailsItemType : Int {
-    case imageAndTitle
-    case longDescription
+// MARK: - GroupDetailsViewModel
+
+enum GroupDetailsSectionType : Int {
+    case image
+    case label
     case products
+    case bottom
 }
 
-protocol GroupDetailsSectionItem {
+// MARK: - GroupDetailsViewModel protocol
+protocol GroupDetailsViewModel {
     
     var title : String { get }
-    var type : GroupDetailsItemType { get }
-    var rows : Int { get }
-    func cellHeight(tableSize: CGSize, cellForRowAt indexPath: IndexPath) -> CGFloat
+    var type : GroupDetailsSectionType { get }
+    var itemsNumber : Int { get }
     
 }
 
-extension GroupDetailsSectionItem {
+extension GroupDetailsViewModel {
     
     var title : String {
         return ""
     }
-    var rows : Int {
+    var itemsNumber : Int {
         return 1
     }
 }
 
-// ===
-//class 
+// MARK: - View Models
+//== IMAGE
+class GDImagesViewModel : GroupDetailsViewModel {
+    
+    var type: GroupDetailsSectionType = .image
+    
+    let group : Group
+    init(group : Group) {
+        self.group = group
+    }
+}
+
+//== Title & descriptions
+class GDTextViewModel : GroupDetailsViewModel {
+
+    var type: GroupDetailsSectionType = .label
+    var linesNumber : Int {
+        return self.items.count
+    }
+    private var items : [LabelViewModel]
+    subscript(index: Int) -> LabelViewModel {
+        return self.items[index]
+    }
+
+    init(items : [LabelViewModel]) {
+        
+        self.items = items.enumerated().map({ (index, element) -> LabelViewModel in
+            var modalElement = element
+            modalElement.index = index
+            return modalElement
+        })
+    }
+}
+//== Products
+class GDProductsViewModel : GroupDetailsViewModel {
+    
+    var type: GroupDetailsSectionType = .products
+    
+    subscript(index: Int) -> Product {
+        return self.productCollection[index]
+    }
+    
+    private weak var productCollection : LocalCollection<Product>!
+    
+    init(productCollection : LocalCollection<Product>) {
+        self.productCollection = productCollection
+    }
+}
+
+//== Bottom
+class GDBottomViewModel : GroupDetailsViewModel {
+    
+    var type: GroupDetailsSectionType = .bottom
+}
+
+
+
+
 
 

@@ -10,7 +10,7 @@ import UIKit
 
 class ProductCell: UITableViewCell {
 
-    var item : ProductSectionItem? {
+    var item : ProductViewModel? {
         didSet {
             log.verbose("")
         }

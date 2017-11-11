@@ -15,19 +15,22 @@ class ProductViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
 
     // MARK: - Vars/ Const
-//    
-//    var productCellWidth : CGFloat! {
-//        return tableView.frame.width
-//    }
-//    let heightToWidthFactor : CGFloat = 0.66
-    let heightFactor : CGFloat = 0.8
-//    var productCellHeight : CGFloat! {
-//        return tableView.frame.height * heightFactor
-//    }
+//    let heightFactor : CGFloat = 0.8
     
     var animator : ImageZoomAnimator!
-    var product : Product!
-    var items : [ProductSectionItem] = []
+    var product : Product! {
+        
+        didSet {
+            // Reflect View Structure here
+            let imageViewModel = ImagesViewModel(product : product)
+            let priceWithNoteItem = PriceWithNoteViewModel(product: product)
+            let descriptionViewModel = DescriptionViewModel(description: product.longDescription)
+            let attributesViewModel = AttributesViewModel(attributes: product.attributes)
+            let bottomViewModel = BottomViewModel()
+            items = [imageViewModel, priceWithNoteItem, descriptionViewModel, attributesViewModel, bottomViewModel]
+        }
+    }
+    var items : [ProductViewModel] = []
     func indexOfItem(type : ProductItemType) -> Int? {
         
         let index = items.index(where: { (item) -> Bool in item.type == type })
@@ -45,14 +48,6 @@ class ProductViewController: UIViewController {
         tableView.register(UINib(nibName: "ProductImageCell", bundle: nil), forCellReuseIdentifier: "imageCell")
         tableView.register(UINib(nibName: "ProductAttributeCell", bundle: nil), forCellReuseIdentifier: "attributeCell")
         
-        // Reflect View Structure here
-        let imageSectionItem = ImagesSectionItem(product : product)
-        let priceWithNoteItem = PriceWithNoteSectionItem(product: product)
-        let descriptionSectionItem = DescriptionSectionItem(description: product.longDescription)
-        let attributesSectionItem = AttributesSectionItem(attributes: product.attributes)
-        let bottomSectionItem = BottomSectionItem()
-        items = [imageSectionItem, priceWithNoteItem, descriptionSectionItem, attributesSectionItem, bottomSectionItem]
-
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -105,7 +100,7 @@ extension ProductViewController : UITableViewDataSource {
             }
         case .attributes:
             
-            if let item = item as? AttributesSectionItem,
+            if let item = item as? AttributesViewModel,
                 let cell = tableView.dequeueReusableCell(withIdentifier: "attributeCell", for: indexPath) as? ProductAttributeCell {
                 cell.attribute = item.attributes[indexPath.row]
                 
@@ -184,7 +179,7 @@ extension ProductViewController : UIViewControllerTransitioningDelegate {
 }
 
 
-// MARK: - ProductSectionItems classes
+// MARK: - ProductViewModels classes
 
 enum ProductItemType : Int {
     case image
@@ -194,7 +189,7 @@ enum ProductItemType : Int {
     case bottom
 }
 
-protocol ProductSectionItem {
+protocol ProductViewModel {
     
     var title : String { get }
     var type : ProductItemType { get }
@@ -203,7 +198,7 @@ protocol ProductSectionItem {
     
 }
 
-extension ProductSectionItem {
+extension ProductViewModel {
     
     var title : String {
         return ""
@@ -213,9 +208,7 @@ extension ProductSectionItem {
     }
 }
 
-
-
-class ImagesSectionItem : ProductSectionItem {
+class ImagesViewModel : ProductViewModel {
     
     let heightFactor : CGFloat = 0.8
     func cellHeight(tableSize: CGSize, cellForRowAt indexPath: IndexPath) -> CGFloat {
@@ -232,7 +225,7 @@ class ImagesSectionItem : ProductSectionItem {
     }
 }
 
-class PriceWithNoteSectionItem : ProductSectionItem {
+class PriceWithNoteViewModel : ProductViewModel {
     
     func cellHeight(tableSize: CGSize, cellForRowAt indexPath: IndexPath) -> CGFloat {
         return 50.0
@@ -249,7 +242,7 @@ class PriceWithNoteSectionItem : ProductSectionItem {
     }
 }
 
-class DescriptionSectionItem : ProductSectionItem {
+class DescriptionViewModel : ProductViewModel {
     
     func cellHeight(tableSize: CGSize, cellForRowAt indexPath: IndexPath) -> CGFloat {
         let inset = 10.0
@@ -271,7 +264,7 @@ class DescriptionSectionItem : ProductSectionItem {
     }
 }
 
-class AttributesSectionItem : ProductSectionItem {
+class AttributesViewModel : ProductViewModel {
     
     func cellHeight(tableSize: CGSize, cellForRowAt indexPath: IndexPath) -> CGFloat {
         
@@ -303,7 +296,7 @@ class AttributesSectionItem : ProductSectionItem {
     }
 }
 
-class BottomSectionItem : ProductSectionItem {
+class BottomViewModel : ProductViewModel {
     func cellHeight(tableSize: CGSize, cellForRowAt indexPath: IndexPath) -> CGFloat {
         return 100.0
     }

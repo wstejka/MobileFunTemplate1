@@ -43,7 +43,8 @@ class ProductAnimator : NSObject, UIViewControllerAnimatedTransitioning {
 
         UIView.animate(withDuration: 0.3, delay: 0.0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
             
-            imageView.frame.size = CGSize(width: imageWidth, height: imageHeight * toVC.heightFactor)
+            let imageViewModel = toVC.items[toVC.indexOfItem(type: ProductItemType.image)!] as! ImagesViewModel
+            imageView.frame.size = CGSize(width: imageWidth, height: imageHeight * imageViewModel.heightFactor)
             imageView.frame.origin = CGPoint(x: 0.0, y: imagePositionY)
             backgroundView.alpha = 1.0
         }) { (_) in

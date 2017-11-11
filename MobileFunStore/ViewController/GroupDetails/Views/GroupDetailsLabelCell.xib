@@ -39,7 +39,11 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="MUM-Eq-pjV"/>
             <connections>
+                <outlet property="bottomConstraint" destination="Ekh-Nh-EJE" id="seD-6h-SOP"/>
+                <outlet property="leadingConstraint" destination="mgZ-ie-yn4" id="drz-6F-qEM"/>
                 <outlet property="textLabel" destination="wBi-Ip-zB5" id="KPZ-oT-vEY"/>
+                <outlet property="topConstraint" destination="FkR-cF-xWE" id="j2Q-SV-SWt"/>
+                <outlet property="trailingConstraint" destination="yiv-bI-mbp" id="9me-1r-Jes"/>
             </connections>
             <point key="canvasLocation" x="-471.5" y="-318"/>
         </view>

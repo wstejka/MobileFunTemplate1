@@ -5,63 +5,32 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="AvenirNext.ttc">
-            <string>AvenirNext-DemiBold</string>
-            <string>AvenirNext-Regular</string>
-        </array>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="GroupDetailsImageCell" customModule="MobileFunStore" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="475" height="410"/>
+            <rect key="frame" x="0.0" y="0.0" width="438" height="301"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VhK-fd-MBo">
-                    <rect key="frame" x="8" y="331" width="459" height="22"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="22" id="3Hk-sc-wXa"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="19"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="description" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AKP-bx-bdb">
-                    <rect key="frame" x="8" y="355" width="459" height="45"/>
-                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aW0-9r-9aI">
-                    <rect key="frame" x="8" y="8" width="459" height="306"/>
+                    <rect key="frame" x="0.0" y="0.0" width="438" height="301"/>
                 </imageView>
             </subviews>
             <accessibility key="accessibilityConfiguration" identifier="cell"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="AKP-bx-bdb" secondAttribute="trailing" constant="8" id="1sb-WN-aX0"/>
-                <constraint firstItem="VhK-fd-MBo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="9Jd-Xr-6f2"/>
-                <constraint firstAttribute="trailing" secondItem="VhK-fd-MBo" secondAttribute="trailing" constant="8" id="AKz-NR-iy3"/>
-                <constraint firstItem="AKP-bx-bdb" firstAttribute="top" secondItem="VhK-fd-MBo" secondAttribute="bottom" constant="2" id="BbY-Gu-Qba"/>
-                <constraint firstAttribute="bottom" secondItem="AKP-bx-bdb" secondAttribute="bottom" constant="10" id="Ege-vE-7uC"/>
-                <constraint firstItem="aW0-9r-9aI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="Tft-sP-OK0"/>
-                <constraint firstItem="aW0-9r-9aI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" constant="8" id="Uy1-IM-75z"/>
-                <constraint firstAttribute="trailing" secondItem="aW0-9r-9aI" secondAttribute="trailing" constant="8" id="dIR-2V-ImS"/>
-                <constraint firstItem="VhK-fd-MBo" firstAttribute="top" secondItem="aW0-9r-9aI" secondAttribute="bottom" constant="17" id="ld8-dm-Ibp"/>
-                <constraint firstItem="aW0-9r-9aI" firstAttribute="width" secondItem="aW0-9r-9aI" secondAttribute="height" multiplier="1.5" id="lws-j8-5Jq"/>
-                <constraint firstItem="AKP-bx-bdb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="uLN-bN-DkQ"/>
+                <constraint firstAttribute="bottom" secondItem="aW0-9r-9aI" secondAttribute="bottom" id="Hhf-om-686"/>
+                <constraint firstItem="aW0-9r-9aI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Tft-sP-OK0"/>
+                <constraint firstItem="aW0-9r-9aI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="Uy1-IM-75z"/>
+                <constraint firstAttribute="trailing" secondItem="aW0-9r-9aI" secondAttribute="trailing" id="dIR-2V-ImS"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="imageView" destination="aW0-9r-9aI" id="grp-KH-MOn"/>
-                <outlet property="shortDecription" destination="AKP-bx-bdb" id="HDM-t0-DOe"/>
-                <outlet property="title" destination="VhK-fd-MBo" id="IDV-77-V4h"/>
             </connections>
-            <point key="canvasLocation" x="-282.5" y="-23"/>
+            <point key="canvasLocation" x="-301" y="-77.5"/>
         </view>
     </objects>
 </document>

@@ -7,6 +7,11 @@
 //
 import Firebase
 
+struct Attribute {
+    let key : String
+    let value : String
+}
+
 struct Product {
     
     // MARK: - mandatory fields
@@ -25,11 +30,6 @@ struct Product {
     var urls : [String] = []
 
     var attributes : [Attribute]
-}
-
-struct Attribute {
-    let key : String
-    let value : String
 }
 
 extension Product : DocumentEquatable {
