@@ -8,33 +8,6 @@
 
 import UIKit
 
-enum ProductItemType : Int {
-    case image
-    case priceWithNote
-    case description
-    case attributes
-    case bottom
-}
-
-protocol ProductSectionItem {
-    
-    var title : String { get }
-    var type : ProductItemType { get }
-    var rows : Int { get }
-    func cellHeight(tableSize: CGSize, cellForRowAt indexPath: IndexPath) -> CGFloat
-    
-}
-
-extension ProductSectionItem {
-    
-    var title : String {
-        return ""
-    }
-    var rows : Int {
-        return 1
-    }
-}
-
 
 class ProductViewController: UIViewController {
 
@@ -212,6 +185,35 @@ extension ProductViewController : UIViewControllerTransitioningDelegate {
 
 
 // MARK: - ProductSectionItems classes
+
+enum ProductItemType : Int {
+    case image
+    case priceWithNote
+    case description
+    case attributes
+    case bottom
+}
+
+protocol ProductSectionItem {
+    
+    var title : String { get }
+    var type : ProductItemType { get }
+    var rows : Int { get }
+    func cellHeight(tableSize: CGSize, cellForRowAt indexPath: IndexPath) -> CGFloat
+    
+}
+
+extension ProductSectionItem {
+    
+    var title : String {
+        return ""
+    }
+    var rows : Int {
+        return 1
+    }
+}
+
+
 
 class ImagesSectionItem : ProductSectionItem {
     

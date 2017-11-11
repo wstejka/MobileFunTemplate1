@@ -1,5 +1,5 @@
 //
-//  GroupDetailsTopCollectionViewCEll.swift
+//  GroupDetailsImageCVCell.swift
 //  MobileFunStore
 //
 //  Created by Wojciech Stejka on 25/10/2017.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GroupDetailsTopCollectionViewCell: UICollectionViewCell {
+class GroupDetailsImageCVCell: UICollectionViewCell {
 
     // MARK: - Outlets
     
@@ -37,9 +37,5 @@ class GroupDetailsTopCollectionViewCell: UICollectionViewCell {
         log.verbose("")
         
     }
-    
-//    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
-//        log.verbose("")
-//    }
     
 }

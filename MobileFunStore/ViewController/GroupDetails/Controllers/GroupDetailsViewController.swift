@@ -17,165 +17,6 @@ struct GroupDetailsConstants {
     static let standardTopInset : CGFloat = 10.0
 }
 
-extension GroupDetailsViewController : UICollectionViewDataSource {
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        log.verbose("")
-
-        return 3
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        log.verbose("numberOfItemsInSection")
-        var itemInSection = 0
-        if section == 0 {
-            itemInSection = 2
-        }
-        else if section == 1 {
-            itemInSection = productCollection.count
-        }
-//        else {
-//            itemInSection = 1
-//        }
-        
-        return itemInSection
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        var reusableCell : UICollectionViewCell!
-        if indexPath.section == 0 && indexPath.row == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "groupCell", for: indexPath) as! GroupDetailsTopCollectionViewCell
-            cell.collectionView = collectionView
-            cell.group = group
-            
-            return cell
-        }
-        else if indexPath.section == 0 && indexPath.row == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "labelCell", for: indexPath) as! SingleLabelCollectionViewCell
-            cell.collectionView = collectionView
-            cell.textLabel.text = group.longDescription
-            
-            return cell
-        }
-        else if indexPath.section == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productCell", for: indexPath) as! GroupDetailsProductCollectionViewCell
-            
-            cell.product = productCollection[indexPath.row]
-            return cell
-        }
-        else if indexPath.section == 2 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reusableCell", for: indexPath) as! GroupDetailsCollectionViewCell
-            cell.backgroundColor = .blue
-            
-            reusableCell = cell
-        }
-
-        return reusableCell
-    }
-
-}
-
-extension GroupDetailsViewController : UICollectionViewDelegate {
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        log.verbose("selected = \(indexPath.row)")
-        
-        if (indexPath.section != 1) { return }
-        lastSelectedCell = collectionView.cellForItem(at: indexPath) as? GroupDetailsProductCollectionViewCell
-        
-        let controller = ProductViewController.fromStoryboard()
-        controller.product = lastSelectedCell?.product
-        self.navigationController?.pushViewController(controller, animated: true)
-    }
-}
-
-
-extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-        var cellSize : CGSize!
-        let inset = Utils.insetSize
-        let collectionWidth = Double(collectionView.frame.width - (GroupDetailsConstants.standardLeftInset + GroupDetailsConstants.standardRightInset))
-        // Default: 2 cell per row
-        var cellWidth = (collectionWidth - 10) / 2
-        var cellHeight : Double = 1.4 * cellWidth
-        
-        if indexPath.section == 0 && indexPath.row == 0 {
-            // First cell
-            if topCellFrame != nil {
-                cellWidth = Double(topCellFrame.width)
-                cellHeight = Double(topCellFrame.height)
-            }
-            else {
-                cellWidth = Double(collectionView.frame.width) // - (2 * inset)
-                collectionView.cellForItem(at: IndexPath(row: 0, section: 0))
-                cellHeight = 0.9 * cellWidth
-            }
-        }
-        else if indexPath.section == 0 && indexPath.row == 1 {
-
-            cellWidth = collectionWidth //- (2 * inset)
-            let height : CGFloat!
-            let widthWithInsets = CGFloat(cellWidth - (2 * inset))
-
-            if let cell = collectionView.cellForItem(at: indexPath) as? SingleLabelCollectionViewCell {
-                
-                if cell.tag == 0 {
-                    height = cell.textLabel.text?.height(constraintedWidth: widthWithInsets,
-                                                               font: UIFont(name: cell.textLabel.font.fontName,
-                                                                            size: cell.textLabel.font.pointSize)!)
-                    
-                    let animation : CATransition = CATransition()
-                    animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                    animation.duration = 0.5
-                    cell.textLabel.layer.add(animation, forKey: kCATransitionReveal)
-                    
-                }
-                else {
-                    height = cell.textLabel.text?.height(constraintedWidth: widthWithInsets,
-                                                               font: UIFont(name: cell.textLabel.font.fontName,
-                                                                            size: cell.textLabel.font.pointSize)!,
-                                                               numberOfLines: 2)
-                }
-                
-            } else {
-                let font = UIFont(name: "AvenirNext-Regular", size: 16.0)
-                height = group.longDescription.height(constraintedWidth: widthWithInsets,
-                                                     font: font!,
-                                                     numberOfLines: 2)
-                
-            }
-            // Add to height the left and right cell insets (2 * 8) + some bufor
-            cellHeight = Double(height) + 24
-            
-        }
-//        else if indexPath.section == 1 {
-//
-//        }
-        else {
-
-        }
-        
-        cellSize = CGSize(width: cellWidth, height: cellHeight)
-        return cellSize
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        
-        var inset = UIEdgeInsets(top: GroupDetailsConstants.standardTopInset,
-                                 left: GroupDetailsConstants.standardLeftInset,
-                                 bottom: 20.0,
-                                 right: GroupDetailsConstants.standardRightInset)
-        if section == 0 {
-            inset = UIEdgeInsets.zero
-        }
-        return inset
-    }
-    
-}
 
 class GroupDetailsViewController: UIViewController {
     
@@ -279,4 +120,195 @@ class GroupDetailsViewController: UIViewController {
     }
     
 }
+
+
+// MARK: - Extensions
+
+extension GroupDetailsViewController : UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        log.verbose("")
+        
+        return 3
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        log.verbose("numberOfItemsInSection")
+        var itemInSection = 0
+        if section == 0 {
+            itemInSection = 2
+        }
+        else if section == 1 {
+            itemInSection = productCollection.count
+        }
+        //        else {
+        //            itemInSection = 1
+        //        }
+        
+        return itemInSection
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        var reusableCell : UICollectionViewCell!
+        if indexPath.section == 0 && indexPath.row == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "groupCell", for: indexPath) as! GroupDetailsImageCVCell
+            cell.collectionView = collectionView
+            cell.group = group
+            
+            return cell
+        }
+        else if indexPath.section == 0 && indexPath.row == 1 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "labelCell", for: indexPath) as! SingleLabelCollectionViewCell
+            cell.collectionView = collectionView
+            cell.textLabel.text = group.longDescription
+            
+            return cell
+        }
+        else if indexPath.section == 1 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productCell", for: indexPath) as! GroupDetailsProductCollectionViewCell
+            
+            cell.product = productCollection[indexPath.row]
+            return cell
+        }
+        else if indexPath.section == 2 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reusableCell", for: indexPath) as! GroupDetailsCollectionViewCell
+            cell.backgroundColor = .blue
+            
+            reusableCell = cell
+        }
+        
+        return reusableCell
+    }
+    
+}
+
+extension GroupDetailsViewController : UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        log.verbose("selected = \(indexPath.row)")
+        
+        if (indexPath.section != 1) { return }
+        lastSelectedCell = collectionView.cellForItem(at: indexPath) as? GroupDetailsProductCollectionViewCell
+        
+        let controller = ProductViewController.fromStoryboard()
+        controller.product = lastSelectedCell?.product
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+}
+
+
+extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        var cellSize : CGSize!
+        let inset = Utils.insetSize
+        let collectionWidth = Double(collectionView.frame.width - (GroupDetailsConstants.standardLeftInset + GroupDetailsConstants.standardRightInset))
+        // Default: 2 cell per row
+        var cellWidth = (collectionWidth - 10) / 2
+        var cellHeight : Double = 1.4 * cellWidth
+        
+        if indexPath.section == 0 && indexPath.row == 0 {
+            // First cell
+            if topCellFrame != nil {
+                cellWidth = Double(topCellFrame.width)
+                cellHeight = Double(topCellFrame.height)
+            }
+            else {
+                cellWidth = Double(collectionView.frame.width) // - (2 * inset)
+                collectionView.cellForItem(at: IndexPath(row: 0, section: 0))
+                cellHeight = 0.9 * cellWidth
+            }
+        }
+        else if indexPath.section == 0 && indexPath.row == 1 {
+            
+            cellWidth = collectionWidth //- (2 * inset)
+            let height : CGFloat!
+            let widthWithInsets = CGFloat(cellWidth - (2 * inset))
+            
+            if let cell = collectionView.cellForItem(at: indexPath) as? SingleLabelCollectionViewCell {
+                
+                if cell.tag == 0 {
+                    height = cell.textLabel.text?.height(constraintedWidth: widthWithInsets,
+                                                         font: UIFont(name: cell.textLabel.font.fontName,
+                                                                      size: cell.textLabel.font.pointSize)!)
+                    
+                    let animation : CATransition = CATransition()
+                    animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                    animation.duration = 0.5
+                    cell.textLabel.layer.add(animation, forKey: kCATransitionReveal)
+                    
+                }
+                else {
+                    height = cell.textLabel.text?.height(constraintedWidth: widthWithInsets,
+                                                         font: UIFont(name: cell.textLabel.font.fontName,
+                                                                      size: cell.textLabel.font.pointSize)!,
+                                                         numberOfLines: 2)
+                }
+                
+            } else {
+                let font = UIFont(name: "AvenirNext-Regular", size: 16.0)
+                height = group.longDescription.height(constraintedWidth: widthWithInsets,
+                                                      font: font!,
+                                                      numberOfLines: 2)
+                
+            }
+            // Add to height the left and right cell insets (2 * 8) + some bufor
+            cellHeight = Double(height) + 24
+            
+        }
+        else {
+            
+        }
+        
+        cellSize = CGSize(width: cellWidth, height: cellHeight)
+        return cellSize
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        
+        var inset = UIEdgeInsets(top: GroupDetailsConstants.standardTopInset,
+                                 left: GroupDetailsConstants.standardLeftInset,
+                                 bottom: 20.0,
+                                 right: GroupDetailsConstants.standardRightInset)
+        if section == 0 {
+            inset = UIEdgeInsets.zero
+        }
+        return inset
+    }
+    
+}
+
+// MARK: - GroupDetailsSectionItem
+
+enum GroupDetailsItemType : Int {
+    case imageAndTitle
+    case longDescription
+    case products
+}
+
+protocol GroupDetailsSectionItem {
+    
+    var title : String { get }
+    var type : GroupDetailsItemType { get }
+    var rows : Int { get }
+    func cellHeight(tableSize: CGSize, cellForRowAt indexPath: IndexPath) -> CGFloat
+    
+}
+
+extension GroupDetailsSectionItem {
+    
+    var title : String {
+        return ""
+    }
+    var rows : Int {
+        return 1
+    }
+}
+
+// ===
+//class 
+
 
