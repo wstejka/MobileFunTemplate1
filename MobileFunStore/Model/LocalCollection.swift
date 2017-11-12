@@ -76,6 +76,9 @@ class LocalCollection<T: DocumentSerializable> where T : DocumentEquatable {
     subscript(index: Int) -> T {
         return self.items[index]
     }
+    var getItems: [T] {
+        return self.items
+    }
 
     // Get documentID
     func getDocumentID(for index : Int) -> String {
@@ -104,7 +107,7 @@ class LocalCollection<T: DocumentSerializable> where T : DocumentEquatable {
             self.oldItemsDict = self.getDict(fromArray: self.items)
             
             let models = snapshot.documents.map({ (singlesnapshot) -> T in
-                log.verbose("\(singlesnapshot.data())")
+//                log.verbose("\(singlesnapshot.data())")
                 guard let model = T(dictionary: singlesnapshot.data()) else {
                     fatalError("Cannot parse snapshot data: \(singlesnapshot.data())")
                 }

@@ -15,6 +15,8 @@ class GroupDetailsProductCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var shortDescription: UILabel!
     @IBOutlet weak var price: UILabel!
+    @IBOutlet weak var widthConstraint: NSLayoutConstraint!
+    
     
     // MARK: Vars/Consts
     var product : Product? {
@@ -23,10 +25,13 @@ class GroupDetailsProductCell: UICollectionViewCell {
             guard let product = product else { return }
             shortDescription.text = product.title
             price.text = "price: " + String(product.price)
-            // Get first image from image's array
+            // Present first image from image's array
             if product.urls.count == 0 { return }
             let url = URL(string: product.urls[0])
             imageView.sd_setImage(with: url)
+            
+            self.contentView.translatesAutoresizingMaskIntoConstraints = false
+            
         }
     }
     

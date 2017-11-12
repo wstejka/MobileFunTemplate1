@@ -86,6 +86,7 @@ class GroupAnimator: NSObject, UIViewControllerAnimatedTransitioning {
                     let titleLabel = UILabel(frame: selectedCell.titleLabel.frame)
                     titleLabel.text = selectedCell.titleLabel.text
                     titleLabel.font = selectedCell.titleLabel.font
+                    titleLabel.numberOfLines = selectedCell.titleLabel.numberOfLines
                     groupViewCell.addSubview(titleLabel)
                     titleLabel.frame.origin.y = titleLabel.frame.origin.y + 100
                     titleLabel.alpha = 0.2

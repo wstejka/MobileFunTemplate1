@@ -5,7 +5,6 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,22 +14,38 @@
             <rect key="frame" x="0.0" y="0.0" width="438" height="301"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aW0-9r-9aI">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q1b-A8-gXJ">
                     <rect key="frame" x="0.0" y="0.0" width="438" height="301"/>
-                </imageView>
+                    <subviews>
+                        <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aW0-9r-9aI">
+                            <rect key="frame" x="0.0" y="0.0" width="438" height="301"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="438" id="3Dy-Ax-OBQ"/>
+                        <constraint firstItem="aW0-9r-9aI" firstAttribute="top" secondItem="q1b-A8-gXJ" secondAttribute="top" id="8rE-7L-i9a"/>
+                        <constraint firstItem="aW0-9r-9aI" firstAttribute="leading" secondItem="q1b-A8-gXJ" secondAttribute="leading" id="9si-HJ-QU0"/>
+                        <constraint firstAttribute="height" constant="301" id="Ekp-Ld-59y"/>
+                        <constraint firstAttribute="bottom" secondItem="aW0-9r-9aI" secondAttribute="bottom" id="HuD-i6-6be"/>
+                        <constraint firstAttribute="trailing" secondItem="aW0-9r-9aI" secondAttribute="trailing" id="Yps-Pb-RRU"/>
+                    </constraints>
+                </view>
             </subviews>
             <accessibility key="accessibilityConfiguration" identifier="cell"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="aW0-9r-9aI" secondAttribute="bottom" id="Hhf-om-686"/>
-                <constraint firstItem="aW0-9r-9aI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Tft-sP-OK0"/>
-                <constraint firstItem="aW0-9r-9aI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="topMargin" id="Uy1-IM-75z"/>
-                <constraint firstAttribute="trailing" secondItem="aW0-9r-9aI" secondAttribute="trailing" id="dIR-2V-ImS"/>
+                <constraint firstItem="q1b-A8-gXJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="DAh-0c-6SB"/>
+                <constraint firstItem="q1b-A8-gXJ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="WuT-Q0-M13"/>
+                <constraint firstAttribute="bottom" secondItem="q1b-A8-gXJ" secondAttribute="bottom" id="ldE-94-jiv"/>
+                <constraint firstAttribute="trailing" secondItem="q1b-A8-gXJ" secondAttribute="trailing" id="ppn-g3-vbU"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="heightConstraint" destination="Ekp-Ld-59y" id="ZzR-Ud-NzB"/>
                 <outlet property="imageView" destination="aW0-9r-9aI" id="grp-KH-MOn"/>
+                <outlet property="widthConstraint" destination="3Dy-Ax-OBQ" id="1xo-VE-c7T"/>
             </connections>
-            <point key="canvasLocation" x="-301" y="-77.5"/>
+            <point key="canvasLocation" x="-564" y="-36.5"/>
         </view>
     </objects>
 </document>

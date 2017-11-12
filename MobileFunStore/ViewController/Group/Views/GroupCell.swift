@@ -38,6 +38,7 @@ class GroupCell: UITableViewCell {
                                                       font: titleLabel.font)
             titleHeightConstraint.constant = titleHeight!
             titleLabel.setNeedsUpdateConstraints()
+            
 
             if !group.url.isEmpty {
                 let url = URL(string: group.url)

@@ -1,5 +1,5 @@
 //
-//  LabelViewModel.swift
+//  LabelModel.swift
 //  MobileFunStore
 //
 //  Created by Wojciech Stejka on 11/11/2017.
@@ -7,51 +7,32 @@
 //
 import UIKit
 
-struct LabelViewModel {
+struct LabelModel {
     
     var text : String
     private var expanded : Bool = false
-    private var maxLines : Int
+    private var defaultLines : Int
     var isExpanded : Bool = false {
         didSet {
             expanded = isExpanded
-            lines = (expanded == true) ? 0 : maxLines
+            lines = (expanded == true) ? defaultLines : 0
         }
     }
-    private var lines : Int = 2
+    private var lines : Int!
     var getLines : Int {
         return lines
     }
 
     var font : UIFont
     var index : Int!
-
-    var top : CGFloat
-    var leading : CGFloat
-    var trailing : CGFloat
-    var bottom : CGFloat
+    var labelWidth : CGFloat
     
-    func cellHeight(tableSize: CGSize, cellForRowAt indexPath: IndexPath) -> CGFloat {
-
-        let width = tableSize.width - (leading + trailing)
-        let labelHeight = text.height(constraintedWidth: width, font: font, numberOfLines: lines)
-        let cellHeight = labelHeight + (top + bottom)
-
-        return cellHeight
-    }
-    
-    init(text : String, font : UIFont, maxLines : Int = 2,
-         top : CGFloat = 0.0,
-         leading : CGFloat = 0.0,
-         trailing : CGFloat = 0.0,
-         bottom : CGFloat = 0.0) {
+    init(text : String, font : UIFont, width : CGFloat = 0.0, defaultLines : Int = 1) {
         
         self.text = text
         self.font = font
-        self.maxLines = maxLines
-        self.top = top
-        self.leading = leading
-        self.trailing = trailing
-        self.bottom = bottom
+        self.defaultLines = defaultLines
+        self.lines = defaultLines
+        self.labelWidth = width
     }
 }

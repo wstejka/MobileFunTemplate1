@@ -28,16 +28,17 @@ class GroupDetailsViewController: UIViewController {
     var items : [GroupDetailsViewModel] = []
     var group : Group! {
         didSet {
-            let imageViewModel = GDImagesViewModel(group: group)
+            let collectionWidth = UIScreen.main.bounds.size.width
+            let imageViewModel = GDImagesViewModel(group: group, collectionWidth : collectionWidth)
             
-            let titleLabel = LabelViewModel(text: group.title, font: UIFont.avenir(name: .demiBold, size: 18.0))
-            let shortDesc = LabelViewModel(text: group.shortDescription, font: UIFont.avenir(name: .regular, size: 16.0))
-            let longDesc = LabelViewModel(text: group.longDescription, font: UIFont.avenir(name: .regular, size: 16.0))
-            let textViewModel = GDTextViewModel(items: [titleLabel, shortDesc, longDesc])
+            let titleLabel = LabelModel(text: group.title, font: UIFont.avenir(name: .demiBold, size: 19.0), defaultLines : 0)
+            let shortDesc = LabelModel(text: group.shortDescription, font: UIFont.avenir(name: .regular, size: 15.0), defaultLines : 2)
+            let longDesc = LabelModel(text: group.longDescription, font: UIFont.avenir(name: .regular, size: 16.0))
+            let textViewModel = GDTextViewModel(items: [titleLabel, shortDesc, longDesc], collectionWidth : collectionWidth)
 
-            let productsViewModel = GDProductsViewModel(productCollection: productCollection)
-            let bottomViewModel = GDBottomViewModel()
-            items = [imageViewModel, textViewModel, productsViewModel, bottomViewModel]
+            let productsViewModel = GDProductsViewModel(products: [], collectionWidth : collectionWidth)
+            let bottomViewModel = GDBottomViewModel(collectionWidth : collectionWidth)
+            items = [imageViewModel, textViewModel] //, productsViewModel, bottomViewModel]
         }
     }
     var documentID : String!
@@ -64,15 +65,29 @@ class GroupDetailsViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = true
         
         //  Register custom section header
+        collectionView.register(UINib(nibName: "GroupDetailsImageCell", bundle: nil), forCellWithReuseIdentifier: "imageCell")
         collectionView.register(UINib(nibName: "GroupDetailsLabelCell", bundle: nil), forCellWithReuseIdentifier: "labelCell")
-        collectionView.register(UINib(nibName: "GroupDetailsImageCell", bundle: nil), forCellWithReuseIdentifier: "groupCell")
         collectionView.register(UINib(nibName: "GroupDetailsProductCell", bundle: nil), forCellWithReuseIdentifier: "productCell")
 
-        let query = Firestore.firestore().collection(Utils.collection.product.rawValue).whereField("parent_id", isEqualTo: group.id).order(by: "order")
+        if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.estimatedItemSize = CGSize(width: 1.0, height: 1.0)
+            flowLayout.minimumLineSpacing = 0.0
+        }
         
+        let query = Firestore.firestore().collection(Utils.collection.product.rawValue).whereField("parent_id", isEqualTo: group.id).order(by: "order")
         productCollection = LocalCollection(query: query, completionHandler: { [weak self] (documents, oldIDs) in
             
             guard let weakSelf = self else { return }
+            guard let productSectionIndex = weakSelf.indexOfItem(type: .products),
+                let productViewModel = weakSelf.items[productSectionIndex] as? GDProductsViewModel else {
+                log.error("Cannot unwrap product section index")
+                return
+            }
+            // Update ViewModel with [Product] delivered by the productCollection
+            weakSelf.items[productSectionIndex] = GDProductsViewModel(products: weakSelf.productCollection.getItems,
+                                                                      collectionWidth: productViewModel.collectionWidth)
+            
+            
             if oldIDs.count == 0 {
                 weakSelf.collectionView.reloadData()
                 return
@@ -90,7 +105,7 @@ class GroupDetailsViewController: UIViewController {
                     continue
                 }
                 if document.type == .added {
-                    let indexPath = IndexPath(row: Int(document.newIndex), section: weakSelf.sectionWithFirestoreData)
+                    let indexPath = IndexPath(row: Int(document.newIndex), section: productSectionIndex)
                     if oldIDs.contains(document.document.documentID) == true {
                         modIndexPaths.append(indexPath)
                     }
@@ -99,11 +114,11 @@ class GroupDetailsViewController: UIViewController {
                     }
                 }
                 else if document.type == .removed {
-                    let indexPath = IndexPath(row: Int(document.oldIndex), section: weakSelf.sectionWithFirestoreData)
+                    let indexPath = IndexPath(row: Int(document.oldIndex), section: productSectionIndex)
                     delIndexPaths.append(indexPath)
                 }
                 else if document.type == DocumentChangeType.modified {
-                    let modIndexPath = IndexPath(row: Int(document.oldIndex), section: weakSelf.sectionWithFirestoreData)
+                    let modIndexPath = IndexPath(row: Int(document.oldIndex), section: productSectionIndex)
                     modIndexPaths.append(modIndexPath)
                 }
             }
@@ -149,56 +164,43 @@ extension GroupDetailsViewController : UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         log.verbose("")
         
-        return 3
+        return items.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         log.verbose("numberOfItemsInSection")
-        var itemInSection = 0
-        if section == 0 {
-            itemInSection = 2
-        }
-        else if section == 1 {
-            itemInSection = productCollection.count
-        }
-        //        else {
-        //            itemInSection = 1
-        //        }
         
-        return itemInSection
+        return items[section].elementsNumber
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        var reusableCell : UICollectionViewCell!
-        if indexPath.section == 0 && indexPath.row == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "groupCell", for: indexPath) as! GroupDetailsImageCell
-//            cell.collectionView = collectionView
-//            cell.group = group
-            
-            return cell
-        }
-        else if indexPath.section == 0 && indexPath.row == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "labelCell", for: indexPath) as! GroupDetailsLabelCell
-//            cell.collectionView = collectionView
-            cell.textLabel.text = group.longDescription
-            
-            return cell
-        }
-        else if indexPath.section == 1 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productCell", for: indexPath) as! GroupDetailsProductCell
-            
-            cell.product = productCollection[indexPath.row]
-            return cell
-        }
-        else if indexPath.section == 2 {
+        let item = items[indexPath.section]
+        switch item.type {
+        case .image:
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as? GroupDetailsImageCell {
+                cell.item = item
+                return cell
+            }
+        case .label:
+            if let viewModel = item as? GDTextViewModel,
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "labelCell", for: indexPath) as? GroupDetailsLabelCell {
+                cell.item = viewModel[indexPath.row]
+                return cell
+            }
+        case .products:
+            if let viewModel = item as? GDProductsViewModel,
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "productCell", for: indexPath) as? GroupDetailsProductCell {
+                cell.product = viewModel[indexPath.row]
+                return cell
+            }
+        case .bottom:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "reusableCell", for: indexPath) as! GroupDetailsCell
             cell.backgroundColor = .blue
-            
-            reusableCell = cell
+            return cell
         }
         
-        return reusableCell
+        return UICollectionViewCell()
     }
     
 }
@@ -207,102 +209,31 @@ extension GroupDetailsViewController : UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        log.verbose("selected = \(indexPath.row)")
-        
-        if (indexPath.section != 1) { return }
-        lastSelectedCell = collectionView.cellForItem(at: indexPath) as? GroupDetailsProductCell
-        
-        let controller = ProductViewController.fromStoryboard()
-        controller.product = lastSelectedCell?.product
-        self.navigationController?.pushViewController(controller, animated: true)
+//        log.verbose("selected = \(indexPath.row)")
+//        
+//        if (indexPath.section != 1) { return }
+//        lastSelectedCell = collectionView.cellForItem(at: indexPath) as? GroupDetailsProductCell
+//        
+//        let controller = ProductViewController.fromStoryboard()
+//        controller.product = lastSelectedCell?.product
+//        self.navigationController?.pushViewController(controller, animated: true)
     }
 }
 
 
 extension GroupDetailsViewController : UICollectionViewDelegateFlowLayout {
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        var cellSize : CGSize!
-        let inset = Utils.insetSize
-        let collectionWidth = Double(collectionView.frame.width - (GroupDetailsConstants.standardLeftInset + GroupDetailsConstants.standardRightInset))
-        // Default: 2 cell per row
-        var cellWidth = (collectionWidth - 10) / 2
-        var cellHeight : Double = 1.4 * cellWidth
-        
-        if indexPath.section == 0 && indexPath.row == 0 {
-            // First cell
-            if topCellFrame != nil {
-                cellWidth = Double(topCellFrame.width)
-                cellHeight = Double(topCellFrame.height)
-            }
-            else {
-                cellWidth = Double(collectionView.frame.width) // - (2 * inset)
-                collectionView.cellForItem(at: IndexPath(row: 0, section: 0))
-                cellHeight = 0.9 * cellWidth
-            }
-        }
-        else if indexPath.section == 0 && indexPath.row == 1 {
-            
-            cellWidth = collectionWidth //- (2 * inset)
-            let height : CGFloat!
-            let widthWithInsets = CGFloat(cellWidth - (2 * inset))
-            
-            if let cell = collectionView.cellForItem(at: indexPath) as? GroupDetailsLabelCell {
-                
-                if cell.tag == 0 {
-                    height = cell.textLabel.text?.height(constraintedWidth: widthWithInsets,
-                                                         font: UIFont(name: cell.textLabel.font.fontName,
-                                                                      size: cell.textLabel.font.pointSize)!)
-                    
-                    let animation : CATransition = CATransition()
-                    animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-                    animation.duration = 0.5
-                    cell.textLabel.layer.add(animation, forKey: kCATransitionReveal)
-                    
-                }
-                else {
-                    height = cell.textLabel.text?.height(constraintedWidth: widthWithInsets,
-                                                         font: UIFont(name: cell.textLabel.font.fontName,
-                                                                      size: cell.textLabel.font.pointSize)!,
-                                                         numberOfLines: 2)
-                }
-                
-            } else {
-                let font = UIFont(name: "AvenirNext-Regular", size: 16.0)
-                height = group.longDescription.height(constraintedWidth: widthWithInsets,
-                                                      font: font!,
-                                                      numberOfLines: 2)
-                
-            }
-            // Add to height the left and right cell insets (2 * 8) + some bufor
-            cellHeight = Double(height) + 24
-            
-        }
-        else {
-            
-        }
-        
-        cellSize = CGSize(width: cellWidth, height: cellHeight)
-        return cellSize
-    }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         
-        var inset = UIEdgeInsets(top: GroupDetailsConstants.standardTopInset,
-                                 left: GroupDetailsConstants.standardLeftInset,
-                                 bottom: 20.0,
-                                 right: GroupDetailsConstants.standardRightInset)
-        if section == 0 {
-            inset = UIEdgeInsets.zero
-        }
-        return inset
+        let item = items[section]
+        return item.sectionInset
     }
     
 }
 
 
-// MARK: - GroupDetailsViewModel
+// MARK: - GroupDetailsSectionType
 
 enum GroupDetailsSectionType : Int {
     case image
@@ -316,17 +247,21 @@ protocol GroupDetailsViewModel {
     
     var title : String { get }
     var type : GroupDetailsSectionType { get }
-    var itemsNumber : Int { get }
-    
+    var elementsNumber : Int { get }
+    var collectionWidth : CGFloat { get }
+    var sectionInset : UIEdgeInsets { get }
 }
 
 extension GroupDetailsViewModel {
     
     var title : String {
-        return ""
+        return "Header"
     }
-    var itemsNumber : Int {
+    var elementsNumber : Int {
         return 1
+    }
+    var sectionInset : UIEdgeInsets {
+        return UIEdgeInsets.zero
     }
 }
 
@@ -334,31 +269,51 @@ extension GroupDetailsViewModel {
 //== IMAGE
 class GDImagesViewModel : GroupDetailsViewModel {
     
-    var type: GroupDetailsSectionType = .image
+    private static let inset : CGFloat = 8.0
+    private static let bottomInset : CGFloat = 8.0
+    var collectionWidth: CGFloat
     
+    var type: GroupDetailsSectionType = .image
+    // Let's width will be 1.5 greater than height
+    let heightToWidthFactor : CGFloat = (1 / 1.5)
+
+    var sectionInset: UIEdgeInsets {
+        return UIEdgeInsets(top: GDImagesViewModel.inset, left: GDImagesViewModel.inset,
+                            bottom: GDImagesViewModel.bottomInset, right: GDImagesViewModel.inset)
+    }
+
     let group : Group
-    init(group : Group) {
+    init(group : Group, collectionWidth : CGFloat) {
         self.group = group
+        self.collectionWidth = collectionWidth - (2 * GDImagesViewModel.inset)
     }
 }
 
 //== Title & descriptions
 class GDTextViewModel : GroupDetailsViewModel {
-
+    
+    var collectionWidth: CGFloat
+    private static let inset : CGFloat = 8.0
     var type: GroupDetailsSectionType = .label
-    var linesNumber : Int {
+    var elementsNumber : Int {
         return self.items.count
     }
-    private var items : [LabelViewModel]
-    subscript(index: Int) -> LabelViewModel {
+    private var items : [LabelModel]
+    subscript(index: Int) -> LabelModel {
         return self.items[index]
     }
+    var sectionInset: UIEdgeInsets {
+        return UIEdgeInsets(top: GDTextViewModel.inset, left: GDTextViewModel.inset,
+                            bottom: 0.0, right: GDTextViewModel.inset)
+    }
 
-    init(items : [LabelViewModel]) {
+    init(items : [LabelModel], collectionWidth : CGFloat) {
         
-        self.items = items.enumerated().map({ (index, element) -> LabelViewModel in
+        self.collectionWidth = collectionWidth
+        self.items = items.enumerated().map({ (index, element) -> LabelModel in
             var modalElement = element
             modalElement.index = index
+            modalElement.labelWidth = collectionWidth - (2 * GDTextViewModel.inset)
             return modalElement
         })
     }
@@ -366,16 +321,22 @@ class GDTextViewModel : GroupDetailsViewModel {
 //== Products
 class GDProductsViewModel : GroupDetailsViewModel {
     
+    private var products : [Product]
+    private let leftInset = 10.0
+    private let rightInset = 10.0
+    var collectionWidth: CGFloat
     var type: GroupDetailsSectionType = .products
-    
-    subscript(index: Int) -> Product {
-        return self.productCollection[index]
+    var elementsNumber: Int {
+        return products.count
     }
     
-    private weak var productCollection : LocalCollection<Product>!
+    subscript(index: Int) -> Product {
+        return self.products[index]
+    }
     
-    init(productCollection : LocalCollection<Product>) {
-        self.productCollection = productCollection
+    init(products : [Product], collectionWidth : CGFloat) {
+        self.products = products
+        self.collectionWidth = collectionWidth
     }
 }
 
@@ -383,6 +344,11 @@ class GDProductsViewModel : GroupDetailsViewModel {
 class GDBottomViewModel : GroupDetailsViewModel {
     
     var type: GroupDetailsSectionType = .bottom
+    var collectionWidth: CGFloat
+    
+    init(collectionWidth : CGFloat) {
+        self.collectionWidth = collectionWidth
+    }
 }
 
 
